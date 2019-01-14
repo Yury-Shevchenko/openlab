@@ -1,0 +1,17 @@
+mixin chosenTestCard(test = {})
+
+  - const testClass = slug ? test.slug == slug ? 'task_chosen' : 'task_not_chosen' : 'task'
+
+  div(class = testClass)
+    .selectedtest
+      .store__hero
+        img(src=`/uploads/${test.photo || 'store.png' }`)
+        h6.title 
+          a(href=`/tasks/${test.slug}`) #{test.name}
+      .store__details
+        h7
+          a(target="_blank" href=`/test/${test.slug}/${user._id}/${param_language}`) #{l.run}
+        h7
+          a(href=`/tasks/${test.slug}/original`) #{l.parameters}
+        h7
+          a(href=`/tasks/${test.slug}/modified`) #{l.customized}

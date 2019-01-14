@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  .inner
+    form.form(action="/auth/email/register" method="POST")
+      h5 #{layout.register_title}
+      label(for="email") #{layout.email}
+      input(type="email" name="email" value=email)
+      label(for="password") #{layout.password}
+      input(type="password" name="password" value=password)
+      label(for="password-confirm") #{layout.password_confirm}
+      input(type="password" name="password-confirm" value=password-confirm)
+      p
+      input.button(type="submit" value=layout.signup)

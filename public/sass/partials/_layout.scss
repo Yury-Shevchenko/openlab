@@ -1,0 +1,24 @@
+html {
+  font-size: 10px;
+}
+
+body {
+  //background: $purple;
+  background: #fcfcff;
+  &:before {
+    // content: '';
+    // display: block;
+    // //background: $grad;
+    // background: linear-gradient(10deg, lightskyblue 80%, deepskyblue 90%) fixed;
+    // height: 10px;
+    // width: 100%;
+  }
+}
+
+.inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  @media all and (max-width: 900px) {
+    padding: 2rem;
+  }
+}
