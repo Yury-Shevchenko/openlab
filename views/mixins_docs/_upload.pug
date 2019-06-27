@@ -1,4 +1,15 @@
 mixin upload()
+  
+  h5
+    .headerLink Upload a task from lab.js
+  p.card-message  
+    | To export a task in Open Lab, please select the option Upload to Open Lab... 
+    | in the builder interface. After receiving a confirmation you will be redirected to the Open Lab page. 
+    | You will see a form for adding a new task that will be filled with information from lab.js. 
+    | When you first join Open Lab, the form contains fields to register a new account by entering an email address and a password. 
+    | The procedure is simple and fast, as shown here:
+  .videocontainer(style='display: grid; padding: 20px; justify-content: center;') 
+    video(controls='', src='/docs/video/1-upload_test.webm' style="max-width: 800px;")
 
   h5
     .headerLink !{l.upload_allTasks_title}

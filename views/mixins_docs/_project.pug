@@ -10,7 +10,10 @@ mixin project()
   
   p.card-message 
     | #{l.project_projects_3}
-    
+  
+  .videocontainer(style='display: grid; padding: 20px; justify-content: center;') 
+    video(controls='', src='/docs/video/2-create_study.webm' style="max-width: 800px;")
+  
   h5 
     .headerLink !{l.project_tasks_title}
   p.card-message 
