@@ -5,7 +5,7 @@ mixin chosenTestCard(test = {})
   div(class = testClass)
     .selectedtest
       .store__hero
-        img(src=`/uploads/${test.photo || 'store.png' }`)
+        img(src=`/uploads/${test.photo || 'teacup.jpg' }`)
         h6.title 
           a(href=`/tasks/${test.slug}`) #{test.name}
       .store__details

@@ -31,7 +31,7 @@ mixin testCard(test = {})
                 != h.icon('remove')
 
 
-      img(src=`/uploads/${test.photo || 'store.png' }`)
+      img(src=`/uploads/${test.photo || 'teacup.jpg' }`)
       h2.title
         a(href=`/tests/test/${test.slug}`) #{test.name}
 
