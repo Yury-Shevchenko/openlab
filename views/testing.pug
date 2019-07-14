@@ -57,7 +57,7 @@ block content
       .single__hero
         - const comingTask = projectTests.filter(function(test){return test.slug == nextTask})[0]
         if comingTask
-          img.single__image(src= `/uploads/${comingTask.photo || 'store.png'}`)
+          img.single__image(src= `/uploads/${comingTask.photo || 'teacup.jpg'}`)
         else
           img.single__image(src= `/images/photos/${'over.jpg'}`)
         if nextTask == "allDone"
@@ -131,7 +131,7 @@ block content
   //- script(src="/javascripts/services/geolocation.js" nonce=`${noncevalue}`)
 
   //- pre= h.dump(project)
-        //- pre= h.dump(projects)
-        //- pre= h.dump(results)
-        //- pre= h.dump(confirmationCode)
-        //- pre= h.dump(user)
+  //- pre= h.dump(projectTests)
+  //- pre= h.dump(results)
+  //- pre= h.dump(confirmationCode)
+  //- pre= h.dump(user)
