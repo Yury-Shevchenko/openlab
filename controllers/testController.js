@@ -505,7 +505,7 @@ exports.testing = async (req, res) => {
         _id: { $in: project.tests},
         author: { $exists: true }
       })
-      .select({slug:1, name:1})
+      .select({slug:1, name:1, photo: 1})
     projectTests = unsortedProjectTests.sort( (a, b) => {
       return project.tests.indexOf(a.id) - project.tests.indexOf(b.id);
     });
