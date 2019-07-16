@@ -151,7 +151,7 @@ exports.downloadSummaryData = async (req, res) => {
           return(Object.keys(e));
         });
         const tempkeys = Array.from(new Set(preKeys));
-        console.log('Keys', tempkeys);
+        // console.log('Keys', tempkeys);
         const new_items = tempkeys.filter(x => !keys.includes(x));
         let parsed;
         if (new_items.length > 0){
@@ -398,7 +398,7 @@ exports.saveIncrementalResults = async (req, res) => {
       })
       .then(JSON => {
         // console.log('JSON', JSON);
-        console.log('success with OSF')
+        // console.log('success with OSF')
       })
       .catch(err => {
         console.log(err);

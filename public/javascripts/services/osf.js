@@ -31,14 +31,14 @@ function osf_test(){
     ),
   })
   .then(res => {
-    console.log('Response', res);
+    // console.log('Response', res);
     return res.json();
   })
   .then(myJSON => {
-    console.log('JSON', myJSON);
+    // console.log('JSON', myJSON);
     const files_link = myJSON.data.relationships.files.links.related.href;
     osfProjectLink = `https://osf.io/${files_link.split('/')[5]}/files/`
-    console.log('files_link', files_link, osfProjectLink);
+    // console.log('files_link', files_link, osfProjectLink);
     osf_testBtn.innerText = "Creating a new project...";
     return files_link;
   })
@@ -53,13 +53,13 @@ function osf_test(){
     })
   })
   .then(second_res => {
-    console.log('Second Response', second_res);
+    // console.log('Second Response', second_res);
     return second_res.json();
   })
   .then(second_JSON => {
-    console.log('second_JSON', second_JSON);
+    // console.log('second_JSON', second_JSON);
     const upload_link = second_JSON.data.filter(d => d.attributes.name === 'osfstorage')[0].links.upload;
-    console.log('upload_link', upload_link);
+    // console.log('upload_link', upload_link);
     osf_testBtn.innerText = "New project created ...";
     return upload_link;
   })

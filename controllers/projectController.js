@@ -244,7 +244,7 @@ exports.debugprojects = async(req, res) => {
 };
 
 exports.updateWithOSF = async(req, res) => {
-  console.log('request body', req.body);
+  // console.log('request body', req.body);
   const project = await Project.findOne({ _id: req.user.project._id });
   project.set(req.body);
   await project.save();
