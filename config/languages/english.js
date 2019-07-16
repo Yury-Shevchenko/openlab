@@ -60,8 +60,8 @@ module.exports =
       'myResults': 'Results',
       'participants': 'Participants',
       'invitations': 'Invitations',
-      'upgradeNeededMessage': 'Please <a href="/subscribe")>upgrade</a> your plan in order to add unlimited amount of studies.',
-      'subscriptionNeededMessage': 'Please <a href="/subscribe")>subscribe</a> to a plan in order to add more studies.',
+      'upgradeNeededMessage': 'Please <a href="/subscribe">upgrade</a> your plan in order to add unlimited amount of studies.',
+      'subscriptionNeededMessage': 'Please <a href="/subscribe">subscribe</a> to a plan in order to add more studies.',
       'account': 'Profile',
       'subscription': 'Subscription',
       'currentPlan': 'Current Plan',
@@ -214,6 +214,13 @@ module.exports =
        'It is made for researchers who want to create and conduct their study on the Internet. ' +
        'Open Lab is integrated with the ' + '<a target="_blank" href="https://labjs.felixhenninger.com/">lab.js experiment builder</a>' + ', with which you can design your own study. ' +
        'The Open Lab server application takes care of running your experiment online and collecting, storing and managing data.',
+      'announcement_header': 'Announcement',
+      'announcement': 'We are very excited and proud to present the integration of Open Lab with ' +
+        '<a target="_blank" href="https://osf.io/">Open Science Framework (OSF)</a>. ' +
+        'From now on you can store the data in your OSF repository. ' +
+        'Each time a participant completes your study, the data are uploaded to your OSF project. ' +
+        'This means that you can have an unlimited number of participants if you store your data in the OSF. '
+        ,
       'forResearchers': 'For researchers',
       'forParticipants': 'For participants',
       'res_1': 'Hosting your study created in lab.js',
@@ -670,8 +677,56 @@ module.exports =
           'table_delete': 'Delete',
           'delete_notifications': 'Delete all notifications',
           'registering_busy_message': 'Registering notification ...',
-
         },
+
+        'osf': {
+          'announcement_header': 'Announcement',
+          'announcement': 'We are very excited and proud to present the integration of Open Lab with ' +
+            '<a target="_blank" href="https://osf.io/">Open Science Framework (OSF)</a>. ' +
+            'From now on you can store the data in your OSF repository. ' +
+            'Each time a participant completes your study, the data are uploaded to your OSF project. ' +
+            'This means that you can have an unlimited number of participants if you store your data in the OSF. '
+            ,
+          'announcement_errors': 'If you notice some errors, please let us know via our ' +
+            '<a target="_blank" href="https://join.slack.com/t/open-lab-online/shared_invite/enQtNDU3MzgzMzY4NDcxLTBjZTg1NmViYTEwYWI0NmE3MDZmM2QwMzNhZmRmNmZkMDRhMzhlNTZlZWU2OWU0MmU5YTBhMjU4MWFlYjcwYjA">Slack channel</a> ' +
+            ' or the ' +
+            '<a target="_blank" href="/docs/faq"> support form</a>.',
+          'sync_header_1': 'Your Open Lab project ',
+          'sync_header_2': ' is synced with the OSF project ',
+          'sync_header_3': '',
+          'recording_header': 'Data recording',
+          'recording_1': 'OSF + Open Lab',
+          'recording_1_desc': 'Record the data on OSF + save the data in Open Lab',
+          'recording_2': 'OSF',
+          'recording_2_desc': 'Record the data only on OSF and do not save in Open Lab',
+          'recording_3': 'Open Lab',
+          'recording_3_desc': 'Save the data in Open Lab and do not send the data to OSF',
+          'goToOSF': 'Go to the OSF project',
+          'removeLink': 'Remove the link',
+          'create': 'Create a new project in OSF to sync with ',
+          'create_2': '',
+          'create_title': 'OSF project title',
+          'create_desc': 'OSF project description',
+          'create_status': 'OSF project status',
+          'status_private': 'Private',
+          'status_private_desc': 'Only for you',
+          'status_public': 'Public',
+          'status_public_desc': 'For everybody',
+          'token_explained': 'We need your OSF token to be able to write data in the new project. '+
+            'We will keep this token safe and only use it to store the data of the participants of the study ',
+          'token_explained_2': '. You can delete the token later if you decide to remove the link between the Open Lab and the OSF project. ',
+          'token_explained_3': 'Read about ' +
+          '<a target="_blank" href="https://developer.osf.io/#tag/Authentication">tokens</a>' +
+          ' and create your own ' +
+          '<a target="_blank" href="https://osf.io/settings/tokens">token</a>' +
+          ' with the scope ' +
+          '<kbd>osf.full_write</kbd>',
+          'token_paste': 'Paste the OSF token here',
+          'create_OSF': 'Create OSF project',
+          'no_studies_yet': 'You have not created any Open Lab studies yet. Please create or activate a study first.',
+          'update': 'Update',
+        },
+
 
 
 

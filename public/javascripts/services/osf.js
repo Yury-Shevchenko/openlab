@@ -31,6 +31,11 @@ function osf_test(){
     ),
   })
   .then(res => {
+    if(res && !res.ok){
+      alert('Wrong OSF token');
+      window.location = '/osf';
+      return;
+    }
     // console.log('Response', res);
     return res.json();
   })

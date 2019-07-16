@@ -212,6 +212,13 @@ module.exports = {
      'Es ist für Forscher gedacht, die ihre Studie im Internet erstellen und durchführen möchten. ' +
      'Open Lab ist integriert mit dem ' + '<a target="_blank" href="https://labjs.felixhenninger.com/">lab.js experiment builder</a>' + ', mit dem Sie Ihre eigene Studie erstellen können. ' +
      'Die Open Lab Server-Anwendung kümmert sich um den Online-Betrieb Ihres Experiments und das Sammeln, Speichern und Verwalten von Daten.',
+     'announcement_header': 'Mitteilung',
+     'announcement': 'Wir freuen uns sehr und sind stolz darauf, die Integration von Open Lab mit ' +
+       '<a target="_blank" href="https://osf.io/">Open Science Framework (OSF)</a> präsentieren zu können. ' +
+       'Ab sofort können Sie die Daten in Ihrem OSF-Repository speichern. ' +
+       ' Jedes Mal, wenn ein Teilnehmer Ihre Studie abschließt, werden die Daten in Ihr OSF-Projekt hochgeladen. ' +
+       'Das bedeutet, dass Sie eine unbegrenzte Anzahl von Teilnehmern haben können, wenn Sie Ihre Daten im OSF speichern. '
+       ,
     'forResearchers': 'Für Forscher',
     'forParticipants': 'Für Teilnehmer',
     'res_1': 'Hosting Ihrer in lab.js erstellten Studie',
@@ -669,4 +676,51 @@ module.exports = {
         'registering_busy_message': 'Registrierung der Benachrichtigung ...',
       },
 
+      'osf': {
+        'announcement_header': 'Ankündigung',
+        'announcement': 'Wir freuen uns sehr und sind stolz darauf, die Integration von Open Lab mit ' +
+          '<a target="_blank" href="https://osf.io/">Open Science Framework (OSF)</a>. ' +
+          'Ab sofort können Sie die Daten in Ihrem OSF-Repository speichern. ' +
+          ' Jedes Mal, wenn ein Teilnehmer Ihre Studie abschließt, werden die Daten in Ihr OSF-Projekt hochgeladen. ' +
+          'Das bedeutet, dass Sie eine unbegrenzte Anzahl von Teilnehmern haben können, wenn Sie Ihre Daten im OSF speichern. '
+          ,
+        'announcement_errors': 'Wenn Sie Fehler bemerken, lassen Sie es uns bitte über unser ' +
+          '<a target="_blank" href="https://join.slack.com/t/open-lab-online/shared_invite/enQtNDU3MzgzMzY4NDcxLTBjZTg1NmViYTEwYWI0NmE3MDZmM2QwMzNhZmRmNmZkMDRhMzhlNTZlZWU2OWU0MmU5YTBhMjU4MWFlYjcwYjA">Slack channel</a> ' +
+          ' oder der ' +
+          '<a target="_blank" href="/docs/faq"> Support Formular</a> wissen.',
+        'sync_header_1': 'Ihr Open Lab Projekt ',
+        'sync_header_2': ' ist mit dem OSF-Projekt ',
+        'sync_header_3': ' synchronisiert',
+        'recording_header': 'Datenaufzeichnung',
+        'recording_1': 'OSF + Open Lab',
+        'recording_1_desc': 'Speichern Sie die Daten auf OSF + speichern Sie die Daten in Open Lab',
+        'recording_2': 'OSF',
+        'recording_2_desc': 'Speichern Sie die Daten nur auf OSF und nicht in Open Lab',
+        'recording_3': 'Open Lab',
+        'recording_3_desc': 'Speichern Sie die Daten in Open Lab und senden Sie die Daten nicht an OSF',
+        'goToOSF': 'Zum OSF-Projekt',
+        'removeLink': 'Den Link entfernen',
+        'create': 'Erstellen Sie ein neues Projekt in OSF, um es mit ',
+        'create_2': ' zu synchronisieren.',
+        'create_title': 'OSF-Projekttite',
+        'create_desc': 'OSF-Projektbeschreibung',
+        'create_status': 'OSF-Projektstatus',
+        'status_private': 'Privat',
+        'status_private_desc': 'Nur für Sie',
+        'status_public': 'Öffentlich',
+        'status_public_desc': 'Für alle',
+        'token_explained': 'Wir benötigen Ihren OSF-Token, um Daten in das neue Projekt schreiben zu können. '+
+          'Wir werden diesen Token sicher aufbewahren und nur zur Speicherung der Daten der Studienteilnehmer verwenden. ',
+        'token_explained_2': '. Sie können das Token später löschen, wenn Sie sich entscheiden, die Verbindung zwischen dem Open Lab und dem OSF-Projekt zu entfernen. ',
+        'token_explained_3': 'Lesen Sie mehr über ' +
+        '<a target="_blank" href="https://developer.osf.io/#tag/Authentication">tokens</a>' +
+        ' und erstellen Sie Ihre eigenen ' +
+        '<a target="_blank" href="https://osf.io/settings/tokens">token</a>' +
+        ' mit dem Geltungsbereich ' +
+        '<kbd>osf.full_write</kbd>',
+        'token_paste': 'Fügen Sie das OSF-Token hier ein',
+        'create_OSF': 'OSF-Projekt erstellen',
+        'no_studies_yet': 'Sie haben noch keine Open Lab-Studien erstellt. Bitte erstellen oder aktivieren Sie zuerst eine Studie.',
+        'update': 'Aktualisieren',
+      },
 }
