@@ -23,8 +23,10 @@ mixin userCard(person = {}, i)
       if(person.numberTests > 0 && person.storage.filter(r => r === 'OSF').length === 0)
         td
           a(style="border-bottom: 2px solid #FFC40E;" href=`/alldata/${person._id}/${person.participant_id}`) #{l.table_download}
-      if(person.storage.filter(r => r === 'OSF').length > 0)
+      else if(person.storage.filter(r => r === 'OSF').length > 0)
         td= `${person.storage.filter(r => r === 'OSF').length} OSF file(s)`
+      else 
+        td= ``
         
       if(person.numberTests > 0)
         td= person.numberDataRequests + person.numberDeleteRequests
