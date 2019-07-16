@@ -125,7 +125,7 @@ userSchema.statics.getUsersOfProject = function(project) {
               }
             }
           },
-          {$project: {project: 1, test: 1,
+          {$project: {project: 1, test: 1, storage: 1,
             deleteRequests: { $cond: ['$deleteRequest', 1, 0] },
             dataRequests: { $cond: ['$dataRequest', 1, 0] },
           }},
@@ -159,6 +159,7 @@ userSchema.statics.getUsersOfProject = function(project) {
         numberDeleteRequests: { $sum: '$results.deleteRequests' },
         numberDataRequests: { $sum: '$results.dataRequests' },
         notifications: '$$ROOT.notifications',
+        storage: '$results.storage',
       }
     },
     { $sort : {identity: 1}}, //from highest to lowest

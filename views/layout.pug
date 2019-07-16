@@ -41,10 +41,10 @@ html
                           option(value=language.value selected=(locale_language == language.value))= language.name
                   li.nav__item
                     a.nav__main_link(href='/studies', class=(currentPath.startsWith('/studies') ? 'nav__main_link--active' : ''))
-                      h6 #{layout.studies}
+                      h6 #{layout && layout.studies}
                   li.nav__item
                     a.nav__main_link(href='/listing', class=(currentPath.startsWith('/listing') ? 'nav__main_link--active' : ''))
-                      h6 #{layout.tasks}
+                      h6 #{layout && layout.tasks}
 
 
             if user
@@ -121,9 +121,9 @@ html
                 h6 #{layout.logout}
             else
               li.nav__item: a.nav__main_link(href="/researcher/login", class=(currentPath.startsWith('/researcher') ? 'nav__main_link--active' : ''))
-                h6 #{layout.forResearchers}
+                h6 #{layout && layout.forResearchers}
               li.nav__item: a.nav__main_link(href="/participant/login", class=(currentPath.startsWith('/participant') ? 'nav__main_link--active' : ''))
-                h6 #{layout.forParticipants}
+                h6 #{layout && layout.forParticipants}
 
     block messages
       if locals.flashes

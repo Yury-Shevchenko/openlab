@@ -47,7 +47,15 @@ const projectSchema = new mongoose.Schema({
       message      : { type: String, default: 'Please complete a test.' },
       duration     : { type: Number, default: 0 }
     }
-  ]
+  ],
+  osf              : {
+    upload_link    : String,
+    upload_token   : String,
+    title          : String,
+    policy         : { type: String, default: 'OL' },
+    project_link   : String,
+  }
+
 });
 
 projectSchema.statics.getCurrentProjects = function() {

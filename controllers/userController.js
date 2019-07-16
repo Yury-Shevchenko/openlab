@@ -209,8 +209,16 @@ exports.invitations = async (req, res) => {
 };
 
 exports.getOneUserData = async (req, res) => {
-  const results = await Result.getUserResults({ author:  req.params.id, project: req.user.project._id });
-  res.render('dataOneUser', {participant: req.params.participant, results});
+  const results = await Result.getUserResults({
+    author:  req.params.id,
+    project: req.user.project._id
+  });
+  if(results && results.length > 0){
+    res.render('dataOneUser', {participant: req.params.participant, results});
+  } else {
+    req.flash('error', `There is no metadata results saved on Open Lab for this user`);
+    res.redirect('back');
+  }
 };
 
 exports.getResearchers = async (req, res) => {
@@ -549,3 +557,10 @@ exports.uploadImage = async (req, res) => {
 
   res.status(201).json({message: 'Data received'});
 };
+
+exports.osfIntegration = async (req, res) => {
+  const project = await Project.findOne({_id: req.user.project._id},{
+    name: 1, osf: 1, description: 1,
+  });
+  res.render('osf', {project});
+}

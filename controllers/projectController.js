@@ -242,3 +242,12 @@ exports.debugprojects = async(req, res) => {
   const projects = await Project.debugProjects();
   res.render('debugprojects', {projects: projects});
 };
+
+exports.updateWithOSF = async(req, res) => {
+  console.log('request body', req.body);
+  const project = await Project.findOne({ _id: req.user.project._id });
+  project.set(req.body);
+  await project.save();
+  req.flash('success', `The OSF project is updated`);
+  res.redirect('/osf');
+};

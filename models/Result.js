@@ -41,13 +41,18 @@ const resultSchema = new mongoose.Schema({
   openDataForParticipant: {
     type: Boolean,
     default: false
-  }
+  },
+  storage: {
+    type: String,
+    default: 'OL'
+  },
 });
 
 //get results of particular user
 resultSchema.statics.getUserResults = function(feature) {
   return this.aggregate([
     //{ $match: { 'uploadType' : 'full'} },
+    { $match: { 'rawdata' : { $exists: true }} },
     { $match: { 'project' : mongoose.Types.ObjectId(feature.project) } },
     { $lookup: {
       from: 'users', localField: 'author', foreignField: '_id', as: 'author'
@@ -203,6 +208,7 @@ resultSchema.statics.getParticipantResults = function(feature) {
 resultSchema.statics.getResults = function(feature) {
   //console.log(feature);
   return this.aggregate([
+    { $match: { 'rawdata' : { $exists: true }} },
     { $match: { test : mongoose.Types.ObjectId(feature.test) } },//filter only users
     { $match: { project : feature.project } },//filter only users
     { $lookup: {

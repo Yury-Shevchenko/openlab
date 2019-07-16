@@ -8,6 +8,7 @@ const User = mongoose.model('User');
 const Test = mongoose.model('Test');
 const Param = mongoose.model('Param');
 const Project = mongoose.model('Project');
+const fetch = require('node-fetch');
 
 //show the results on the page with chosen tests
 // exports.getResultsOfTest = async (req, res) => {
@@ -29,31 +30,45 @@ exports.showMyResults = async (req, res) => {
 
 //download metadata for a user as a csv file
 exports.downloadMetadataUser = async (req, res) => {
-  const results = await Result.find({ author: req.params.id })
-  const name = req.params.identity;
-  const data = results.map(e => e.rawdata[0].meta);
-  const csv_file = papaparse.unparse({data});
-  res.setHeader('Content-disposition', 'attachment; filename=meta_' + name +'.csv');
-  res.send(csv_file);
+  const results = await Result.find({ author: req.params.id, rawdata: { $exists: true } })
+  if(results && results.length > 0){
+    const name = req.params.identity;
+    const data = results.map(e => e.rawdata[0].meta);
+    const csv_file = papaparse.unparse({data});
+    res.setHeader('Content-disposition', 'attachment; filename=meta_' + name +'.csv');
+    res.send(csv_file);
+  } else {
+    req.flash('error', `There is no metadata results saved on Open Lab for this user`);
+    res.redirect('back');
+  }
 };
 
 //download results of a user as a csv file
 exports.downloadResultsUser = async (req, res) => {
-  const results = await Result.find({ author: req.params.id, project: req.user.project._id })
-  const authoreddata = results.map(u=>{
-    u.rawdata.map(e=>{
-      return e;
-    })
-    return u.rawdata;
-  }).reduce((a,b)=>a.concat(b),[]);
-  const keys = authoreddata.map(e => Object.keys(e)).reduce( (a,b) => Array.from(new Set(a.concat(b))) );
-  const name = req.params.identity;
-  const csv_file = papaparse.unparse({
-     fields: keys,
-	   data: authoreddata
-   });
-  res.setHeader('Content-disposition', 'attachment; filename=' + name +'.csv');
-  res.send(csv_file);
+  const results = await Result.find({
+    author: req.params.id,
+    project: req.user.project._id,
+    rawdata: { $exists: true },
+  })
+  if(results && results.length > 0){
+    const authoreddata = results.map(u=>{
+      u.rawdata.map(e=>{
+        return e;
+      })
+      return u.rawdata;
+    }).reduce((a,b)=>a.concat(b),[]);
+    const keys = authoreddata.map(e => Object.keys(e)).reduce( (a,b) => Array.from(new Set(a.concat(b))) );
+    const name = req.params.identity;
+    const csv_file = papaparse.unparse({
+       fields: keys,
+  	   data: authoreddata
+     });
+    res.setHeader('Content-disposition', 'attachment; filename=' + name +'.csv');
+    res.send(csv_file);
+  } else {
+    req.flash('error', `There is no results saved on Open Lab for this user`);
+    res.redirect('back');
+  }
 };
 
 //download all projects data for an researcher as a csv file
@@ -68,7 +83,7 @@ exports.downloadprojectdata = async (req, res) => {
     .cursor()
     .on('data', obj => {
       //return only the results of participants (level < 10)
-      if(obj.author.level < 10){
+      if(obj.author.level < 10 && obj.rawdata && obj.rawdata.length > 0){
         const preKeys = flatMap(obj.rawdata, function(e){
           return(Object.keys(e));
         });
@@ -102,7 +117,7 @@ exports.downloadprojectmetadata = async (req, res) => {
     .cursor()
     .on('data', obj => {
       //return only the results of participants (level < 10)
-      if(obj.author.level < 10){
+      if(obj.author.level < 10 && obj.rawdata && obj.rawdata.length > 0){
         const metadata = obj.rawdata[0].meta;
         const preparsed = papaparse.unparse([metadata]) + '\r\n';
         let parsed;
@@ -249,6 +264,12 @@ exports.changeStatusOfDataRequest = async (req, res) => {
 
 //save results during the task
 exports.saveIncrementalResults = async (req, res) => {
+  const project_id = req.user.participantInProject || req.user.project._id;
+
+  const project = await Project.findOne({_id: project_id},{
+    name: 1, osf: 1,
+  });
+
   const slug = req.body.url.split('/')[4];
   const test = await Test
     .findOne({ slug })
@@ -265,7 +286,7 @@ exports.saveIncrementalResults = async (req, res) => {
     })
   };
 
-  if (req.body.metadata.payload == 'incremental'){
+  if (req.body.metadata.payload == 'incremental' && project && project.osf && project.osf.policy !== 'OSF'){
     let result = await Result.findOne({transfer: req.body.metadata.id, uploadType: req.body.metadata.payload});
     if(!result){
       const parameters = await Param.getParameters({
@@ -304,6 +325,7 @@ exports.saveIncrementalResults = async (req, res) => {
     res.send('saved');
 
   } else if(req.body.metadata.payload == 'full'){
+
     const parameters = await Param.getParameters({
       slug: slug,
       language: req.user.language,
@@ -340,11 +362,53 @@ exports.saveIncrementalResults = async (req, res) => {
       aggregated: aggregated
     });
 
-    await fullResult.save();
+    if(project && project.osf && project.osf.policy !== 'OSF'){
+      await fullResult.save();
+    } else {
+      const osfFullResult = new Result({
+        transfer: req.body.metadata.id,
+        author: req.user._id,
+        openLabId: req.user.openLabId,
+        project: req.user.participantInProject || req.user.project._id,
+        test: test._id,
+        taskslug: slug,
+        uploadType: req.body.metadata.payload,
+        parameters: params,
+        storage: 'OSF',
+      });
+      await osfFullResult.save();
+    }
 
-    res.send('Saved all results');
+    // upload data to osf
+    if(project && project.osf && project.osf.upload_link && project.osf.upload_token && project.osf.policy !== 'OL'){
+      const link = project.osf.upload_link + '?kind=file&name=' + req.user.openLabId + '-' + req.body.metadata.id + '.csv';
+      const data = papaparse.unparse(req.body.data);
+      // console.log("link", link);
+      fetch(link, {
+        method:'PUT',
+        headers: {
+          'Authorization': `Bearer ${project.osf.upload_token}`,
+          //rpktADN0Z6G0X87NfbMcFMc4dKonnCjpHEeOooCtv2jGT2aSTuxRM7vaTSVoNurWWYPDVw
+        },
+        body: data
+      })
+      .then(response => {
+        // console.log('response', response);
+        return response.json();
+      })
+      .then(JSON => {
+        // console.log('JSON', JSON);
+        console.log('success with OSF')
+      })
+      .catch(err => {
+        console.log(err);
+      })
+    };
+
+    res.send('Data were saved');
+
   } else {
-    res.send('Unknown upload data type');
+    res.send('Nothing was saved');
   }
 };
 

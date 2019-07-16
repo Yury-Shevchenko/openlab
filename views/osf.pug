@@ -1,0 +1,158 @@
+extends layout
+
+block content
+  .inner
+    p
+    header.top
+      nav.nav
+        .nav__section.nav__section--pages
+          li.nav__item: a.nav__link(href="/users", class=(currentPath.startsWith('/users') ? 'nav__link--active' : '')) #{layout.participants}
+          li.nav__item: a.nav__link(href="/data", class=(currentPath.startsWith('/data') ? 'nav__link--active' : '')) #{layout.results}
+          li.nav__item: a.nav__link(href="/osf", class=(currentPath.startsWith('/osf') ? 'nav__link--active' : '')) OSF (beta) 
+    p
+    
+    p Announcement
+    p We are very excited and proud to present the integration of Open Lab with  
+      a(href='https://osf.io/' target='_blank') Open Science Framework (OSF).
+      | 
+      | From now on you can store the data in your OSF repository. 
+      | Each time a participant completes your study, the data are uploaded to your OSF project. 
+      | This means that you can have an unlimited number of participants if you store your data in the OSF.
+      p If you notice some errors, please let us know via our 
+        |
+        a(href='https://join.slack.com/t/open-lab-online/shared_invite/enQtNDU3MzgzMzY4NDcxLTBjZTg1NmViYTEwYWI0NmE3MDZmM2QwMzNhZmRmNmZkMDRhMzhlNTZlZWU2OWU0MmU5YTBhMjU4MWFlYjcwYjA' target='_blank') Slack channel 
+        | or 
+        a(href='/docs/faq' target='_blank') the support form.
+    
+    
+    .userTable
+      
+      if(project && user.project && user.project.name)
+      
+        if(project.osf && project.osf.upload_link && project.osf.upload_token)
+          //- h2 Your project 
+          //-   span(style="color:orange; font-size: larger;")= project.name 
+          //-   |
+          //-   | on OSF
+          h2 Your Open Lab project 
+            span(style="color:red; font-size: larger;")= project.name 
+            |
+            | is synced with the OSF project  
+            |
+            span(style="color:#337ab7; font-size: larger;")= project.osf.title 
+          
+          .card
+            //- p Your Open Lab project 
+            //-   span(style="color:orange; font-size: larger;")= project.name 
+            //-   |
+            //-   | is synced with the OSF project  
+            //-   |
+            //-   span(style="color:orange; font-size: larger;")= project.osf.title 
+            //- p 
+            //-   a(href=project.osf.project_link) Go to the OSF project
+            //- p
+            //- p 
+            //- p
+            h6 Data recording
+            p
+            form(action=`/updateprojectwithosfinfo/` method = 'POST' id="osfform")
+              div.span4#test_privacy
+                input(type='radio', name='osf.policy', value="OSF-OL", style="visibility: true;" checked=project.osf.policy === 'OSF-OL')#wnr1
+                
+                label(for='wnr1')
+                  i.yes
+                  span.
+                    OSF + Open Lab
+                  br
+                  small Record the data on OSF + save the data in Open Lab 
+                
+                input(type='radio', name='osf.policy', value="OSF", style="visibility: true;" checked=project.osf.policy === 'OSF')#wnr2
+                
+                label(for='wnr2')
+                  i.yes
+                  span.
+                    OSF 
+                  br
+                  small Record the data only on OSF and do not save in Open Lab
+                  
+                input(type='radio', name='osf.policy', value="OL", style="visibility: true;" checked=project.osf.policy === 'OL')#wnr3
+                  
+                label(for='wnr3')
+                  i.yes
+                  span.
+                    Open Lab
+                  br
+                  small Save the data in Open Lab and do not send the data to OSF
+              
+              input(type='submit' id="btnEditOsfProject" value='Update' class="button")
+          
+          p 
+            a.button(href=project.osf.project_link target='_blank') Go to the OSF project
+            span 
+            button.button(id='removeosfconnection' style='background-color:red; color:white') Remove the link
+          p
+          p 
+          p
+        else
+          h2 Create a new project in OSF to sync with 
+            span(style="color:rgba(135, 206, 250, 0.6); font-size: larger;")= project.name 
+            
+          .card
+            label OSF project title
+            input(type="text" id="osf-title" value=project.name)
+            
+            label OSF project description
+            input(type="text" id="osf-description" value=project.description)
+            
+            label OSF project status 
+            
+            div.span4#test_privacy
+              input(type='radio', name='osf-status', style="visibility: true;" checked=true)#wnr1
+              
+              label(for='wnr1')
+                i.yes
+                span.
+                  Private
+                br
+                small Only for you
+              
+              input(type='radio', name='osf-status', style="visibility: true;")#wnr2
+              
+              label(for='wnr2')
+                i.yes
+                span.
+                  Public
+                br
+                small For everybody
+            
+            
+            p We need your OSF token to be able to write data in the new project. 
+              | We will keep this token safe and only use it to store the data of the participants of the study 
+              span(style="color:rgba(135, 206, 250, 0.6); font-size: larger;")= project.name 
+              | .
+              |
+              | You can delete the token later if you decide to remove the link between the Open Lab and the OSF project. 
+              
+            p Read about
+              | 
+              a(href='https://developer.osf.io/#tag/Authentication' target="_blank") tokens
+              |
+              | and create your own
+              a(href='https://osf.io/settings/tokens' target="_blank")  token  
+              | with the scope "osf.full_write"
+              
+            input(type="text" id="osf-token" placeholder="Paste the OSF token here")
+              
+            p
+            
+            button(id="osf_testBtn" class="button") Create OSF project
+      else 
+        .card
+          p You have not created any Open Lab studies yet. Please create or activate a study first.        
+        
+      
+      //- pre=h.dump(project)
+      //- pre=h.dump(user)
+      
+  
+  script(type='text/javascript', src='/javascripts/services/osf.js' nonce=`${noncevalue}`)

@@ -104,6 +104,9 @@ router.get('/logout', authController.logout);
 //for researchers list users with their results
 router.get('/data', authController.isLoggedIn, catchErrors(resultController.showDataByTests));
 router.get('/data/:slug', authController.isLoggedIn, catchErrors(resultController.showDataByTests));
+router.get('/osf', authController.isAdminLoggedIn, catchErrors(userController.osfIntegration));
+router.post('/updateprojectwithosfinfo', authController.isAdminLoggedIn, catchErrors(projectController.updateWithOSF));
+
 router.get('/users', authController.isAdminLoggedIn, catchErrors(userController.getData));
 router.get('/users/page/:page', authController.isAdminLoggedIn, catchErrors(userController.getData));
 router.get('/users/:id/:participant', authController.isAdminLoggedIn, catchErrors(userController.getOneUserData));

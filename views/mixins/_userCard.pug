@@ -19,10 +19,13 @@ mixin userCard(person = {}, i)
       else
         td= l.table_participant
       td= person.numberTests
-      td
-        if(person.numberTests > 0)
-            a(style="border-bottom: 2px solid #FFC40E;" href=`/alldata/${person._id}/${person.participant_id}`) #{l.table_download}
-
+      
+      if(person.numberTests > 0 && person.storage.filter(r => r === 'OSF').length === 0)
+        td
+          a(style="border-bottom: 2px solid #FFC40E;" href=`/alldata/${person._id}/${person.participant_id}`) #{l.table_download}
+      if(person.storage.filter(r => r === 'OSF').length > 0)
+        td= `${person.storage.filter(r => r === 'OSF').length} OSF file(s)`
+        
       if(person.numberTests > 0)
         td= person.numberDataRequests + person.numberDeleteRequests
       else
@@ -35,11 +38,11 @@ mixin userCard(person = {}, i)
         td
 
       td
-        if(person.numberTests > 0)
+        if(person.numberTests > 0 && person.storage.filter(r => r === 'OSF').length === 0)
             a(style="border-bottom: 2px solid #FFC40E;" href=`/users/${person._id}/${person.participant_id}`) #{l.table_open}
 
       td
-        if(person.numberTests > 0)
+        if(person.numberTests > 0 && person.storage.filter(r => r === 'OSF').length === 0)
             a(style="border-bottom: 2px solid #FFC40E;" href=`/allmetadata/${person._id}/${person.participant_id}`) #{l.table_download}
       
       if(person.notifications && person.notifications.length > 0)

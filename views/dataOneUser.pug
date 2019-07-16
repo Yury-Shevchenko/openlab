@@ -59,7 +59,7 @@ block content
                 td= result.fileSize
                 if user.level > 10
                   td
-                    a(style="border-bottom: 2px solid #FFC40E;" href=`/database/${result.slug}/${result.participant_id}/${result._id}`) #{l.table_one_download}
+                    a(style="border-bottom: 2px solid #FFC40E;" href=`/database/${result.slug}/${result._id}`) #{l.table_one_download}
                 if user.level > 10
                   if (result.dataRequest && result.deleteRequest)
                     td #{l.table_see_my_data}, #{l.table_delete_my_data}

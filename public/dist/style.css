@@ -1664,7 +1664,7 @@ i.yes {
 i.yes:after {
   content: '\2705'; }
 
-#yes, #test_privacy input#wnr1:checked ~ label[for='wnr1'] > i.yes, #test_privacy input#wnr2:checked ~ label[for='wnr2'] > i.yes {
+#yes, #test_privacy input#wnr1:checked ~ label[for='wnr1'] > i.yes, #test_privacy input#wnr2:checked ~ label[for='wnr2'] > i.yes, #test_privacy input#wnr3:checked ~ label[for='wnr3'] > i.yes {
   display: block; }
 
 #test_privacy {
@@ -1692,6 +1692,10 @@ i.yes:after {
   #test_privacy input#wnr2:checked ~ label[for='wnr2'] {
     background-color: #ffe !important; }
     #test_privacy input#wnr2:checked ~ label[for='wnr2'] span {
+      font-weight: 600; }
+  #test_privacy input#wnr3:checked ~ label[for='wnr3'] {
+    background-color: #ffe !important; }
+    #test_privacy input#wnr3:checked ~ label[for='wnr3'] span {
       font-weight: 600; }
 
 .tooltip {

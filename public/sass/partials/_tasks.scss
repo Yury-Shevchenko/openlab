@@ -113,6 +113,18 @@ i.yes:after {
       }
     }
   }
+  input#wnr3:checked {
+    &~ label[for='wnr3'] {
+      //background-color: #eee!important;
+      background-color: #ffe !important;
+      &> i.yes {
+        @extend #yes;
+      }
+      span {
+        font-weight: 600;
+      }
+    }
+  }
 }
 
 //tooltips
