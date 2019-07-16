@@ -12,6 +12,7 @@ const fs = require('fs');
 const FormData = require('form-data');
 const fetch = require('node-fetch');
 const cloudinary = require('cloudinary');
+const defaultSlugify = require('slugify');
 
 exports.convertJSON = async (state, foldername, production = 'alpha', stateModifier=state => state, additionalFiles={}) => {
   // Apply modification function to copy of current state
@@ -230,6 +231,24 @@ const processShuffleGroups = columns =>
     g => g.map(c => c.name)
   )
 
+const processItems = items =>
+  items.rows
+    .map(r => r[0])
+    .filter(i => i.label !== '')
+    .map(i => {
+      // Provide a default name based on the label
+      // for the items that require one
+      if (['text', 'divider'].includes(i.type)) {
+        return i
+      } else {
+        console.log('i', slugify(i.label))
+        return ({
+          ...i,
+          name: i.name || slugify(i.label || '')
+        })
+      }
+    })
+
 // Process any single node in isolation
 const processNode = node => {
   // Options to exclude from JSON output
@@ -255,6 +274,9 @@ const processNode = node => {
     parameters: node.parameters
       ? processParameters(node.parameters)
       : {},
+    items: node.items
+      ? processItems(node.items)
+      : null,
     responses: node.responses
       ? processResponses(node.responses)
       : {},
@@ -448,3 +470,6 @@ const adaptiveFunction = code =>
     ? new AsyncFunction(code)
     // eslint-disable-next-line no-new-func
 : new Function(code)
+
+const slugify = title =>
+  defaultSlugify(title).toLowerCase()
