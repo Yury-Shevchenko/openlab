@@ -228,8 +228,8 @@ router.get('/allmetadata/:id/:identity', authController.isLoggedIn, catchErrors(
 //download results for particular test and user
 router.get('/database/:slug/:filename', authController.isLoggedIn, catchErrors(resultController.downloadResultTestUser));
 //get all data from the project
-router.get('/downloadprojectdata', authController.isAdminLoggedIn, catchErrors(resultController.downloadprojectdata));
-router.get('/downloadprojectmetadata', authController.isAdminLoggedIn, catchErrors(resultController.downloadprojectmetadata));
+router.get('/downloadprojectdata/:id', authController.isAdminLoggedIn, catchErrors(resultController.downloadprojectdata));
+router.get('/downloadprojectmetadata/:id', authController.isAdminLoggedIn, catchErrors(resultController.downloadprojectmetadata));
 router.get('/downloadsummarydata', authController.isAdminLoggedIn, catchErrors(resultController.downloadSummaryData));
 //download results of particular test in the project
 router.get('/downloadtestresults/:name/:test', authController.isAdminLoggedIn, catchErrors(resultController.downloadTestResults));
@@ -293,7 +293,7 @@ router.post('/registernotification', authController.isLoggedIn, catchErrors(jobC
 router.post('/unregisternotification', authController.isLoggedIn, catchErrors(jobController.unsubscribePushNotification));
 
 router.get('/debugprojects',
-  authController.isSuperAdminLoggedIn,
+  // authController.isSuperAdminLoggedIn,
   catchErrors(projectController.debugprojects));
 
 

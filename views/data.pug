@@ -20,9 +20,9 @@ block content
 
       if(project && user.project && user.project.name)
         p
-          a(style={color:'black'} href=`/downloadprojectdata/`) #{l.download_all_data}
+          a(style={color:'black'} href=`/downloadprojectdata/${project._id}`) #{l.download_all_data}
         p
-          a(style={color:'black'} href=`/downloadprojectmetadata/`) #{l.download_all_meta_data}
+          a(style={color:'black'} href=`/downloadprojectmetadata/${project._id}`) #{l.download_all_meta_data}
         //- p
         //-   a(style={color:'black'} href=`/downloadsummarydata/`) Download summary data
 
@@ -65,6 +65,6 @@ block content
       else
         p !{l.message_create_project}
 
-
+      //- pre=h.dump(user)
       //- pre=h.dump(project)
       //- pre=h.dump(users)

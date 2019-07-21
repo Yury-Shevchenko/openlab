@@ -30,6 +30,8 @@ exports.showMyResults = async (req, res) => {
 
 //download metadata for a user as a csv file
 exports.downloadMetadataUser = async (req, res) => {
+  const project = await Project.findOne({ _id: req.user.project._id });
+  confirmOwner(project, req.user);
   const results = await Result.find({ author: req.params.id, rawdata: { $exists: true } })
   if(results && results.length > 0){
     const name = req.params.identity;
@@ -45,6 +47,8 @@ exports.downloadMetadataUser = async (req, res) => {
 
 //download results of a user as a csv file
 exports.downloadResultsUser = async (req, res) => {
+  const project = await Project.findOne({ _id: req.user.project._id });
+  confirmOwner(project, req.user);
   const results = await Result.find({
     author: req.params.id,
     project: req.user.project._id,
@@ -71,8 +75,21 @@ exports.downloadResultsUser = async (req, res) => {
   }
 };
 
+const confirmOwner = (project, user) => {
+  // check whether the user is a creator or a member of the project
+  const isCreator = project.creator.equals(user._id);
+  const isMember = project.members.map(id => id.toString()).includes(user._id.toString());
+  const isParticipant = user.level <= 10;
+  if(!(isCreator || isMember) || isParticipant){
+    throw Error('You must be a creator or a member of a project in order to do it!');
+  }
+};
+
 //download all projects data for an researcher as a csv file
 exports.downloadprojectdata = async (req, res) => {
+  // check whether the user has right to access the data from the project
+  const project = await Project.findOne({ _id: req.params.id });
+  confirmOwner(project, req.user);
   let keys = [];
   const name = req.user.project.name;
   res.setHeader('Content-disposition', 'attachment; filename=' + name +'.csv');
@@ -107,6 +124,8 @@ exports.downloadprojectdata = async (req, res) => {
 
 //download all projects data for an researcher as a csv file
 exports.downloadprojectmetadata = async (req, res) => {
+  const project = await Project.findOne({ _id: req.params.id });
+  confirmOwner(project, req.user);
   let first = true;
   const name = req.user.project.name;
   res.setHeader('Content-disposition', 'attachment; filename=meta_' + name +'.csv');
@@ -171,6 +190,8 @@ exports.downloadSummaryData = async (req, res) => {
 
 //download csv file for particular test and user
 exports.downloadResultTestUser = async (req, res) => {
+  const project = await Project.findOne({ _id: req.user.project._id });
+  confirmOwner(project, req.user);
   const result = await Result.findOne({ _id: req.params.filename });
   const name = req.params.slug;
   const keys = result.rawdata.map(e => Object.keys(e)).reduce( (a,b) => Array.from(new Set(a.concat(b))) );
@@ -184,6 +205,8 @@ exports.downloadResultTestUser = async (req, res) => {
 
 //download csv file for particular test in the project
 exports.downloadTestResults = async (req, res) => {
+  const project = await Project.findOne({ _id: req.user.project._id });
+  confirmOwner(project, req.user);
   let keys = [];
   const name =  req.params.name;
   res.setHeader('Content-disposition', 'attachment; filename=' + name +'.csv');

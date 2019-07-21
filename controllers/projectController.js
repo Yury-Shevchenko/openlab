@@ -33,6 +33,7 @@ exports.getUserProjects = async (req, res) => {
 
 exports.activateProject = async (req, res) => {
   const activeProject = await Project.findOne({_id: req.params.id});
+  confirmOwnerOrMember(activeProject, req.user);
   const updatedUser = await User.findOneAndUpdate({
     _id: req.user._id
   }, { project: activeProject }, {
@@ -98,6 +99,7 @@ exports.updateProject = async (req, res) => {
       }).filter(e => typeof(e) != 'undefined');
     };
     const project = await Project.findOne({ _id: req.params.id });
+    confirmOwner(project, req.user);
     project.name = req.body.name;
     project.description = req.body.description;
     project.completionMessage = req.body.completionMessage;
@@ -129,12 +131,23 @@ exports.editProject = async (req, res) => {
 
 const confirmOwner = (project, user) => {
   if(!project.creator.equals(user._id) || user.level <= 10){
-    throw Error('You must own a project in order to edit it!');
+    throw Error('You must own a project in order to do it!');
+  }
+};
+
+const confirmOwnerOrMember = (project, user) => {
+  // check whether the user is a creator or a member of the project
+  const isCreator = project.creator.equals(user._id);
+  const isMember = project.members.map(id => id.toString()).includes(user._id.toString());
+  const isParticipant = user.level <= 10;
+  if(!(isCreator || isMember) || isParticipant){
+    throw Error('You must be a creator or a member of a project in order to do it!');
   }
 };
 
 exports.trydeleteProject = async (req, res) => {
   const project = await Project.findOne({ _id: req.params.id });
+  confirmOwner(project, req.user);
   if(!project.creator.equals(req.user._id) || req.user.level <= 10){
     req.flash('error', `${res.locals.layout.flash_project_no_rights}`);
     res.redirect('back');
@@ -147,6 +160,7 @@ exports.trydeleteProject = async (req, res) => {
 
 exports.removeProject = async (req, res) => {
   const project = await Project.findOne({ _id: req.params.id });
+  confirmOwner(project, req.user);
   const resultsCount = await Result.where({ project: req.params.id }).countDocuments();
   if (req.body.confirmation == project.name){
     if (resultsCount > 0) {
@@ -169,6 +183,9 @@ exports.removeProject = async (req, res) => {
 
 exports.changeStatusProject = async (req, res) => {
   const project = await Project.findOne({ _id: req.params.id });
+  if(req.user.level < 100){
+    confirmOwnerOrMember(project, req.user);
+  };
   const limitSandbox = process.env.FREE_PLAN_PARTICIPANTS_LIMIT;
   const limitProf = process.env.PROF_PLAN_PARTICIPANTS_LIMIT;
   const participantsNumber = project.participants.length;
