@@ -176,7 +176,7 @@ exports.changeStatusProject = async (req, res) => {
     project.currentlyActive = !project.currentlyActive;
     await project.save();
     req.flash('success', `${req.params.action == 'on'? res.locals.layout.flash_program_open : res.locals.layout.flash_program_closed}`);
-    res.redirect('/projects');
+    res.redirect('back');
   } else {
     req.flash('error', `${res.locals.layout.flash_limit_of_participants_reached_1} ${project.name} ${res.locals.layout.flash_limit_of_participants_reached_2}`);
     res.redirect('back');

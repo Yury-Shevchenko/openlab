@@ -296,6 +296,7 @@ router.get('/debugprojects',
   authController.isSuperAdminLoggedIn,
   catchErrors(projectController.debugprojects));
 
+
 router.post('/uploadimage', catchErrors(userController.uploadImage));
 
 module.exports = router;

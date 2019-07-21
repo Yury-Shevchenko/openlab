@@ -1,8 +1,66 @@
 extends layout
- 
+
+include mixins/_projectCard
+
 block content
   .inner
+
     p
-    .card
-      pre=h.dump(projects)
- 
+    header.top
+      nav.nav
+
+    if(user.projects && user.projects.length > 0)
+      h2 Projects
+      .stores
+        each project in projects
+          .store
+            div(class = projectClass)
+              .store__hero
+                h2.title
+                  a(href=`/projects/${project._id}`) #{project.name}
+        
+              .store__details
+                .project__actions
+                  if user.project && user.project._id
+                    if (user._id.toString() == project.creator.toString())
+                      .store__action
+                        a(href=`/projects/${project._id}/edit`)
+                          != h.icon('edit')
+                      .store__action
+                        a(href=`/projects/deleteproject/${project._id}`)
+                          != h.icon('delete')
+        
+                if(project.tests)
+                  if(project.tests.length == 1)
+                    p= `${project.tests.length} task`
+                  else if(project.tests.length > 1)
+                    p= `${project.tests.length} tasks`
+        
+                if(project.participants)
+                  if(project.participants.length == 1)
+                    p= `${project.participants.length} participant`
+                  else if(project.participants.length > 1)
+                    p= `${project.participants.length} participants`
+        
+                if(project.members)
+                  if(project.members.length == 1)
+                    p= `${project.members.length} member`
+                  else if(project.members.length > 1)
+                    p= `${project.members.length} members`
+        
+                  .project_icons
+                    .project_icon
+                      if(project.currentlyActive)
+                        a(href=`/changestatusofproject/${project._id}/off`)
+                          != h.icon('switchOn')
+                      else
+                        a(href=`/changestatusofproject/${project._id}/on`)
+                          != h.icon('switchOff')
+
+
+
+
+
+    //- pre= h.dump(user)
+    //- pre= h.dump(projects)
+    //- pre= h.dump(invitedprojects)
