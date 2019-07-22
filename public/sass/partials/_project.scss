@@ -7,6 +7,7 @@
 
 .project {
   // border-radius: 10px;
+  display: grid;
   position: relative;
   min-height: 250px;
   background:white;
@@ -43,8 +44,10 @@
     }
   }
   &__bottom {
+    display: grid;
+    align-self: end;
     bottom: 0;
-    position: absolute;
+    // position: absolute;
     text-align: center;
     width: 100%;
   }
@@ -104,6 +107,7 @@
   position: relative;
   padding: 20px 5px 20px 5px;
   text-align: center;
+  height: fit-content;
   &:before {
     display: block;
     content: '';

@@ -2044,6 +2044,8 @@ i.yes:after {
       grid-template-columns: repeat(auto-fill, 250px); }
 
 .project {
+  display: -ms-grid;
+  display: grid;
   position: relative;
   min-height: 250px;
   background: white;
@@ -2074,8 +2076,11 @@ i.yes:after {
       line-height: 1.2;
       margin-bottom: 0; }
   .project__bottom {
+    display: -ms-grid;
+    display: grid;
+    -ms-grid-row-align: end;
+        align-self: end;
     bottom: 0;
-    position: absolute;
     text-align: center;
     width: 100%; }
   @media all and (max-width: 850px) {
@@ -2126,7 +2131,10 @@ i.yes:after {
 .project__hero {
   position: relative;
   padding: 20px 5px 20px 5px;
-  text-align: center; }
+  text-align: center;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content; }
   .project__hero:before {
     display: block;
     content: '';

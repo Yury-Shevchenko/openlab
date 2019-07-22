@@ -4,10 +4,15 @@ mixin publicProjectCard(project = {})
       .project__hero
         h2.project__title #{project.name}
       .project__details
-        p= project.description
+        if(project.description)
+          if(project.description.length < 100)
+            p= project.description
+          else 
+            p= `${project.description.substring(0,100)}...`
+
       .project__bottom
-        p(style="font-size:1.2rem; font-style: italic;")= project.author_name
-        p(style="font-size:1.2rem")= project.author_institute
+        p(style="font-size:1.2rem; font-style: italic; line-height:1;")= project.author_name
+        p(style="font-size:1.2rem; line-height:1;")= project.author_institute
         
         if(user)
           if(user.level < 10)
