@@ -6,6 +6,9 @@ block content
   .inner
 
     h2= project.name
+    if(!user)
+      a(href=`/code/${project.name}/?generate=true`)
+        .button(style="width: fit-content;")=`${layout.participate}` 
     p
     .card 
       if(author && (author.name || author.institute))   
@@ -26,7 +29,8 @@ block content
             +publicTestCard(test)
       else 
         p(style="font-style: italic; text-align: center; color: darkred;") #{l.no_tests_in_study}
-
+      
+      
 
         //- pre= h.dump(project)
         //- pre= h.dump(tests)

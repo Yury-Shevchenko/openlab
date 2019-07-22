@@ -1,6 +1,5 @@
 mixin publicProjectCard(project = {})
   
-  a(href= (user ? (user.participantInProject ? `/studies/?study=${project.name}` : `/testing/?study=${project.name}` )  : `/studies/${project.name}`) ) 
     .project(class=`${(user && user.participantInProject && project._id && user.participantInProject.toString() === project._id.toString() ) ? 'chosenStudy': ''}`)
       .project__hero
         h2.project__title #{project.name}
@@ -9,3 +8,21 @@ mixin publicProjectCard(project = {})
       .project__bottom
         p(style="font-size:1.2rem; font-style: italic;")= project.author_name
         p(style="font-size:1.2rem")= project.author_institute
+        
+        if(user)
+          if(user.level < 10)
+            if(user.participantInProject && project._id && user.participantInProject.toString() === project._id.toString())
+              p=`${layout.currentlyActive}`
+              a(href= `/testing/?study=${project.name}`) 
+               .button(style="background-color: white;")=`${layout.goToTests}`
+            else 
+              a(href= `/studies/?study=${project.name}`) 
+               .button()=`${layout.participate}`
+            
+        else
+          a(href=`/code/${project.name}/?generate=true`)
+            .button()=`${layout.participate}`
+        
+        //- a(href= (user ? (user.participantInProject ? `/studies/?study=${project.name}` : `/testing/?study=${project.name}` )  : `/studies/${project.name}`) ) 
+        //-   p More information
+        //- 

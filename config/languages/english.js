@@ -178,6 +178,9 @@ module.exports =
       'change_project_confirm': 'Confirm',
       'notifications': 'Notifications',
       'install_app': 'Install App',
+      'participate': 'Participate',
+      'goToTests': 'Go to tests',
+      'currentlyActive': 'Current study',
     },
 
     'passport': {

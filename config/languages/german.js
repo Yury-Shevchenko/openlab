@@ -177,6 +177,9 @@ module.exports = {
     'change_project_confirm': 'Bestätigen',
     'notifications': 'Mitteilungen',
     'install_app': 'App installieren',
+    'participate': 'Teilnehmen',
+    'goToTests': 'Zu den Tests',
+    'currentlyActive': 'Aktuelle Studie',
   },
 
   'passport': {
