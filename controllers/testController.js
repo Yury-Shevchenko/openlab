@@ -489,14 +489,12 @@ exports.getProgramTests = async (req, res) => {
   res.render('program', {project, slug, test, original, modified, allParams, savedParameter, param_language, projectTests});
 };
 
-//for participants
-//show the screen with all tests in a sequence
+// show tests
 exports.testing = async (req, res) => {
   const study = req.query.study;
   const project = await Project.findOne({ _id: req.user.participantInProject || req.user.project._id },{
     name: 1, showCompletionCode: 1, completionMessage: 1, useNotifications: 1, tests: 1,
   });
-
   const projects = await Project.getCurrentProjects();
   let tests, results, confirmationCode, projectTests;
   if(project){
@@ -521,7 +519,8 @@ exports.testing = async (req, res) => {
         await User.findOneAndUpdate({
           _id: req.user._id
         }, {
-          $push: {
+          $addToSet: {
+            participant_projects: project._id,
             participantHistory:
               {
                 project_id: project._id,
@@ -529,18 +528,29 @@ exports.testing = async (req, res) => {
                 individual_code: confirmationCode,
               }
             },
-          $push: {
-            participant_projects: project._id
-          }
         }, {
           new: true
         }).exec();
       } else {
         confirmationCode = req.user.participantHistory.filter(e => e.project_id.toString() == req.user.participantInProject.toString())[0].individual_code;
-      }
+      };
     };
   };
-  res.render('testing', {project, projects, results, study, confirmationCode, projectTests});
+
+  if(req.params.selector === 'start' && projectTests && projectTests.length ){
+    const arrayTests = projectTests.map(function(test) {return test.slug});
+    const arrayResults = results.map(function(result) {return result.taskslug});
+    const doneArray = arrayTests.filter(function(test) {return arrayResults.includes(test)});
+    const remainingArray = arrayTests.filter(function(test) {return !arrayResults.includes(test)});
+    const nextTask = remainingArray[0] || "allDone";
+    if(nextTask === 'allDone'){
+      res.render('testing', {project, projects, results, study, confirmationCode, projectTests});
+    } else {
+      res.redirect(`/test/${nextTask}/${req.user.id}`);
+    }
+  } else {
+    res.render('testing', {project, projects, results, study, confirmationCode, projectTests});
+  }
 };
 
 //run the test for a particular user

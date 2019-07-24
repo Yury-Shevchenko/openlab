@@ -30,7 +30,7 @@ router.get('/sign/:project/:code', userController.sign);
 
 //authentification strategies
 router.post('/auth/code', passport.authenticate('local-code', {
-  successRedirect : '/testing',
+  successRedirect : '/testing/start', // redirect directly to the first test
   failureRedirect: '/code',
   failureFlash : true
 }))
@@ -209,6 +209,7 @@ router.get('/tasks/:slug/:selector/:lang', authController.isAdminLoggedIn, catch
 
 //for participants
 router.get('/testing', authController.isLoggedIn, catchErrors(testController.testing));
+router.get('/testing/:selector', authController.isLoggedIn, catchErrors(testController.testing));
 //individual session of a particular user with a particular task
 router.get('/test/:slug/:id', authController.isLoggedIn, catchErrors(testController.runTest));
 router.get('/test/:slug/:id/:lang', authController.isLoggedIn, catchErrors(testController.runTest));

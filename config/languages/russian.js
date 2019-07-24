@@ -343,7 +343,7 @@ module.exports =
         'table_description': 'Описание',
         'table_status': 'Статус',
         'table_done' : 'Выполнено',
-        'table_not_done': 'Еще не выполнено',
+        'table_not_done': 'Начать тест',
         'your_code': 'Данный код подтверждает выполнение всех тестов: ',
       },
 

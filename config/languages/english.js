@@ -346,7 +346,7 @@ module.exports =
         'table_description': 'Description',
         'table_status': 'Status',
         'table_done' : 'Completed',
-        'table_not_done': 'Not done yet',
+        'table_not_done': 'Start',
         'your_code': 'This code confirms the completion of your tasks: ',
       },
 

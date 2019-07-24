@@ -343,7 +343,7 @@ module.exports = {
       'table_description': 'Beschreibung',
       'table_status': 'Status',
       'table_done' : 'Erledigt',
-      'table_not_done': 'Noch nicht fertig',
+      'table_not_done': 'Beginnen',
       'your_code': 'Dieser Code bestätigt die Erledigung Ihrer Aufgaben: ',
     },
 
