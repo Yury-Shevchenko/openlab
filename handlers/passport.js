@@ -117,7 +117,8 @@ passport.use('local-login', new LocalStrategy({
       passReqToCallback : true
     },
     function(req, email, password, done) {
-      User.findOne({ email :  email }, function(err, user) {
+      const normEmail = validator.normalizeEmail(email);
+      User.findOne({ email :  normEmail }, function(err, user) {
           const user_lang = req.res.locals.locale_language;
           if (err) return done(err);
           if (!user) return done(null, false, req.flash('loginMessage', `${language[user_lang]['passport'].no_user_found}`));
@@ -132,14 +133,15 @@ passport.use('local-labjs-researcher', new LocalStrategy({
       passReqToCallback : true
     },
     function(req, email, password, done) {
-      User.findOne({ email :  email }, function(err, user) {
+      const normEmail = validator.normalizeEmail(email);
+      User.findOne({ email :  normEmail }, function(err, user) {
           const user_lang = req.res.locals.locale_language;
           if (err) return done(err);
           if (!user) {
             var newUser = new User();
             newUser.openLabId = makeOpenLabId();
             newUser.level    = 11;
-            newUser.email    = email;
+            newUser.email    = normEmail;
             newUser.local.password = newUser.generateHash(password);
             newUser.language = user_lang;
             newUser.save(function(err) {
