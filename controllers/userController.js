@@ -18,6 +18,7 @@ const webpush = require('web-push');
 const formidable = require('formidable');
 const fs = require('fs');
 const schedule = require('node-schedule');
+const validator = require('validator');
 
 exports.login = (req, res) => {
   res.render('login', {title: 'Login', message: req.flash('loginMessage')})
@@ -165,6 +166,7 @@ exports.editlabjsupload = async (req, res) => {
 exports.updateAccount = async (req, res) => {
     User.findById(req.user._id, (err, user) => {
       if(req.body.participantInProject == '') {req.body.participantInProject = user.participantInProject};
+      if(req.body.email) {req.body.email = validator.normalizeEmail(req.body.email)};
       user.set(req.body);
       user.save((saveErr, updatedUser) => {
         if (saveErr) {

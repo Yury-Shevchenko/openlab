@@ -20,35 +20,42 @@ block content
         label(for="time") #{l.registered}
         h2= h.moment(user.created).locale(language).format("MMM Do YY")
         
+        if user.openLabId
+          label(for="email") ID
+          h2= user.code.id || user.openLabId
+          
         if user.level > 10
           label(for="subscription_plan") #{l.subscriptionPlan}
           if user.subscription
             if user.subscription_plan == 'professional'
-              h2= `${l.professionalPlan} ${h.moment((user.subscription_expires - 86400) * 1000).format('MM-DD-YYYY')}`
+              a(href='/subscribe')
+                h2= `${l.professionalPlan} ${h.moment((user.subscription_expires - 86400) * 1000).format('MM-DD-YYYY')}`
             else if user.subscription_plan == 'laboratory'
-              h2= `${l.laboratoryPlan} ${h.moment((user.subscription_expires - 86400) * 1000).format('MM-DD-YYYY')}`
+              a(href='/subscribe')
+                h2= `${l.laboratoryPlan} ${h.moment((user.subscription_expires - 86400) * 1000).format('MM-DD-YYYY')}`
             else
-              h2= `${l.somePlan} ${h.moment((user.subscription_expires - 86400) * 1000).format('MM-DD-YYYY')}`
+              a(href='/subscribe')
+                h2= `${l.somePlan} ${h.moment((user.subscription_expires - 86400) * 1000).format('MM-DD-YYYY')}`
           else
-            h2 #{l.freeSandbox}
+            a(href='/subscribe')
+              h2 #{l.freeSandbox}
           p
+
+        label(for="email") #{l.email}
+        h2= `${user.email||user.facebook.email||user.github.email||user.google.email}`
+        //- input(type="email" name="email" value=user.email||user.facebook.email||user.github.email||user.google.email)
 
         label(for="name") #{l.name}
         input(type="text" name="name" value=user.name||user.facebook.name||user.github.name||user.google.name)
 
-        label(for="email") #{l.email}
-        input(type="email" name="email" value=user.email||user.facebook.email||user.github.email||user.google.email)
-
+        
         if user.level > 10
-
+          p
           label(for="institute") #{l.institute}
           input(type="text" name="institute" value=user.institute)
 
         else
-          if user.openLabId
-            label(for="email") ID
-            h2= user.code.id || user.openLabId
-
+          p
           if user.participantInProject
             label(for="participantInProject") #{layout.project}
             .custom-select-header
@@ -57,6 +64,7 @@ block content
                 each project in projects
                   option(value=project._id, selected=(user.participantInProject.toString() === project._id.toString()))= project.name
           else
+            p
             label(for="participantInProject") #{l.choose_project}
             .custom-select-header
               select(name="participantInProject")
@@ -65,6 +73,7 @@ block content
                   option(value=project._id)= project.name
 
         //-general for all users information
+        p
         label(for="language") #{l.language}
         .custom-select
           select(name="language")

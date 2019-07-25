@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const promisify = require('es6-promisify');
 const User = mongoose.model('User');
 const mail = require('../handlers/mail');
+const validator = require('validator');
 
 exports.logout = (req, res) => {
   req.logout();
@@ -61,7 +62,8 @@ exports.isSuperAdminLoggedIn = (req, res, next) => {
 };
 
 exports.forgot = async (req, res) => {
-  const user = await User.findOne({email: req.body.email});
+  const normEmail = validator.normalizeEmail(req.body.email);
+  const user = await User.findOne({email: normEmail});
   if(!user){
     req.flash('error', `${res.locals.layout.flash_no_account_with_email_exist}`);
     return res.redirect('back');

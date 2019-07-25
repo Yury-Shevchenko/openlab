@@ -8,6 +8,7 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const GitHubStrategy = require('passport-github').Strategy;
 const configAuth = require('../config/auth');
 const language = require('../config/lang');
+const validator = require('validator');
 
 const makeOpenLabId = () => {
   const time = Date.now() / 1000 | 0;
@@ -48,8 +49,9 @@ passport.use('local-signup-participant', new LocalStrategy({
     passReqToCallback : true // allows us to pass back the entire request to the callback
   },
   async function(req, email, password, done) {
+    const normEmail = validator.normalizeEmail(email);
     process.nextTick(function() {
-      User.findOne({ email :  email }, function(err, user) {
+      User.findOne({ email :  normEmail }, function(err, user) {
         const user_lang = req.res.locals.locale_language;
         if (req.body.password !== req.body['password-confirm']) {
           return done(null, false, req.flash('signupMessage', `${language[user_lang]['passport'].passwords_mismatch}` ));
@@ -63,7 +65,7 @@ passport.use('local-signup-participant', new LocalStrategy({
           newUser.name    = req.body.name;
           newUser.openLabId = makeOpenLabId();
           newUser.level    = 1;
-          newUser.email    = email;
+          newUser.email    = normEmail;
           newUser.language = user_lang;
           if(req.body.code) newUser.code.id = req.body.code;
           if(req.body.project) newUser.participantInProject = req.body.project;
@@ -82,8 +84,9 @@ passport.use('local-signup-researcher', new LocalStrategy({
     passReqToCallback : true // allows us to pass back the entire request to the callback
   },
   function(req, email, password, done) {
+    const normEmail = validator.normalizeEmail(email);
     process.nextTick(function() {
-      User.findOne({ email :  email }, function(err, user) {
+      User.findOne({ email :  normEmail }, function(err, user) {
         const user_lang = req.res.locals.locale_language;
         if (req.body.password !== req.body['password-confirm']) {
           return done(null, false, req.flash('signupMessage', `${language[user_lang]['passport'].passwords_mismatch}`));
@@ -97,7 +100,7 @@ passport.use('local-signup-researcher', new LocalStrategy({
           newUser.name    = req.body.name;
           newUser.openLabId = makeOpenLabId();
           newUser.level    = 11;
-          newUser.email    = email;
+          newUser.email    = normEmail;
           newUser.language = user_lang;
           newUser.local.password = newUser.generateHash(password);
           newUser.save(function(err) {
