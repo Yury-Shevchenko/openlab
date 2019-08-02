@@ -305,6 +305,12 @@ userSchema.statics.getResearchers = function() {
         created: '$$ROOT.created',
         language: '$$ROOT.language',
         project: '$$ROOT.project',
+        subscription: '$$ROOT.subscription',
+        subscription_expires: '$$ROOT.subscription_expires',
+        subscription_id: '$$ROOT.subscription_id',
+        subscription_period: '$$ROOT.subscription_period',
+        subscription_plan: '$$ROOT.subscription_plan',
+        subscription_status: '$$ROOT.subscription_status',
         // participantInProject: '$$ROOT.participantInProject',
         // numberParticipantResults: {$size:
         //   { $setUnion: '$results._id' }

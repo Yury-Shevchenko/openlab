@@ -13,7 +13,10 @@ mixin researcherCard(person = {}, i)
         td= (person.project && person.project.name) || person.participantInProject
         td= person.numberResearcherTests
         td= person.numberResearcherCreatedProjects
-
+        if person.subscription
+          td= `${person.subscription_id}-${person.subscription_plan}-${person.subscription_period}-${person.subscription_status}-${person.subscription_expires}`
+        else 
+          td
         if user.level > 100
           td
             a(href=`/removeuser/${person._id}/${person.identity}`)
