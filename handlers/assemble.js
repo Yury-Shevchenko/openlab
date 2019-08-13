@@ -13,8 +13,10 @@ const FormData = require('form-data');
 const fetch = require('node-fetch');
 const cloudinary = require('cloudinary');
 const defaultSlugify = require('slugify');
+const mapValues = require('lodash/mapValues');
+const template = require('lodash/template');
 
-exports.convertJSON = async (state, foldername, production = 'alpha', stateModifier=state => state, additionalFiles={}) => {
+exports.convertJSON = async (state, foldername, production = 'alpha', stateModifier=state => state, additionalFiles={}, headerOptions={} ) => {
   // Apply modification function to copy of current state
   const updatedState = stateModifier(cloneDeep(state));
   const redirects = {
@@ -22,6 +24,7 @@ exports.convertJSON = async (state, foldername, production = 'alpha', stateModif
       window.location = '/testing';
     }
   };
+
   //add plugin to emit post event at the end of the study
   updatedState.components.root.plugins = [
     ...state.components.root.plugins,
@@ -32,7 +35,7 @@ exports.convertJSON = async (state, foldername, production = 'alpha', stateModif
   const main_sequence_number = Object.values(updatedState.components)
     .filter(el => el.id == 'root')
     .map(e => e.children[0])
-  //console.log("main_sequence_number", main_sequence_number);
+
   const params = Object.values(updatedState.components)
     .filter(el => el.id == main_sequence_number)
     .map(e => e.parameters)
@@ -40,7 +43,6 @@ exports.convertJSON = async (state, foldername, production = 'alpha', stateModif
     .reduce((flat, next) => flat.concat(next), [])
     .reduce((flat, next) => flat.concat(next), [])
     .filter(p => typeof(p) != "undefined" && p.name != '')
-  //console.log("Params", params);
 
   const filesInUse = embeddedFiles(updatedState.components)
 
@@ -54,6 +56,7 @@ exports.convertJSON = async (state, foldername, production = 'alpha', stateModif
 
   const uploadFile = async (item) => {
     const name = item[0].split(`${item[1].source == "embedded" ? "embedded" : "static"}/`)[1];
+    console.log('name', name);
     const string = item[1].content;
     const truncatedName = name.split('.')[0];
     const location = `${foldername}/${truncatedName}`;
@@ -67,7 +70,6 @@ exports.convertJSON = async (state, foldername, production = 'alpha', stateModif
       upload_preset,
       options,
       function(error, result) {
-        // console.log(result.secure_url);
         for (let [key, value] of Object.entries(updatedState.components)){
           if (value.files && value.files.rows && value.files.rows.length > 0) {
             value.files.rows.map(o => {
@@ -98,20 +100,48 @@ exports.convertJSON = async (state, foldername, production = 'alpha', stateModif
   await Promise.all(arr.map(item => {
     return uploadFile(item)
   }))
-    // .then(data => {
-    //   console.log("Data", data);
-    // })
+
+  //PLUGINS
+  // Collect plugin data
+  const { pluginFiles, pluginHeaders, pluginPaths } = embedPlugins(updatedState)
+
+  // Inject plugin headers
+  const updatedHeaderOptions = {
+    ...headerOptions,
+    beforeHeader: [
+      ...(headerOptions.beforeHeader || []),
+      ...pluginHeaders,
+    ]
+  }
+
+  // Inject plugin paths, where available
+  updatedState.components = mapValues(updatedState.components, c => ({
+    ...c,
+    plugins: c.plugins
+      ? c.plugins.map(p => ({
+          ...p,
+          path: Object.keys(pluginPaths).includes(p.type)
+            ? pluginPaths[p.type]
+            : p.path
+        }) )
+      : c.plugins
+  }))
 
     return {
         files: {
+          // Static files stored in state
+          ...files,
+          // Files required by plugins
+          ...pluginFiles,
+          // Additional files injected by the export modifier
+          ...additionalFiles,
+          // Generated experiment files
           'script': {
             content: readDataURI(makeDataURI(
               makeScript(updatedState),
               'application/javascript',
             ))
-          },
-          ...updatedState.files.files,
-          ...additionalFiles,
+          }
         },
         bundledFiles: fromPairs(Object.entries(updatedState.files.bundledFiles).map(
           // Add source path to data, so that bundled files can be moved
@@ -120,6 +150,24 @@ exports.convertJSON = async (state, foldername, production = 'alpha', stateModif
         params: params,
         production: production
       }
+    // return {
+    //     files: {
+    //       'script': {
+    //         content: readDataURI(makeDataURI(
+    //           makeScript(updatedState),
+    //           'application/javascript',
+    //         ))
+    //       },
+    //       ...updatedState.files.files,
+    //       ...additionalFiles,
+    //     },
+    //     bundledFiles: fromPairs(Object.entries(updatedState.files.bundledFiles).map(
+    //       // Add source path to data, so that bundled files can be moved
+    //       ([path, data]) => [path, { source: path, ...data }]
+    //     )),
+    //     params: params,
+    //     production: production
+    //   }
 
   // Reassemble state object that now includes the generated script,
   // as well as any additional files required for the deployment target
@@ -473,3 +521,127 @@ const adaptiveFunction = code =>
 
 const slugify = title =>
   defaultSlugify(title).toLowerCase()
+
+  // File management
+  // Plugin files are placed in `lib/plugins/${ pluginName }`.
+  // This code moves plugin files and updates the paths accordingly.
+  const pluginDir = 'lib/plugins'
+
+  // Prepend plugin path to filenames
+  const prependPath = (files={}, pluginName) =>
+    fromPairs(
+      Object.entries(files).map(([path, data]) => [
+        `${ pluginDir }/${ pluginName }/${ path }`,
+        data,
+      ])
+    )
+
+  // Add plugin path to header attributes
+  const parseHeaders = (headers=[], pluginName) =>
+    headers.map(([tag, attributes]) => [
+      tag,
+      mapValues(attributes, a =>
+        typeof a === 'string'
+          ? template(a)({ pluginPath: `${ pluginDir }/${ pluginName }` })
+          : a
+      ),
+    ])
+
+  const embedPlugins = state => {
+    // Collect plugins used in components
+    const plugins = Object.entries(state.components)
+      .map(([_, c]) => c.plugins || [])
+      .reduce((prev, a) => prev.concat(a), [])
+
+    // Load plugins, ignoring unknown ones
+    // (plugins are represented in the following by [type, data] tuples)
+    const loadedPlugins = plugins
+      .map(data => [data.type, loadPlugin(data.type)])
+      .filter(([, data]) => data !== undefined)
+
+    // Move files and update page headers
+    const pluginFiles = loadedPlugins
+      .map(([type, data]) => prependPath(data.files, type))
+      .reduce((prev, o) => Object.assign(prev, o), {})
+
+    const pluginHeaders = loadedPlugins
+      .map(([type, data]) => parseHeaders(data.headers, type))
+      .reduce((prev, a) => prev.concat(a), [])
+
+    // Collect plugin load path information
+    const pluginPaths = fromPairs(
+      loadedPlugins
+        .map(([type, data]) => [type, data.path])
+        .filter(([, path]) => path !== undefined)
+    )
+
+    return {
+      pluginFiles,
+      pluginHeaders,
+      pluginPaths,
+    }
+  }
+
+  const testingPlugin = {
+    title: 'Test plugin',
+    description: 'Inert plugin for testing purposes',
+    version: '0.0.1',
+    path: 'global.TestPlugin',
+    files: {
+      'index.js': {
+        content: 'data:text/javascript;base64,Y2xhc3MgVGVzdFBsdWdpbiB7CiAgY29uc3RydWN0b3Iob3B0aW9ucykgewogICAgY29uc29sZS5sb2coJ1Rlc3RQbHVnaW4gaW5pdGlhbGl6ZWQgd2l0aCBvcHRpb25zJywgb3B0aW9ucykKICB9CgogIGhhbmRsZShjb250ZXh0LCBldmVudCkgewogICAgY29uc29sZS5sb2coYEhhbmRsaW5nICR7IGV2ZW50IH0gb25gLCBjb250ZXh0KQogIH0KfQoKd2luZG93LlRlc3RQbHVnaW4gPSBUZXN0UGx1Z2luCg==',
+      }
+    },
+    headers: [
+      ['comment', { content: 'TestingPlugin' }],
+      // eslint-disable-next-line no-template-curly-in-string
+      ['script', { src: '${ pluginPath }/index.js' }],
+    ],
+    options: {
+      'whatever': {
+        label: 'Plugin option', type: 'string',
+        default: 'My hovercraft is full of eels.',
+        placeholder: 'Feel free to add whatever',
+        help: 'This option is purely for illustrative purposes and accomplishes absolutely nothing',
+      }
+    }
+  }
+
+  const GPSPlugin = {
+    title: 'GPS plugin',
+    description: 'GPS plugin for testing purposes',
+    version: '0.0.1',
+    path: 'global.GPSPlugin',
+    headers: [
+      ['comment', { content: 'GPSPlugin' }],
+      // eslint-disable-next-line no-template-curly-in-string
+      ['script', { src: 'https://res.cloudinary.com/dfshkvgf3/raw/upload/v1564741693/openlab/Tracking/gpsplugin' }],
+    ],
+    options: {
+      'enableHighAccuracy': {
+        label: 'Enable high accuracy', type: 'boolean',
+        default: 'false',
+        placeholder: '',
+        help: 'The property is a Boolean that indicates the application would like to receive the best possible results. If true and if the device is able to provide a more accurate position, it will do so. Note that this can result in slower response times or increased power consumption (with a GPS chip on a mobile device for example). On the other hand, if false (the default value), the device can take the liberty to save resources by responding more quickly and/or using less power.',
+      },
+      'watchPosition': {
+        label: 'Track coordinates changes', type: 'boolean',
+        default: 'false',
+        placeholder: '',
+        help: 'The property is Booleran that specifies whether the changes of coordinates should be registered. If true, the plugin registers the coordinates automatically each time the position of the device changes. If false (the default value), the plugin is used to get the current position of the device.',
+      },
+      'commitNewLine': {
+        label: 'Create a new row in the database', type: 'boolean',
+        default: 'false',
+        placeholder: '',
+        help: 'The property is Booleran that indicates how the new coordinates should be recorded. If true, each new coordinates add a new row in the datafile. If false (default value), the coordinates values are included in the running experiment component.',
+      }
+    }
+  }
+
+  const plugins = {
+    testingPlugin,
+    GPSPlugin
+  }
+
+  const loadPlugin = name => plugins[name]
