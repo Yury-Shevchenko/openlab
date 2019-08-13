@@ -165,7 +165,7 @@ router.get('/tests/:id/json', authController.isAdminLoggedIn, catchErrors(testCo
 router.get('/tests/test/:slug', catchErrors(testController.getTestBySlug));
 
 //cors options
-var whitelist = ['https://labjs-beta.netlify.com', 'https://labjs.felixhenninger.com']
+var whitelist = ['https://labjs-beta.netlify.com', 'https://labjs.felixhenninger.com', 'http://localhost:3000']
 var corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
