@@ -192,8 +192,10 @@ exports.downloadSummaryData = async (req, res) => {
 exports.downloadResultTestUser = async (req, res) => {
   const project = await Project.findOne({ _id: req.user.project._id });
   confirmOwner(project, req.user);
-  const result = await Result.findOne({ _id: req.params.filename });
-  const name = req.params.slug;
+  const result = await Result.findOne({ _id: req.params.id });
+  const taskName = result.taskslug || 'result';
+  const authorId = result.author.openLabId || 'undefined';
+  const name = taskName + '_' + authorId;
   const keys = result.rawdata.map(e => Object.keys(e)).reduce( (a,b) => Array.from(new Set(a.concat(b))) );
   const csv_file = papaparse.unparse({
      fields: keys,
@@ -240,7 +242,7 @@ exports.downloadTestResults = async (req, res) => {
 exports.removeResultsData = async (req, res) => {
   const result = await Result.findOneAndRemove({ _id: req.params.filename });
   req.flash('success', `${res.locals.layout.flash_data_deleted}`);
-  res.redirect('back');
+  res.redirect('/users');
 };
 
 exports.openDataForParticipant = async (req, res) => {

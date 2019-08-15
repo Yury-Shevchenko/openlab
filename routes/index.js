@@ -227,7 +227,7 @@ router.get('/results', authController.isLoggedIn, catchErrors(resultController.s
 router.get('/alldata/:id/:identity', authController.isLoggedIn, catchErrors(resultController.downloadResultsUser));
 router.get('/allmetadata/:id/:identity', authController.isLoggedIn, catchErrors(resultController.downloadMetadataUser));
 //download results for particular test and user
-router.get('/database/:slug/:filename', authController.isLoggedIn, catchErrors(resultController.downloadResultTestUser));
+router.get('/database/:id', authController.isLoggedIn, catchErrors(resultController.downloadResultTestUser));
 //get all data from the project
 router.get('/downloadprojectdata/:id', authController.isAdminLoggedIn, catchErrors(resultController.downloadprojectdata));
 router.get('/downloadprojectmetadata/:id', authController.isAdminLoggedIn, catchErrors(resultController.downloadprojectmetadata));

@@ -219,8 +219,7 @@ exports.getOneUserData = async (req, res) => {
   if(results && results.length > 0){
     res.render('dataOneUser', {participant: req.params.participant, results});
   } else {
-    req.flash('error', `There is no metadata results saved on Open Lab for this user`);
-    res.redirect('back');
+    res.redirect('/users');
   }
 };
 
