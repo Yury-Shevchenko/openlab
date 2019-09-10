@@ -242,7 +242,7 @@ exports.downloadTestResults = async (req, res) => {
 exports.removeResultsData = async (req, res) => {
   const result = await Result.findOneAndRemove({ _id: req.params.filename });
   req.flash('success', `${res.locals.layout.flash_data_deleted}`);
-  res.redirect('/users');
+  res.redirect('back');
 };
 
 exports.openDataForParticipant = async (req, res) => {
