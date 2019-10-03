@@ -302,4 +302,5 @@ router.post('/uploadimage', catchErrors(userController.uploadImage));
 
 router.post('/api/mouselab', catchErrors(testController.mouselab));
 router.post('/api/mouselab', testController.mouselab);
+
 module.exports = router;

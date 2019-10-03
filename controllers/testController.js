@@ -611,3 +611,4 @@ exports.showAllTasksForAdmin = async (req, res) => {
 };
 
   console.log("It works")
+  res.json({yes: 'it is done'})
