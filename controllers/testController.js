@@ -610,5 +610,7 @@ exports.showAllTasksForAdmin = async (req, res) => {
   res.render('alltestsforadmin', {tests});
 };
 
+exports.mouselab = (req, res) => {
   console.log("It works")
   res.json({yes: 'it is done'})
+};
