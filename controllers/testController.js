@@ -610,3 +610,4 @@ exports.showAllTasksForAdmin = async (req, res) => {
   res.render('alltestsforadmin', {tests});
 };
 
+  console.log("It works")
