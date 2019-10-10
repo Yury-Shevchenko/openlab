@@ -251,7 +251,7 @@ const confirmOwner = (test, user) => {
 exports.downloadJSON = async (req, res) => {
   const test = await Test.findOne({ _id: req.params.id });
   const file = JSON.parse(test.json);
-  res.setHeader('Content-disposition', 'attachment; filename=' + test.name +'.json');
+  res.setHeader('Content-disposition', 'attachment; filename=' + test.slug +'.json');
   res.send(file);
 };
 

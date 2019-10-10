@@ -13,8 +13,24 @@ block content
     .single__details.inner
       p
       h2.title(style='text-align:center; margin-bottom: 30px; line-height: 2;' )
-        if user
-          a(target="_blank" href=`/test/${test.slug}/${user._id}`) #{l.test_card_run}
+        if user && user.level > 10
+          nav
+            .nav__section(style='justify-content:center')
+              li.nav__item
+                a.nav__link(target="_blank" href=`/test/${test.slug}/${user._id}`) 
+                  h6 #{l.test_card_run}
+              if (test && test.production && test.production == 'beta')
+                li.nav__item 
+                  a.nav__link(target='blank' href=`https://labjs-beta.netlify.com/?url=https://open-lab.online/labjs/${test._id}`) 
+                    h6 #{l.test_card_open_beta}
+              else 
+                li.nav__item
+                  a.nav__link(target='blank' href=`https://labjs.felixhenninger.com/?url=https://open-lab.online/labjs/${test._id}`) 
+                    h6 #{l.test_card_open}
+              li.nav__item
+                a.nav__link(href=`/tests/${test._id}/json`) 
+                  h6 #{l.test_card_download}
+            
         else
           | #{layout.please_register}
           span(style="border-bottom: solid tomato;")

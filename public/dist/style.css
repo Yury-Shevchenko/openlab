@@ -879,10 +879,10 @@ label {
       transition: all 0.2s;
       fill: white; }
     .nav__link:hover, .nav__link--active {
-      border-bottom: 3px solid deepskyblue; }
+      border-bottom: 0px solid deepskyblue; }
       .nav__link:hover svg, .nav__link--active svg {
-        -ms-transform: scale(1.2);
-            transform: scale(1.2); }
+        -ms-transform: scale(1.1);
+            transform: scale(1.1); }
       .nav__link:hover h6, .nav__link--active h6 {
         -ms-transform: scale(1.1);
             transform: scale(1.1);
