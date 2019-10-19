@@ -15,7 +15,7 @@ mixin result(result)
         p= `${l.result_full}`
         p= `${result.fileSize} ${l.results_rows}`
       p 
-        a(href=`/database/${result.slug}/${result._id}`) #{l.result_download}
+        a(href=`/database/${result._id}`) #{l.result_download}
       p
         a(href=`/removefromdatabase/${result.test}/${result._id}`) #{l.result_delete}
     else 
