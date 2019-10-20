@@ -373,6 +373,7 @@ module.exports = {
       'pagination_page_2': ' von ',
       'pagination_page_3': ' Gesamtergebnisse',
       'download_all_data': 'Alle Daten herunterladen',
+      'download_full_data': 'Daten der abgeschlossenen Aufgaben herunterladen',
       'message_invitation': `Laden Sie neue Teilnehmer zur aktuellen Studie ein.
         Schreiben Sie jede E-Mail-Adresse in eine eigene Zeile.
         Der einzigartige Teilnehmercode wird generiert und an jeden Teilnehmer gesendet.`,

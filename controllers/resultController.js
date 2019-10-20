@@ -88,6 +88,7 @@ const confirmOwner = (project, user) => {
 //download all projects data for an researcher as a csv file
 exports.downloadprojectdata = async (req, res) => {
   // check whether the user has right to access the data from the project
+  const type = req.params.type === 'full' ? 'full' : ['full', 'incremental'];
   const project = await Project.findOne({ _id: req.params.id });
   confirmOwner(project, req.user);
   let keys = [];
@@ -96,7 +97,7 @@ exports.downloadprojectdata = async (req, res) => {
   const input = new stream.Readable({ objectMode: true });
   input._read = () => {};
   var cursor = await Result
-    .find({project: req.user.project._id},{rawdata:1, author:1})
+    .find({project: req.user.project._id, uploadType: type},{rawdata:1, author:1})
     .cursor()
     .on('data', obj => {
       //return only the results of participants (level < 10)

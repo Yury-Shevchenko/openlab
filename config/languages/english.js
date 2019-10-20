@@ -376,6 +376,7 @@ module.exports =
         'pagination_page_2': ' of ',
         'pagination_page_3': ' total results',
         'download_all_data': 'Download all data',
+        'download_full_data': 'Download data of completed tasks',
         'message_invitation': `Invite new participants to the current study.
           Write each email address on a separate line.
           The unique participation code will be generated and sent to each participant.`,

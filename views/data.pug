@@ -19,10 +19,13 @@ block content
       h2 #{l.title}
 
       if(project && user.project && user.project.name)
-        p
-          a(style={color:'black'} href=`/downloadprojectdata/${project._id}`) #{l.download_all_data}
-        p
-          a(style={color:'black'} href=`/downloadprojectmetadata/${project._id}`) #{l.download_all_meta_data}
+        .div(style={display: 'grid', 'grid-template-columns': 'repeat(auto-fill, 150px)', 'grid-gap': '10px'})
+          p
+            a(style={color:'black'} href=`/downloadprojectdata/${project._id}`) #{l.download_all_data}
+          p
+            a(style={color:'black'} href=`/downloadprojectdata/${project._id}/full`) #{l.download_full_data}
+          p
+            a(style={color:'black'} href=`/downloadprojectmetadata/${project._id}`) #{l.download_all_meta_data}
         //- p
         //-   a(style={color:'black'} href=`/downloadsummarydata/`) Download summary data
 

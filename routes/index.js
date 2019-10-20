@@ -230,6 +230,7 @@ router.get('/allmetadata/:id/:identity', authController.isLoggedIn, catchErrors(
 router.get('/database/:id', authController.isLoggedIn, catchErrors(resultController.downloadResultTestUser));
 //get all data from the project
 router.get('/downloadprojectdata/:id', authController.isAdminLoggedIn, catchErrors(resultController.downloadprojectdata));
+router.get('/downloadprojectdata/:id/:type', authController.isAdminLoggedIn, catchErrors(resultController.downloadprojectdata));
 router.get('/downloadprojectmetadata/:id', authController.isAdminLoggedIn, catchErrors(resultController.downloadprojectmetadata));
 router.get('/downloadsummarydata', authController.isAdminLoggedIn, catchErrors(resultController.downloadSummaryData));
 //download results of particular test in the project
