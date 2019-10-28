@@ -171,7 +171,6 @@ exports.downloadSummaryData = async (req, res) => {
           return(Object.keys(e));
         });
         const tempkeys = Array.from(new Set(preKeys));
-        // console.log('Keys', tempkeys);
         const new_items = tempkeys.filter(x => !keys.includes(x));
         let parsed;
         if (new_items.length > 0){
@@ -208,6 +207,7 @@ exports.downloadResultTestUser = async (req, res) => {
 
 //download csv file for particular test in the project
 exports.downloadTestResults = async (req, res) => {
+  const type = req.params.type === 'full' ? 'full' : ['full', 'incremental'];
   const project = await Project.findOne({ _id: req.user.project._id });
   confirmOwner(project, req.user);
   let keys = [];
@@ -216,7 +216,7 @@ exports.downloadTestResults = async (req, res) => {
   const input = new stream.Readable({ objectMode: true });
   input._read = () => {};
   var cursor = await Result
-    .find({project: req.user.project._id, test: req.params.test},{rawdata:1})
+    .find({project: req.user.project._id, test: req.params.test, uploadType: type},{rawdata:1})
     .cursor()
     .on('data', obj => {
       const preKeys = flatMap(obj.rawdata, function(e){

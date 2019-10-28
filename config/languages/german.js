@@ -532,7 +532,8 @@ module.exports = {
         'your_project': 'Ihre Studie',
         'create_your_project': 'Erstellen oder aktivieren Sie Ihre Studie <a href="/projects">hier</a>.',
         'results_download_test_results' : 'Alle Ergebnisse für diesen Test herunterladen',
-        'noTests': 'Es gibt keine Tests in der Studie.'
+        'noTests': 'Es gibt keine Tests in der Studie.',
+        'download_full_data': 'Daten der abgeschlossenen Aufgaben herunterladen',
       },
 
       'invitations': {

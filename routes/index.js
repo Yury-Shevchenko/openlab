@@ -235,6 +235,9 @@ router.get('/downloadprojectmetadata/:id', authController.isAdminLoggedIn, catch
 router.get('/downloadsummarydata', authController.isAdminLoggedIn, catchErrors(resultController.downloadSummaryData));
 //download results of particular test in the project
 router.get('/downloadtestresults/:name/:test', authController.isAdminLoggedIn, catchErrors(resultController.downloadTestResults));
+router.get('/downloadtestresults/:name/:test/:type', authController.isAdminLoggedIn, catchErrors(resultController.downloadTestResults));
+
+
 //delete the data of the task and the user
 router.get('/removefromdatabase/:slug/:filename', authController.isAdminLoggedIn, catchErrors(resultController.removeResultsData));
 router.get('/opendataforparticipant/:slug/:filename', authController.isAdminLoggedIn, catchErrors(resultController.openDataForParticipant));

@@ -50,8 +50,11 @@ block content
                         p(style="color:hsl(0,0%,45%)") #{l.noResultsYet}
                       else
                         if(user.project && user.project.name)
-                          p
-                            a(style={color:'black'} href=`/downloadtestresults/${test.name}/${test._id}`) #{l.results_download_test_results}
+                          .div(style={display: 'grid', 'grid-template-columns': 'repeat(auto-fill, 150px)', 'grid-gap': '10px'})
+                            p
+                              a(style={color:'black'} href=`/downloadtestresults/${test.name}/${test._id}`) #{l.results_download_test_results}
+                            p
+                              a(style={color:'black'} href=`/downloadtestresults/${test.name}/${test._id}/full`) #{l.download_full_data}
 
                         table.table
                           thead

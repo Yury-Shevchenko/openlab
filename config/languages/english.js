@@ -534,7 +534,8 @@ module.exports =
           'your_project': 'Your study',
           'create_your_project': `Create or activate your study <a href="/projects">here</a>.`,
           'results_download_test_results' : 'Download all results for this task',
-          'noTests': 'There are no tasks in the study'
+          'noTests': 'There are no tasks in the study',
+          'download_full_data': 'Download data of completed tasks',
         },
 
         'invitations': {

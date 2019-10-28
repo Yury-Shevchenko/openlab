@@ -536,7 +536,8 @@ module.exports =
         'your_project': 'Ваш проект',
         'create_your_project': 'Создайте или активируйте ваш проект <a href="/projects">здесь</a>.',
         'results_download_test_results' : 'Скачать все результаты для данного теста',
-        'noTests': 'В проекте на данный момент нет тестов'
+        'noTests': 'В проекте на данный момент нет тестов',
+        'download_full_data': 'Скачать данные завершенных экспериментов',
       },
 
       'invitations': {
