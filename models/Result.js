@@ -14,7 +14,6 @@ const resultSchema = new mongoose.Schema({
   project:{
     type: mongoose.Schema.ObjectId,
     ref: 'Project'
-    //required: 'You must supply a project!'
   },
   test: {
     type: mongoose.Schema.ObjectId,

@@ -208,11 +208,12 @@ router.get('/tasks/:slug/:selector', authController.isAdminLoggedIn, catchErrors
 router.get('/tasks/:slug/:selector/:lang', authController.isAdminLoggedIn, catchErrors(testController.getProgramTests));
 
 //for participants
-router.get('/testing', authController.isLoggedIn, catchErrors(testController.testing));
+router.get('/testing', catchErrors(testController.testing));
 router.get('/testing/:selector', authController.isLoggedIn, catchErrors(testController.testing));
 //individual session of a particular user with a particular task
-router.get('/test/:slug/:id', authController.isLoggedIn, catchErrors(testController.runTest));
-router.get('/test/:slug/:id/:lang', authController.isLoggedIn, catchErrors(testController.runTest));
+router.get('/test/:slug', testController.generateId, catchErrors(testController.runTest));
+router.get('/test/:slug/:id', catchErrors(testController.runTest));
+router.get('/test/:slug/:id/:lang', catchErrors(testController.runTest));
 
 //PARAMETERS controller
 router.post('/tasks/:task/:slug/:lang', authController.isLoggedIn, catchErrors(paramController.postParameters)); //change parameters of the task
@@ -246,7 +247,7 @@ router.get('/datarequest/:slug/:filename', authController.isLoggedIn, catchError
 
 //For participant
 //post results of the test
-router.post('/save', authController.isLoggedIn, catchErrors(resultController.saveIncrementalResults));
+router.post('/save', catchErrors(resultController.saveIncrementalResults));
 
 //Project controller
 router.get('/projects', authController.isAdminLoggedIn, catchErrors(projectController.getUserProjects));

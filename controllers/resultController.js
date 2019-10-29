@@ -290,25 +290,30 @@ exports.changeStatusOfDataRequest = async (req, res) => {
 
 //save results during the task
 exports.saveIncrementalResults = async (req, res) => {
-  const project_id = req.user.participantInProject || req.user.project._id;
 
-  const project = await Project.findOne({_id: project_id},{
-    name: 1, osf: 1,
-  });
+  let anonymParticipantId;
+  if (!req.user){ anonymParticipantId = req.body.url.split('/')[5] };
 
   const slug = req.body.url.split('/')[4];
   const test = await Test
     .findOne({ slug })
-    .select({slug:1});
+    .select({slug:1, project:1, author:1});
+
+  const openLabId = (req.user && req.user.openLabId) || anonymParticipantId || "undefined";
+  const projectId = (req.user && req.user.participantInProject) || (req.user && req.user.project._id) || test.project || "undefined";
+
+  const project = await Project.findOne({ _id: projectId },{
+    name: 1, osf: 1,
+  });
 
   if(req.body.data && req.body.data.length !== 0){
     req.body.data.map(row => {
-      row["openLabId"] = req.user.openLabId || "undefined";
+      row["openLabId"] = openLabId;
       row["type"] =  req.body.metadata.payload || "undefined";
       row["task"]= slug || "undefined";
-      row['project'] = req.user.participantInProject || req.user.project._id;
-      row['status'] = req.user.level > 10 ? 'researcher' : 'participant';
-      row['code'] = (req.user.code && req.user.code.id) || "undefined";
+      row['project'] = projectId;
+      row['status'] = (req.user && req.user.level > 10) ? 'researcher' : 'participant';
+      row['code'] = (req.user && req.user.code && req.user.code.id) || openLabId;
     })
   };
 
@@ -317,8 +322,8 @@ exports.saveIncrementalResults = async (req, res) => {
     if(!result){
       const parameters = await Param.getParameters({
         slug: slug,
-        language: req.user.language,
-        author: req.user.participantInProject || req.user.project._id
+        language: (req.user && req.user.language) || req.body.url.split('/')[5] || "english",
+        author: projectId 
       });
       let params = "no-change-of-params";
       if(parameters){
@@ -330,9 +335,9 @@ exports.saveIncrementalResults = async (req, res) => {
       }
       const result = new Result({
         transfer: req.body.metadata.id,
-        author: req.user._id,
-        openLabId: req.user.openLabId,
-        project: req.user.participantInProject || req.user.project._id,
+        author: (req.user && req.user._id) || test.author,
+        openLabId: openLabId,
+        project: projectId,
         test: test._id,
         taskslug: slug,
         rawdata: req.body.data,
@@ -354,8 +359,8 @@ exports.saveIncrementalResults = async (req, res) => {
 
     const parameters = await Param.getParameters({
       slug: slug,
-      language: req.user.language,
-      author: req.user.participantInProject || req.user.project._id
+      language: (req.user && req.user.language) || req.body.url.split('/')[5] || "english",
+      author: projectId 
     });
     let params = "no-change-of-params";
     if(parameters){
@@ -377,9 +382,9 @@ exports.saveIncrementalResults = async (req, res) => {
 
     const fullResult = new Result({
       transfer: req.body.metadata.id,
-      author: req.user._id,
-      openLabId: req.user.openLabId,
-      project: req.user.participantInProject || req.user.project._id,
+      author: (req.user && req.user._id) || test.author,
+      openLabId: openLabId,
+      project: projectId,
       test: test._id,
       taskslug: slug,
       rawdata: req.body.data,
@@ -393,9 +398,9 @@ exports.saveIncrementalResults = async (req, res) => {
     } else {
       const osfFullResult = new Result({
         transfer: req.body.metadata.id,
-        author: req.user._id,
-        openLabId: req.user.openLabId,
-        project: req.user.participantInProject || req.user.project._id,
+        author: (req.user && req.user._id) || test.author,
+        openLabId: openLabId,
+        project: projectId,
         test: test._id,
         taskslug: slug,
         uploadType: req.body.metadata.payload,
@@ -407,32 +412,25 @@ exports.saveIncrementalResults = async (req, res) => {
 
     // upload data to osf
     if(project && project.osf && project.osf.upload_link && project.osf.upload_token && project.osf.policy !== 'OL'){
-      const link = project.osf.upload_link + '?kind=file&name=' + req.user.openLabId + '-' + req.body.metadata.id + '.csv';
+      const link = project.osf.upload_link + '?kind=file&name=' + openLabId + '-' + req.body.metadata.id + '.csv';
       const data = papaparse.unparse(req.body.data);
-      // console.log("link", link);
       fetch(link, {
         method:'PUT',
         headers: {
           'Authorization': `Bearer ${project.osf.upload_token}`,
-          //rpktADN0Z6G0X87NfbMcFMc4dKonnCjpHEeOooCtv2jGT2aSTuxRM7vaTSVoNurWWYPDVw
         },
         body: data
       })
       .then(response => {
-        // console.log('response', response);
         return response.json();
       })
       .then(JSON => {
-        // console.log('JSON', JSON);
-        // console.log('success with OSF')
       })
       .catch(err => {
         console.log(err);
       })
     };
-
     res.send('Data were saved');
-
   } else {
     res.send('Nothing was saved');
   }

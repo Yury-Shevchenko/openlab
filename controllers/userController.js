@@ -120,6 +120,7 @@ exports.labjs = async (req, res) => {
   if(req.files.script){
       if(req.user){
         req.body.author = req.user._id;
+        req.body.project = req.user.project._id;
       };
       console.log('req.headers.referer', req.headers.referer);
       const prod = (req.headers.referer == 'https://labjs-beta.netlify.com/' || req.headers.referer == 'http://localhost:3000/') ? 'beta': 'alpha';//check from where the upload comes

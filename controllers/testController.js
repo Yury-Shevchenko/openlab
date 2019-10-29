@@ -91,6 +91,7 @@ exports.resize = async (req, res, next) => {
 
 exports.createTest = async (req, res, next) => {
   req.body.author = req.user._id; //when the test is created the current id is put in the author
+  req.body.project = req.user.project._id;
   if(req.files.script){
     const json_string = req.files.script[0].buffer.toString();
     const json = JSON.parse(json_string);
@@ -120,6 +121,7 @@ exports.updateTest = async (req, res, next) => {
   }
   if(req.user){
     req.body.author = req.user._id;
+    req.body.project = req.user.project._id;
   }
   req.body.token = undefined;
   req.body.tokenExpires = undefined;
@@ -491,75 +493,88 @@ exports.getProgramTests = async (req, res) => {
 
 // show tests
 exports.testing = async (req, res) => {
-  const study = req.query.study;
-  const project = await Project.findOne({ _id: req.user.participantInProject || req.user.project._id },{
-    name: 1, showCompletionCode: 1, completionMessage: 1, useNotifications: 1, tests: 1,
-  });
-  const projects = await Project.getCurrentProjects();
-  let tests, results, confirmationCode, projectTests;
-  if(project){
-    const unsortedProjectTests = await Test
-      .find({
-        _id: { $in: project.tests},
-        author: { $exists: true }
-      })
-      .select({slug:1, name:1, photo: 1})
-    projectTests = unsortedProjectTests.sort( (a, b) => {
-      return project.tests.indexOf(a.id) - project.tests.indexOf(b.id);
+  if(!req.user) {
+    res.redirect('/');
+  } else {
+    const study = req.query.study;
+    const project = await Project.findOne({ _id: req.user.participantInProject || req.user.project._id },{
+      name: 1, showCompletionCode: 1, completionMessage: 1, useNotifications: 1, tests: 1,
     });
+    const projects = await Project.getCurrentProjects();
+    let tests, results, confirmationCode, projectTests;
+    if(project){
+      const unsortedProjectTests = await Test
+        .find({
+          _id: { $in: project.tests},
+          author: { $exists: true }
+        })
+        .select({slug:1, name:1, photo: 1})
+      projectTests = unsortedProjectTests.sort( (a, b) => {
+        return project.tests.indexOf(a.id) - project.tests.indexOf(b.id);
+      });
 
-    results = await Result.getResultsForUserTesting({ author: req.user._id, project: project._id });
-    const arrayTests = projectTests.map(function(test) {return test.slug;});
-    const arrayResults = results.map(function(result) {return result.taskslug;});
-    const remainingArray = arrayTests.filter(function(test) {return !arrayResults.includes(test)});
-    if(remainingArray.length == 0 && req.user.level < 10){
-      const recordedCode = req.user.participantHistory.filter(e => e.project_id.toString() == req.user.participantInProject.toString());
-      if (recordedCode.length == 0){
-        confirmationCode = uniqid();
-        await User.findOneAndUpdate({
-          _id: req.user._id
-        }, {
-          $addToSet: {
-            participant_projects: project._id,
-            participantHistory:
-              {
-                project_id: project._id,
-                project_name: project.name,
-                individual_code: confirmationCode,
-              }
-            },
-        }, {
-          new: true
-        }).exec();
-      } else {
-        confirmationCode = req.user.participantHistory.filter(e => e.project_id.toString() == req.user.participantInProject.toString())[0].individual_code;
+      results = await Result.getResultsForUserTesting({ author: req.user._id, project: project._id });
+      const arrayTests = projectTests.map(function(test) {return test.slug;});
+      const arrayResults = results.map(function(result) {return result.taskslug;});
+      const remainingArray = arrayTests.filter(function(test) {return !arrayResults.includes(test)});
+      if(remainingArray.length == 0 && req.user.level < 10){
+        const recordedCode = req.user.participantHistory.filter(e => e.project_id.toString() == req.user.participantInProject.toString());
+        if (recordedCode.length == 0){
+          confirmationCode = uniqid();
+          await User.findOneAndUpdate({
+            _id: req.user._id
+          }, {
+            $addToSet: {
+              participant_projects: project._id,
+              participantHistory:
+                {
+                  project_id: project._id,
+                  project_name: project.name,
+                  individual_code: confirmationCode,
+                }
+              },
+          }, {
+            new: true
+          }).exec();
+        } else {
+          confirmationCode = req.user.participantHistory.filter(e => e.project_id.toString() == req.user.participantInProject.toString())[0].individual_code;
+        };
       };
     };
-  };
 
-  if(req.params.selector === 'start' && projectTests && projectTests.length ){
-    const arrayTests = projectTests.map(function(test) {return test.slug});
-    const arrayResults = results.map(function(result) {return result.taskslug});
-    const doneArray = arrayTests.filter(function(test) {return arrayResults.includes(test)});
-    const remainingArray = arrayTests.filter(function(test) {return !arrayResults.includes(test)});
-    const nextTask = remainingArray[0] || "allDone";
-    if(nextTask === 'allDone'){
+    if(req.params.selector === 'start' && projectTests && projectTests.length ){
+      const arrayTests = projectTests.map(function(test) {return test.slug});
+      const arrayResults = results.map(function(result) {return result.taskslug});
+      const doneArray = arrayTests.filter(function(test) {return arrayResults.includes(test)});
+      const remainingArray = arrayTests.filter(function(test) {return !arrayResults.includes(test)});
+      const nextTask = remainingArray[0] || "allDone";
+      if(nextTask === 'allDone'){
+        res.render('testing', {project, projects, results, study, confirmationCode, projectTests});
+      } else {
+        res.redirect(`/test/${nextTask}/${req.user.id}`);
+      }
+    } else {
       res.render('testing', {project, projects, results, study, confirmationCode, projectTests});
-    } else {
-      res.redirect(`/test/${nextTask}/${req.user.id}`);
     }
-  } else {
-    res.render('testing', {project, projects, results, study, confirmationCode, projectTests});
   }
 };
+
+exports.generateId = (req, res, next) => {
+  if(!req.params.id){
+    const id = uniqid();
+    res.redirect(`/test/${req.params.slug}/${id}`);
+    return;
+  }
+  next();
+}
 
 //run the test for a particular user
 exports.runTest = async (req, res) => {
   const test = await Test.findOne({ slug: req.params.slug });
   const feature = {
     slug: req.params.slug,
-    language: req.params.lang || req.user.language,
-    project: req.user.participantInProject || req.user.project._id
+    language: req.params.lang || (req.user && req.user.language) || 'english',
+    project: (req.user && req.user.participantInProject) || (req.user && req.user.project._id ) || test.project
   };
   const parameters = await Param.getParameters(feature);
   let params = '';
@@ -611,6 +626,5 @@ exports.showAllTasksForAdmin = async (req, res) => {
 };
 
 exports.mouselab = (req, res) => {
-  console.log("It works")
   res.json({yes: 'it is done'})
 };
