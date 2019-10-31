@@ -616,7 +616,7 @@ module.exports =
         'data_invitations_2': `Регистрация с адресом электронной почты позволяет создать аккаунт участника, защищенный паролем. Позже, электронный адрес и пароль изпользуются для идентификации пользователя, что обеспечивает более высокий уровень безопасности чем регистрация с кодом участника.`,
         'data_invitations_3': `Если ваш проект открыт для всех участников, он будет отображаться в списке текущих экспериментов. Таким образом, ваше исследование могут увидеть все пользователи Открытой Лаборатории.`,
         'help_title' : 'Помощь',
-        'help_1': `Пожалуйста, зайдите в <a target='blank' href='https://join.slack.com/t/open-lab-online/shared_invite/enQtNDU3MzgzMzY4NDcxLTBjZTg1NmViYTEwYWI0NmE3MDZmM2QwMzNhZmRmNmZkMDRhMzhlNTZlZWU2OWU0MmU5YTBhMjU4MWFlYjcwYjA'>чат проекта</a>, чтобы задать интересующий вас вопрос. `,
+        'help_1': `Пожалуйста, зайдите в <a target='blank' href='https://join.slack.com/t/open-lab-online/shared_invite/enQtNDU3MzgzMzY4NDcxLWZhYzU0MGU3MDFkNTNlZmI2MjQ4YzdlNzE3ZmYwMThmM2I1YTg5YjNiYjg3MzEzOGI5YzhkYzI0OTQ2Yjg1Y2Q'>чат проекта</a>, чтобы задать интересующий вас вопрос. `,
         'forum': 'Форум',
         'offer_title': 'Заказать тест',
         'offer': `У вас есть идея теста, но вы не знаете как его программировать? Мы будем рады сделать это для вас. Заполните форму и мы вышлем вам предложение. Цена зависит от количества часов работы.`,

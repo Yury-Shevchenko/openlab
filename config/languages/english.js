@@ -616,7 +616,7 @@ module.exports =
           'data_invitations_2': `Registration with an email address requests a participant to create an account with an email address and password. Later, the email and password will be used for authorization. This provides a higher level of security than a participant code.`,
           'data_invitations_3': `If your study is publicly accessible, it can also be discovered by participants after registration by all available methods (code, email or social networks such as Facebook, Google or Github). Your study will appear in the list of studies in which a user can participate.`,
           'help_title' : 'Help',
-          'help_1': `Please, join the <a target='blank' href='https://join.slack.com/t/open-lab-online/shared_invite/enQtNDU3MzgzMzY4NDcxLTBjZTg1NmViYTEwYWI0NmE3MDZmM2QwMzNhZmRmNmZkMDRhMzhlNTZlZWU2OWU0MmU5YTBhMjU4MWFlYjcwYjA'>Slack chat</a> to ask questions and get help. `,
+          'help_1': `Please, join the <a target='blank' href='https://join.slack.com/t/open-lab-online/shared_invite/enQtNDU3MzgzMzY4NDcxLWZhYzU0MGU3MDFkNTNlZmI2MjQ4YzdlNzE3ZmYwMThmM2I1YTg5YjNiYjg3MzEzOGI5YzhkYzI0OTQ2Yjg1Y2Q'>Slack chat</a> to ask questions and get help. `,
           'forum': 'Forum',
           // 'offer_title': 'Outsource programming',
           // 'offer': `Do you have an idea of a task, but don't know how to program it? We would be happy to program it for you. Fill out the form and we will send you an offer. The price depends on the estimated number of working hours.`,

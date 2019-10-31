@@ -612,7 +612,7 @@ module.exports = {
         'data_invitations_2': `Die Registrierung mit einer E-Mail-Adresse fordert einen Teilnehmer auf, ein Profil mit einer E-Mail-Adresse und einem Passwort zu erstellen. Später werden die E-Mail und das Passwort für die Autorisierung verwendet. Dies bietet höhere Sicherheit als ein Teilnehmercode.`,
         'data_invitations_3': `Wenn Ihre Studie öffentlich zugänglich ist, kann es auch von den Teilnehmern nach der Registrierung mit allen verfügbaren Methoden (Code, E-Mail oder sozialen Netzwerken wie Facebook, Google oder Github) entdeckt werden. Ihre Studie erscheint in der Liste der Studien, an denen der Benutzer teilnehmen kann.`,
         'help_title' : 'Hilfe',
-        'help_1': `Bitte nehmen Sie am <a target='blank' href='https://join.slack.com/t/open-lab-online/shared_invite/enQtNDU3MzgzMzY4NDcxLTBjZTg1NmViYTEwYWI0NmE3MDZmM2QwMzNhZmRmNmZkMDRhMzhlNTZlZWU2OWU0MmU5YTBhMjU4MWFlYjcwYjA'>Slack chat</a> teil, um Fragen zu stellen und Hilfe zu erhalten.`,
+        'help_1': `Bitte nehmen Sie am <a target='blank' href='https://join.slack.com/t/open-lab-online/shared_invite/enQtNDU3MzgzMzY4NDcxLWZhYzU0MGU3MDFkNTNlZmI2MjQ4YzdlNzE3ZmYwMThmM2I1YTg5YjNiYjg3MzEzOGI5YzhkYzI0OTQ2Yjg1Y2Q'>Slack chat</a> teil, um Fragen zu stellen und Hilfe zu erhalten.`,
         'forum': 'Forum',
         // 'offer_title': 'Programmierung outsourcen',
         // 'offer': `Haben Sie eine Idee von einer Aufgabe, wissen aber nicht, wie man sie programmiert? Gerne programmieren wir es für Sie. Füllen Sie das Formular aus und wir senden Ihnen ein Angebot zu. Der Preis hängt von der geschätzten Anzahl der Arbeitsstunden ab.`,
