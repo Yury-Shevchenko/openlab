@@ -2,13 +2,11 @@ doctype html
 html
   head
     title= `${title || h.siteName}`
-    //- script(src="/labjs/plugins/gps.js" nonce=`${noncevalue}`)
-
     if (test && test.production && test.production == 'beta')
       script(src="https://labjs-beta.netlify.com/api/_defaultStatic/lib/lab.js" nonce=`${noncevalue}`)
       link(rel="stylesheet" href="https://labjs-beta.netlify.com/api/_defaultStatic/lib/lab.css")
     else
-      if(test.labjsVersion && (test.labjsVersion === '19,0,1' || test.labjsVersion === '19,1,0'))
+      if(test.labjsVersion && (test.labjsVersion === '19,0,1' || test.labjsVersion === '19,1,0' || test.labjsVersion === '19,1,1'))
         script(src=`/labjs/${test.labjsVersion}/lab.js` nonce=`${noncevalue}`)
         script(src=`/labjs/${test.labjsVersion}/lab.fallback.js` nonce=`${noncevalue}`)  
         link(rel="stylesheet" href=`/labjs/${test.labjsVersion}/lab.css`)
