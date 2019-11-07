@@ -237,6 +237,9 @@ router.get('/downloadsummarydata', authController.isAdminLoggedIn, catchErrors(r
 //download results of particular test in the project
 router.get('/downloadtestresults/:name/:test', authController.isAdminLoggedIn, catchErrors(resultController.downloadTestResults));
 router.get('/downloadtestresults/:name/:test/:type', authController.isAdminLoggedIn, catchErrors(resultController.downloadTestResults));
+// download my results
+router.get('/downloadmyresults/', authController.isAdminLoggedIn, catchErrors(resultController.downloadMyResults));
+router.get('/downloadmyresults/:type', authController.isAdminLoggedIn, catchErrors(resultController.downloadMyResults));
 
 
 //delete the data of the task and the user

@@ -21,6 +21,12 @@ block content
       p
 
     h2 #{l.title}
+    
+    .div(style={display: 'grid', 'grid-template-columns': 'repeat(auto-fill, 150px)', 'grid-gap': '10px'})
+      p
+        a(style={color:'black'} href=`/downloadmyresults/`) Download all data
+      p
+        a(style={color:'black'} href=`/downloadmyresults/full`) Download data of completed tasks
 
     if results && results.length && results.length > 0
       .reviews

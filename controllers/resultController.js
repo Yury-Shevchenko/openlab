@@ -239,6 +239,37 @@ exports.downloadTestResults = async (req, res) => {
   const processor = input.pipe(res);
 };
 
+//download csv file for all tests that matches the author id
+exports.downloadMyResults = async (req, res) => {
+  const type = req.params.type === 'full' ? 'full' : ['full', 'incremental'];
+  let keys = [];
+  res.setHeader('Content-disposition', 'attachment; filename=' + 'mydata' +'.csv');
+  const input = new stream.Readable({ objectMode: true });
+  input._read = () => {};
+  var cursor = await Result
+    .find({ author: req.user._id, uploadType: type},{ rawdata:1 })
+    .cursor()
+    .on('data', obj => {
+      const preKeys = flatMap(obj.rawdata, function(e){
+        return(Object.keys(e));
+      });
+      const tempkeys = Array.from(new Set(preKeys));
+      const new_items = tempkeys.filter(x => !keys.includes(x));
+      let parsed;
+      if (new_items.length > 0){
+        keys = keys.concat(new_items);
+        parsed = papaparse.unparse({data: obj.rawdata, fields: keys}) + '\r\n';
+      } else {
+        const preparsed = papaparse.unparse({data: obj.rawdata, fields: keys}) + '\r\n';
+        parsed = preparsed.replace(/(.*\r\n)/,'');
+      };
+      input.push(parsed);
+    })
+    .on('end', function() { input.push(null) })
+    .on('error', function(err) { console.log(err) });
+  const processor = input.pipe(res);
+};
+
 //delete data
 exports.removeResultsData = async (req, res) => {
   const result = await Result.findOneAndRemove({ _id: req.params.filename });
@@ -440,7 +471,7 @@ exports.saveIncrementalResults = async (req, res) => {
 exports.showDataByTests = async (req, res) => {
   let test, results, projectTests;
   const project = await Project.findOne({_id: req.user.project._id},{
-    name: 1, tests: 1, tests: 1
+    name: 1, tests: 1,
   });
   if(project){
     const unsortedProjectTests = await Test
