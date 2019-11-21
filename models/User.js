@@ -102,6 +102,7 @@ userSchema.methods.validCode = function(password) {
 //get users of a particular project (for /data)
 userSchema.statics.getUsersOfProject = function(project) {
   return this.aggregate([
+    { $match: { 'level' : { $lt: 10 }} },//filter only users
     { $match: {
       $or: [
         { 'participant_projects' : { $eq: project } }, //filter users in the past
@@ -109,7 +110,6 @@ userSchema.statics.getUsersOfProject = function(project) {
         ]
       }
     },
-    { $match: { 'level' : { $lt: 10 }} },//filter only users
     { $lookup:
       {
         from: 'results',
@@ -133,14 +133,6 @@ userSchema.statics.getUsersOfProject = function(project) {
         as: 'results'
       }
     },
-    // { $match: {
-    //   $or: [
-    //     { 'results.project' : { $eq: project } }, //filter only results of the current project
-    //     { 'participantInProject' : { $eq: project } }//filter users
-    //     ]
-    //   }
-    // },
-    //{ $match: { 'level' : { $lt: 10 }} },//filter only users
     { $project: {
         name: '$$ROOT.name',
         level: '$$ROOT.level',
@@ -148,14 +140,11 @@ userSchema.statics.getUsersOfProject = function(project) {
         participant_code: '$$ROOT.code.id',
         created: '$$ROOT.created',
         language: '$$ROOT.language',
-        //project: '$$ROOT.project',
         participantInProject: '$$ROOT.participantInProject',
         confirmationCodes: '$$ROOT.participantHistory',
-        //averageRating: {$avg: '$results.rating'},
         numberTests: {$size:
           { $setUnion: '$results.test' }
         },
-        //results: '$results',
         numberDeleteRequests: { $sum: '$results.deleteRequests' },
         numberDataRequests: { $sum: '$results.dataRequests' },
         notifications: '$$ROOT.notifications',
