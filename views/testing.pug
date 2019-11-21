@@ -38,9 +38,8 @@ block content
 
             p(style='white-space:pre;')
             input.button( type="submit" value=l.message_enter )
-
-
-  else
+  
+  if(project)
     - const arrayTests = projectTests.map(function(test) {return test.slug;});
     - const arrayResults = results.map(function(result) {return result.taskslug;});
     - const doneArray = arrayTests.filter(function(test) {return arrayResults.includes(test)});
@@ -78,7 +77,7 @@ block content
           p= `${l.message_welcome}, ${user.name}!`
         else
           p= `${l.message_welcome}!`
-      
+        
 
       if (project.useNotifications)
         .notificationsPanel
@@ -101,4 +100,4 @@ block content
             else if doneArray.includes(test.slug)
               p #{l.table_done}
 
-  script(src="/javascripts/services/notifications.js" nonce=`${noncevalue}`)
+    script(src="/javascripts/services/notifications.js" nonce=`${noncevalue}`)
