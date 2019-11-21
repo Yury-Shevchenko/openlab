@@ -340,8 +340,8 @@ exports.constructor = async (req, res) => {
           }
         ]
       })
-      .select({author:1, slug:1, name:1, description: 1})
-      .sort({name: 1});
+      .select({author:1, slug:1, name:1, description: 1});
+      // .sort({name: 1});
       [tags, tests, unsortedProjectTests] = await Promise.all([ tagsPromise, testsPromise, projectTestsPromise ]);
       //order projectTests
       projectTests = unsortedProjectTests.sort( (a, b) => {
@@ -362,8 +362,8 @@ exports.constructor = async (req, res) => {
         }
       ]
     })
-    .select({author:1, slug:1, name:1, description: 1})
-    .sort({name: 1});
+    .select({author:1, slug:1, name:1, description: 1});
+    // .sort({name: 1});
     [tags, tests] = await Promise.all([ tagsPromise, testsPromise ]);
   };
   res.render('construct', { title: 'Select tests', tag, tags, tests, projectTests, project });
