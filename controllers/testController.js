@@ -336,7 +336,7 @@ exports.constructor = async (req, res) => {
             tags: tagQuery,
             _id: { $nin: project.tests},
             open: false,
-            author: authorQuery
+            author: req.user._id
           }
         ]
       })
