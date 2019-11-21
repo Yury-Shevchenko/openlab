@@ -259,8 +259,8 @@ function autopopulate(next) {
 // });
 //define indexes for the faster search
 resultSchema.index({
-  project: '_id',
-  author: '_id'
+  project: 1,
+  author: 1,
 });
 
 
