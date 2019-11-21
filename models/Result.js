@@ -257,6 +257,12 @@ function autopopulate(next) {
 //   // score: 'text',
 //   //what would make sence to put here for search?
 // });
+//define indexes for the faster search
+resultSchema.index({
+  project: '_id',
+  author: '_id'
+});
+
 
 resultSchema.pre('find', autopopulate);
 resultSchema.pre('findOne', autopopulate);
