@@ -21,6 +21,13 @@ block content
     h2 #{layout.chooseTasks}
     .userTable
       .tags
+        a.tag__link(href = `/constructor` class=(!tag ? 'tag__link--active' : ''))
+          span.tag__text #{layout.myTasks}
+          span.tag__count
+        a.tag__link(href = `/constructor/all` class=(tag === 'all' ? 'tag__link--active' : ''))
+          span.tag__text #{layout.allTasks}
+          span.tag__count
+        
         if tags
           each t in tags
             li.tag
@@ -50,9 +57,3 @@ block content
             if tests
               each test in tests
                 +constructorTestCard(test)
-
-      //- pre=h.dump(tags)
-      //- pre=h.dump(projectTests)
-      //- pre=h.dump(project)
-      //- pre=h.dump(tests)
-      //- pre=h.dump(user)

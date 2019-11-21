@@ -282,7 +282,7 @@ module.exports = {
       'title_tasks': 'Verfügbare Aufgaben',
       'title_project': 'Ihre Studie',
       'not_chosen_message': 'Fügen Sie Aufgaben zu Ihrer Studie hinzu.',
-      'no_project_message': 'Um IIhrer Studie Aufgaben hinzuzufügen, erstellen Sie ' + '<a href="/projects">hier</a>' + ' eine Studie.'
+      'no_project_message': 'Um IIhrer Studie Aufgaben hinzuzufügen, erstellen oder aktivieren Sie ' + '<a href="/projects">hier</a>' + ' eine Studie.'
     },
 
     'tasks' : {
@@ -728,7 +728,7 @@ module.exports = {
         '<kbd>osf.full_write</kbd>',
         'token_paste': 'Fügen Sie das OSF-Token hier ein',
         'create_OSF': 'OSF-Projekt erstellen',
-        'no_studies_yet': 'Sie haben noch keine Open Lab-Studien erstellt. Bitte erstellen oder aktivieren Sie zuerst eine Studie.',
+        'no_studies_yet': 'Bitte erstellen oder aktivieren Sie zuerst eine Open Lab Studie <a href="/projects">hier</a>.',
         'update': 'Aktualisieren',
       },
 }

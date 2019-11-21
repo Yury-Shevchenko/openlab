@@ -310,22 +310,19 @@ exports.constructor = async (req, res) => {
     name: 1, tests: 1,
   });
   const tag = req.params.tag;
-  const tagQuery = tag || { $exists: true };
+  const tagQuery = tag === 'all' ? { $exists: true } : (tag || { $exists: true });
+  const authorQuery = tag ? { $exists: true } : req.user._id;
   const tagsPromise = Test.getTagsList(req.user._id); //use a custom function to get tags list
   //get only own private tests and tests that are opened by other researchers
-  let testsPromise;
-  let projectTestsPromise;
+  let testsPromise, projectTests, projectTestsPromise;
+  let tags, tests, unsortedProjectTests;
   if(project){
     projectTestsPromise = Test
       .find({
-        // tags: tagQuery,
-        _id: { $in: project.tests},
-        // open: true,
+        _id: { $in: project.tests },
         author: { $exists: true }
       })
       .select({slug:1, name:1})
-      // .sort({name: );
-
     testsPromise = Test
       .find({
         $or:[
@@ -333,18 +330,23 @@ exports.constructor = async (req, res) => {
             tags: tagQuery,
             _id: { $nin: project.tests},
             open: true,
-            author: { $exists: true }
+            author: authorQuery
           },
           {
             tags: tagQuery,
             _id: { $nin: project.tests},
             open: false,
-            author: { $eq: req.user._id}
+            author: authorQuery
           }
         ]
       })
       .select({author:1, slug:1, name:1, description: 1})
       .sort({name: 1});
+      [tags, tests, unsortedProjectTests] = await Promise.all([ tagsPromise, testsPromise, projectTestsPromise ]);
+      //order projectTests
+      projectTests = unsortedProjectTests.sort( (a, b) => {
+        return project.tests.indexOf(a.id) - project.tests.indexOf(b.id);
+      });
   } else {
     testsPromise = Test.find({
       $or:[
@@ -362,13 +364,8 @@ exports.constructor = async (req, res) => {
     })
     .select({author:1, slug:1, name:1, description: 1})
     .sort({name: 1});
+    [tags, tests] = await Promise.all([ tagsPromise, testsPromise ]);
   };
-
-  const [tags, tests, unsortedProjectTests] = await Promise.all([ tagsPromise, testsPromise, projectTestsPromise ]);
-  //order projectTests
-  const projectTests = unsortedProjectTests.sort( (a, b) => {
-    return project.tests.indexOf(a.id) - project.tests.indexOf(b.id);
-  });
   res.render('construct', { title: 'Select tests', tag, tags, tests, projectTests, project });
 };
 
@@ -435,60 +432,62 @@ exports.getProgramTests = async (req, res) => {
   const project = await Project.findOne({_id: req.user.project._id},{
     name: 1, tests: 1,
   });
+  if(project){
+    const unsortedProjectTests = await Test
+      .find({
+        _id: { $in: project.tests},
+        author: { $exists: true }
+      })
+      .select({slug:1, name:1, photo:1})
+    //order projectTests
+    const projectTests = unsortedProjectTests.sort( (a, b) => {
+      return project.tests.indexOf(a.id) - project.tests.indexOf(b.id);
+    });
 
-  const unsortedProjectTests = await Test
-    .find({
-      _id: { $in: project.tests},
-      author: { $exists: true }
-    })
-    .select({slug:1, name:1, photo:1})
-  //order projectTests
-  const projectTests = unsortedProjectTests.sort( (a, b) => {
-    return project.tests.indexOf(a.id) - project.tests.indexOf(b.id);
-  });
+    const slug = req.params.slug;
+    let param_language = req.params.lang || req.user.language;
+    let test = 'nope';
+    let original = 'nope';
+    let modified = 'nope';
+    let allParams = 'nope';
+    let savedParameter = 'nope';
 
-  const slug = req.params.slug;
-  let param_language = req.params.lang || req.user.language;
-  let test = 'nope';
-  let original = 'nope';
-  let modified = 'nope';
-  let allParams = 'nope';
-  let savedParameter = 'nope';
-
-  if (slug){
-    test = await Test.findOne({slug: slug},{_id:1, name:1, slug:1, params:1, description:1, version:1, script: 1});
-  };
-
-  if (test == null){
-    test = 'nope';
-  } else {
-    const selector = req.params.selector;
-    if (selector === 'original') {
-      if(test){
-        original = test.params || 'empty';
-      } else {
-        original = 'empty';
-      };
-    }
-    if (selector === 'modified') {
-      const params = await Param.findOne({project: req.user.project._id, test: test._id, language: param_language});
-      allParams = await Param.find({project: req.user.project._id},{slug:1, language:1, created: 1});
-      if(params){
-        modified = params.parameters || 'empty';
-      } else {
-        modified = 'empty';
-      };
+    if (slug){
+      test = await Test.findOne({slug: slug},{_id:1, name:1, slug:1, params:1, description:1, version:1, script: 1});
     };
-    if(selector === 'upload'){
-      if(req.query.savedParameter != ''){
-        savedParameter = await Param.findOne({_id: req.query.savedParameter});
+
+    if (test == null){
+      test = 'nope';
+    } else {
+      const selector = req.params.selector;
+      if (selector === 'original') {
+        if(test){
+          original = test.params || 'empty';
+        } else {
+          original = 'empty';
+        };
+      }
+      if (selector === 'modified') {
+        const params = await Param.findOne({project: req.user.project._id, test: test._id, language: param_language});
         allParams = await Param.find({project: req.user.project._id},{slug:1, language:1, created: 1});
-        param_language = savedParameter.language;
+        if(params){
+          modified = params.parameters || 'empty';
+        } else {
+          modified = 'empty';
+        };
+      };
+      if(selector === 'upload'){
+        if(req.query.savedParameter != ''){
+          savedParameter = await Param.findOne({_id: req.query.savedParameter});
+          allParams = await Param.find({project: req.user.project._id},{slug:1, language:1, created: 1});
+          param_language = savedParameter.language;
+        }
       }
     }
+    res.render('program', {project, slug, test, original, modified, allParams, savedParameter, param_language, projectTests});
+  } else {
+    res.render('program');
   }
-
-  res.render('program', {project, slug, test, original, modified, allParams, savedParameter, param_language, projectTests});
 };
 
 // show tests

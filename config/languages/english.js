@@ -285,7 +285,7 @@ module.exports =
         'title_tasks': 'Available tasks',
         'title_project': 'Your study',
         'not_chosen_message': 'Add tasks to your study',
-        'no_project_message': 'To add tasks to your study, create a study ' + '<a href="/projects">here.</a>',
+        'no_project_message': 'To add tasks to your study, create or activate a study ' + '<a href="/projects">here.</a>',
       },
 
       'tasks' : {
@@ -731,7 +731,7 @@ module.exports =
           '<kbd>osf.full_write</kbd>',
           'token_paste': 'Paste the OSF token here',
           'create_OSF': 'Create OSF project',
-          'no_studies_yet': 'You have not created any Open Lab studies yet. Please create or activate a study first.',
+          'no_studies_yet': 'Please create or activate an Open Lab study <a href="/projects">here</a> to start the integration.',
           'update': 'Update',
         },
 

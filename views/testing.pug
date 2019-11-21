@@ -19,11 +19,11 @@ block content
             li.nav__item: a.nav__link(href="/results", class=(currentPath.startsWith('/results') ? 'nav__link--active' : '')) #{layout.demoResults}
       p
 
-  if(!project || typeof(project) == 'null')
-    if (user.level > 10)
-      .inner
-        .card
-          p !{l.message_create_project}
+      if(!project || typeof(project) == 'null')
+        if (user.level > 10)
+          h2 #{layout.testing}
+          .card
+            p !{l.message_create_project}
 
     if (user.level < 10)
       .inner
@@ -82,33 +82,10 @@ block content
 
       if (project.useNotifications)
         .notificationsPanel
-          //- button(class="js-push-button" disabled) Enable Push Messages
           button(id="enable_notifications" class="button") Enable notifications
           button(id="disable_notifications" class="button") Disable notifications
           #notification_status
           p
-
-
-      //- .videoPanel
-      //-   button(id="start_video" class="button") Start video
-      //-   button(id="stop_video" class="button") Stop video
-      //-
-      //- .cameraPanel
-      //-   video#player(autoplay='')
-      //-   canvas#canvas(width='320px', height='240px')
-      //-   button(class="button" id="capture-btn")
-      //-     | Capture
-      //-   #pick-image
-      //-     h6 Pick an Image instead
-      //-     input#image-picker(type='file', accept='image/*')
-      //-
-      //- .locationPanel
-      //-   .input-section
-      //-     button(type='button' class="button" id="location-btn")
-      //-       | Get
-      //-       | Location
-      //-     #location-loader.mdl-spinner.mdl-js-spinner.is-active
-      //-   #location-input
 
       .dashboard
         .dashboardBody
@@ -125,12 +102,3 @@ block content
               p #{l.table_done}
 
   script(src="/javascripts/services/notifications.js" nonce=`${noncevalue}`)
-  //- script(src="/javascripts/services/notify.js" nonce=`${noncevalue}`)
-  //- script(src="/javascripts/services/media.js" nonce=`${noncevalue}`)
-  //- script(src="/javascripts/services/geolocation.js" nonce=`${noncevalue}`)
-
-  //- pre= h.dump(project)
-  //- pre= h.dump(projectTests)
-  //- pre= h.dump(results)
-  //- pre= h.dump(confirmationCode)
-  //- pre= h.dump(user)

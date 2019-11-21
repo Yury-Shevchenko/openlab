@@ -24,7 +24,9 @@ block content
       if project && project.name
         h2 #{`${project.name}`}
       else
-        p !{l.create_your_project}
+        h2 #{layout.customizeParameters}
+        .card
+          p !{l.create_your_project}
 
       .program
 

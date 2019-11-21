@@ -282,7 +282,7 @@ module.exports =
         'title_tasks': 'Доступные тесты',
         'title_project': 'Ваш проект',
         'not_chosen_message': 'Добавьте тесты в ваш проект',
-        'no_project_message': 'Чтобы добавлять тесты в ваш проект, создайте проект ' + '<a href="/projects">здесь.</a>'
+        'no_project_message': 'Чтобы добавлять тесты в ваш проект, создайте или активируйте проект ' + '<a href="/projects">здесь.</a>'
       },
 
       'tasks' : {
@@ -688,50 +688,50 @@ module.exports =
       },
 
       'osf': {
-        'announcement_header': 'Announcement',
-        'announcement': 'We are very excited and proud to present the integration of Open Lab with ' +
+        'announcement_header': 'Объявление',
+        'announcement': 'Мы очень рады представить интеграцию Открытой лаборатории с порталом ' +
           '<a target="_blank" href="https://osf.io/">Open Science Framework (OSF)</a>. ' +
-          'From now on you can store the data in your OSF repository. ' +
-          'Each time a participant completes your study, the data are uploaded to your OSF project. ' +
-          'This means that you can have an unlimited number of participants if you store your data in the OSF. '
+          'Вы можете хранить результаты экспериментов в вашем OSF репозитории. ' +
+          'Каждый раз когда испытуемый завершает эксперимент, данные загружаются в ваш OSF проект. ' +
+          'Это означает, что в вашем эксперименте можете принять участие неограниченное количество испытуемых, если вы решили хранить результаты на OSF. '
           ,
-        'announcement_errors': 'If you notice some errors, please let us know via our ' +
-          '<a target="_blank" href="https://join.slack.com/t/open-lab-online/shared_invite/enQtNDU3MzgzMzY4NDcxLTBjZTg1NmViYTEwYWI0NmE3MDZmM2QwMzNhZmRmNmZkMDRhMzhlNTZlZWU2OWU0MmU5YTBhMjU4MWFlYjcwYjA">Slack channel</a> ' +
-          ' or the ' +
-          '<a target="_blank" href="/docs/faq"> support form</a>.',
-        'sync_header_1': 'Your Open Lab project ',
-        'sync_header_2': ' is synced with the OSF project ',
+        'announcement_errors': 'Если вы заметили ошибку, пожалуйста сообщите нам через ' +
+          '<a target="_blank" href="https://join.slack.com/t/open-lab-online/shared_invite/enQtNDU3MzgzMzY4NDcxLTBjZTg1NmViYTEwYWI0NmE3MDZmM2QwMzNhZmRmNmZkMDRhMzhlNTZlZWU2OWU0MmU5YTBhMjU4MWFlYjcwYjA">Slack канал</a> ' +
+          ' или ' +
+          '<a target="_blank" href="/docs/faq"> отправьте сообщение на сайте</a>.',
+        'sync_header_1': 'Ваш проект ',
+        'sync_header_2': ' связан с OSF проектом ',
         'sync_header_3': '',
-        'recording_header': 'Data recording',
-        'recording_1': 'OSF + Open Lab',
-        'recording_1_desc': 'Record the data on OSF + save the data in Open Lab',
+        'recording_header': 'Тип сохранения результатов экспериментов',
+        'recording_1': 'OSF + Открытая Лаборатория',
+        'recording_1_desc': 'Загружать данные на OSF + сохранять их в Открытой Лаборатории',
         'recording_2': 'OSF',
-        'recording_2_desc': 'Record the data only on OSF and do not save in Open Lab',
-        'recording_3': 'Open Lab',
-        'recording_3_desc': 'Save the data in Open Lab and do not send the data to OSF',
+        'recording_2_desc': 'Загружать данные только на OSF и не сохранять их в Открытой Лаборатории',
+        'recording_3': 'Открытая Лаборатория',
+        'recording_3_desc': 'Сохранять данные в Открытой Лаборатории и не загружать их на OSF',
         'goToOSF': 'Go to the OSF project',
         'removeLink': 'Remove the link',
-        'create': 'Create a new project in OSF to sync with ',
+        'create': 'Создать новый OSF проект, синхронизированный с проектом ',
         'create_2': '',
-        'create_title': 'OSF project title',
-        'create_desc': 'OSF project description',
-        'create_status': 'OSF project status',
-        'status_private': 'Private',
-        'status_private_desc': 'Only for you',
-        'status_public': 'Public',
-        'status_public_desc': 'For everybody',
-        'token_explained': 'We need your OSF token to be able to write data in the new project. '+
-          'We will keep this token safe and only use it to store the data of the participants of the study ',
-        'token_explained_2': '. You can delete the token later if you decide to remove the link between the Open Lab and the OSF project. ',
-        'token_explained_3': 'Read about ' +
-        '<a target="_blank" href="https://developer.osf.io/#tag/Authentication">tokens</a>' +
-        ' and create your own ' +
-        '<a target="_blank" href="https://osf.io/settings/tokens">token</a>' +
-        ' with the scope ' +
+        'create_title': 'Название OSF проекта',
+        'create_desc': 'Описание OSF проекта',
+        'create_status': 'Статус OSF проекта',
+        'status_private': 'Личный',
+        'status_private_desc': 'Доступен только вам',
+        'status_public': 'Открытый',
+        'status_public_desc': 'Доступен всем',
+        'token_explained': 'Нам нужен ваш OSF токен, чтобы иметь возможность загружать результаты экспериментов в ваш проект. '+
+          'Токен будет использован только для того, чтобы отсылать данные испытуемых в ваш проект ',
+        'token_explained_2': '. В будущем вы можете удалить токен в любой момент, если вы решите остановить синхронизацию вашего проекта в Открытой Лаборатории с OSF проектом. ',
+        'token_explained_3': 'Здесь вы можете ' +
+        '<a target="_blank" href="https://developer.osf.io/#tag/Authentication">почитать о токенах</a>' +
+        ' и создать ' +
+        '<a target="_blank" href="https://osf.io/settings/tokens">ваш собственный токен</a>' +
+        ' с разрешением ' +
         '<kbd>osf.full_write</kbd>',
-        'token_paste': 'Paste the OSF token here',
-        'create_OSF': 'Create OSF project',
-        'no_studies_yet': 'You have not created any Open Lab studies yet. Please create or activate a study first.',
+        'token_paste': 'OSF токен',
+        'create_OSF': 'Создать OSF project',
+        'no_studies_yet': 'Создайте или активируйте ваш проект <a href="/projects">здесь</a>.',
         'update': 'Update',
       },
 
