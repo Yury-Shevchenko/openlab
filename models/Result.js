@@ -255,6 +255,7 @@ resultSchema.index({
   project: 1,
   author: 1,
   test: 1,
+  uploadType: 1,
 });
 
 
