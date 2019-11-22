@@ -98,12 +98,12 @@ testSchema.statics.showMyTests = function(userID) {
       author: '$$ROOT.author',
       photo: '$$ROOT.photo',
       production: '$$ROOT.production',
-      numberResults: {$size:
-        { $setUnion: '$results._id' }
-      },
-      numberProjects: {$size:
-        { $setUnion: '$results.project' }
-      }
+      // numberResults: {$size:
+      //   { $setUnion: '$results._id' }
+      // },
+      // numberProjects: {$size:
+      //   { $setUnion: '$results.project' }
+      // }
     }},
     { $sort: { position: 1 } }
   ]);
