@@ -69,26 +69,26 @@ testSchema.statics.getTests = function(tests) {
 testSchema.statics.showMyTests = function(userID) {
   return this.aggregate([
     { $match: { author: userID }},
-    { $lookup:
-      {
-        from: 'results',
-        let: { current_test: '$_id' },
-        pipeline: [
-          { $match:
-            { $expr:
-              { $and:
-                [
-                  { $eq: ['$test', '$$current_test'] },
-                  { $eq: ['$uploadType', 'full' ]}
-                ]
-              }
-            }
-          },
-          {$project: {_id:1, project: 1}}
-        ],
-        as: 'results'
-      }
-    },
+    // { $lookup:
+    //   {
+    //     from: 'results',
+    //     let: { current_test: '$_id' },
+    //     pipeline: [
+    //       { $match:
+    //         { $expr:
+    //           { $and:
+    //             [
+    //               { $eq: ['$test', '$$current_test'] },
+    //               { $eq: ['$uploadType', 'full' ]}
+    //             ]
+    //           }
+    //         }
+    //       },
+    //       {$project: {_id:1, project: 1}}
+    //     ],
+    //     as: 'results'
+    //   }
+    // },
     { $project: {
       name: '$$ROOT.name',
       fullName: '$$ROOT.fullName',
