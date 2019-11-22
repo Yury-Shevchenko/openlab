@@ -250,17 +250,11 @@ function autopopulate(next) {
   next();
 };
 
-//TODO
-//define indexes
-// resultSchema.index({
-//   // test: 'text',
-//   // score: 'text',
-//   //what would make sence to put here for search?
-// });
 //define indexes for the faster search
 resultSchema.index({
   project: 1,
   author: 1,
+  test: 1,
 });
 
 

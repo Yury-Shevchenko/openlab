@@ -98,7 +98,6 @@ testSchema.statics.showMyTests = function(userID) {
       author: '$$ROOT.author',
       photo: '$$ROOT.photo',
       production: '$$ROOT.production',
-      // results: '$results',
       numberResults: {$size:
         { $setUnion: '$results._id' }
       },
@@ -145,7 +144,8 @@ testSchema.statics.showChosenTests = function(project_id, tests) {
 //define indexes for the faster search
 testSchema.index({
   name: 'text',
-  description: 'text'
+  description: 'text',
+  test: 1,
 });
 
 //pre-save validation to make sure that the test slug is unique
@@ -183,7 +183,7 @@ testSchema.statics.getTagsList = function(id){
     { $group: { _id: '$tags' , count: {$sum: 1}} },
     { $sort: { count: -1 } }
   ]);
-}; 
+};
 
 //find results where the tests _id property === results test property
 testSchema.virtual('results', {

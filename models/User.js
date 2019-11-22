@@ -227,26 +227,7 @@ userSchema.statics.getUsers = function() {
 //method to get researchers
 userSchema.statics.getResearchers = function() {
   return this.aggregate([
-    { $match: { 'level' : { $gt: 10 }} },//filter only users
-    // { $lookup:
-    //   {
-    //     from: 'results',
-    //     let: { current_author: '$_id' },
-    //     pipeline: [
-    //       { $match:
-    //         { $expr:
-    //           { $and:
-    //             [
-    //               { $eq: ['$author', '$$current_author' ]}
-    //             ]
-    //           }
-    //         }
-    //       },
-    //       {$project: {project: 1, test: 1}}
-    //     ],
-    //     as: 'results'
-    //   }
-    // },
+    { $match: { 'level' : { $gt: 10 }} }, // filter only researchers
     { $lookup:
       {
         from: 'tests',
@@ -300,28 +281,15 @@ userSchema.statics.getResearchers = function() {
         subscription_period: '$$ROOT.subscription_period',
         subscription_plan: '$$ROOT.subscription_plan',
         subscription_status: '$$ROOT.subscription_status',
-        // participantInProject: '$$ROOT.participantInProject',
-        // numberParticipantResults: {$size:
-        //   { $setUnion: '$results._id' }
-        // },
-        // numberParticipantTests: {$size:
-        //   { $setUnion: '$results.test' }
-        // },
-        // numberParticipantProjects: {$size:
-        //   { $setUnion: '$results.project' }
-        // },
         numberResearcherTests: {$size:
           { $setUnion: '$tests._id' }
         },
         numberResearcherCreatedProjects: {$size:
           { $setUnion: '$projects._id' }
         },
-        // projects: '$projects',
-        // tests: '$tests',
-        // results: '$results',
       }
     },
-    { $sort : {identity: 1}} //from highest to lowest
+    { $sort : {identity: 1}} // from highest to lowest
   ]);
 };
 

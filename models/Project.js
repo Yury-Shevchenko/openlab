@@ -108,6 +108,10 @@ projectSchema.statics.debugProjects = function() {
   ]);
 };
 
+projectSchema.index({
+  creator: 1,
+});
+
 //pre-save validation to make sure that the project with the same name does not already exist
 projectSchema.pre('save', function(next){
   if (!this.isModified('name') || this.name === ''){
