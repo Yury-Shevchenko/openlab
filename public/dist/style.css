@@ -873,13 +873,14 @@ label {
         flex-direction: column;
     -ms-flex-pack: center;
         justify-content: center;
-    transition: transform 0.2s; }
+    transition: transform 0.2s;
+    border-bottom: 2px solid transparent; }
     .nav__link svg {
       width: 30px;
       transition: all 0.2s;
       fill: white; }
     .nav__link:hover, .nav__link--active {
-      border-bottom: 0px solid deepskyblue; }
+      border-bottom: 2px solid deepskyblue; }
       .nav__link:hover svg, .nav__link--active svg {
         -ms-transform: scale(1.1);
             transform: scale(1.1); }

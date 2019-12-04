@@ -82,6 +82,7 @@
     // align-items: center;
     justify-content: center;
     transition: transform 0.2s;
+    border-bottom: 2px solid transparent;
     // border-bottom: 5px solid transparent;
     svg {
       width: 30px;
@@ -90,11 +91,11 @@
       // margin-bottom: 1rem;
     }
     &:hover, &--active {
-      border-bottom: 3px solid deepskyblue;
+      border-bottom: 2px solid deepskyblue;
       // border-bottom-color: deepskyblue;
       //border-right-color: rgba(0,0,0,0.05);
       svg {
-        transform: scale(1.2)
+        transform: scale(1.1)
       }
       h6 {
         transform: scale(1.1);
