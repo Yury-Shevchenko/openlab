@@ -69,7 +69,7 @@ html
                   a.nav__main_link(href='/docs/intro', class=(currentPath.startsWith('/docs') ? 'nav__main_link--active' : ''))
                     != h.icon('document')
                 li.nav__item
-                  a.nav__main_link(href='/tests/all', class=(currentPath.startsWith('/tests') ? 'nav__main_link--active' : ''))
+                  a.nav__main_link(href='/tests/my', class=(currentPath.startsWith('/tests') ? 'nav__main_link--active' : ''))
                     h6 #{layout.tasks}
                 li.nav__item
                   a.nav__main_link(href='/projects', class=(currentPath.startsWith('/projects') || currentPath.startsWith('/constructor') || currentPath.startsWith('/tasks') || currentPath.startsWith('/invitations') || currentPath.startsWith('/testing') || currentPath.startsWith('/results') ? 'nav__main_link--active' : ''))
