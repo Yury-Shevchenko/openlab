@@ -441,7 +441,11 @@ module.exports = {
     'results': {
       'title': 'Ihre Ergebnisse',
       'result_download': 'Herunterladen',
+      'result_download_all': 'Alle Daten herunterladen',
+      'result_download_completed': 'Daten der erledigten Aufgaben herunterladen',
       'result_delete': 'Löschen',
+      'result_delete_all': 'Alle Daten löschen',
+      'result_delete_confirm': 'Sind Sie sicher, dass Sie alle Einträge löschen wollen?',
       'result_full': 'Komplett',
       'result_incremental': 'Inkremental',
       'results_rows': 'Zeilen',

@@ -21,14 +21,26 @@ block content
       p
 
     h2 #{l.title}
-    
-    .div(style={display: 'grid', 'grid-template-columns': 'repeat(auto-fill, 150px)', 'grid-gap': '10px'})
-      p
-        a(style={color:'black'} href=`/downloadmyresults/`) Download all data
-      p
-        a(style={color:'black'} href=`/downloadmyresults/full`) Download data of completed tasks
 
     if results && results.length && results.length > 0
+      .div(style={display: 'grid', 'grid-template-columns': '150px 150px auto', 'grid-gap': '10px'})
+        p
+          a(style={color:'black'} href=`/downloadmyresults/`) #{l.result_download_all} 
+        p
+          a(style={color:'black'} href=`/downloadmyresults/full`) #{l.result_download_completed} 
+        p(style={'justify-self': 'end'})
+          a.delete(style={color:'black'} href=`/deletemyresults` data-confirm=`${l.result_delete_confirm}`) #{l.result_delete_all} 
+        script(nonce=`${noncevalue}`).
+          var deleteLinks = document.querySelectorAll('.delete');
+          for (var i = 0; i < deleteLinks.length; i++) {
+            deleteLinks[i].addEventListener('click', function(event) {
+                event.preventDefault();
+                var choice = confirm(this.getAttribute('data-confirm'));
+                if (choice) {
+                  window.location.href = this.getAttribute('href');
+                }
+            });
+          }
       .reviews
         each res in results
           .review

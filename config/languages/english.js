@@ -444,7 +444,11 @@ module.exports =
       'results': {
         'title': 'Your results',
         'result_download': 'Download',
+        'result_download_all': 'Download all data',
+        'result_download_completed': 'Download data of completed tasks',
         'result_delete': 'Delete',
+        'result_delete_all': 'Delete all data',
+        'result_delete_confirm': 'Are you sure to delete all the results?',
         'result_full': 'Full',
         'result_incremental': 'Incremental',
         'results_rows': 'records',

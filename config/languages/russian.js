@@ -441,7 +441,11 @@ module.exports =
       'results': {
         'title': 'Ваши Результаты',
         'result_download': 'Скачать',
+        'result_download_all': 'Скачать все результаты',
+        'result_download_completed': 'Скачать результаты завершенных тестов',
         'result_delete': 'Удалить',
+        'result_delete_all': 'Удалить все результаты',
+        'result_delete_confirm': 'Подтвердите удаление всех результатов',
         'result_full': 'Полный',
         'result_incremental': 'Пошаговый',
         'results_rows': 'записи(-ей)',

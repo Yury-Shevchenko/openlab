@@ -270,6 +270,13 @@ exports.downloadMyResults = async (req, res) => {
   const processor = input.pipe(res);
 };
 
+// delete all results of a user
+exports.deleteMyResults = async (req, res) => {
+  await Result.deleteMany({ author: req.user._id });
+  req.flash('success', `${res.locals.layout.flash_data_deleted}`);
+  res.redirect('back');
+};
+
 //delete data
 exports.removeResultsData = async (req, res) => {
   const result = await Result.findOneAndRemove({ _id: req.params.filename });

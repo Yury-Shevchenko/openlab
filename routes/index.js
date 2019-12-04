@@ -240,7 +240,8 @@ router.get('/downloadtestresults/:name/:test/:type', authController.isAdminLogge
 // download my results
 router.get('/downloadmyresults/', authController.isAdminLoggedIn, catchErrors(resultController.downloadMyResults));
 router.get('/downloadmyresults/:type', authController.isAdminLoggedIn, catchErrors(resultController.downloadMyResults));
-
+// delete my results
+router.get('/deletemyresults/', authController.isAdminLoggedIn, catchErrors(resultController.deleteMyResults));
 
 //delete the data of the task and the user
 router.get('/removefromdatabase/:slug/:filename', authController.isAdminLoggedIn, catchErrors(resultController.removeResultsData));
