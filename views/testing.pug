@@ -98,7 +98,7 @@ block content
               p #{test.name}
               p #{test.description}
             if(test.slug == nextTask || project.allowMultipleParticipation)
-              a(class='button', href=`/test/${nextTask}/${user._id}`) #{l.table_not_done}
+              a(class='button', href=`/test/${test.slug}/${user._id}`) #{l.table_not_done}
             else if doneArray.includes(test.slug)
               p #{l.table_done}
 
