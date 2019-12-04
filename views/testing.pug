@@ -61,7 +61,7 @@ block content
           img.single__image(src= `/images/photos/${'over.jpg'}`)
 
     .single__details.inner
-      if nextTask == "allDone"
+      if(nextTask == "allDone" && !project.allowMultipleParticipation)
         if(project.completionMessage && project.completionMessage !== '')
           p !{project.completionMessage}
         else
@@ -89,13 +89,15 @@ block content
       .dashboard
         .dashboardBody
           each test in projectTests
-            if test.slug == nextTask
-              strong #{test.name}
-              strong #{test.description}
+            if(test.slug == nextTask || project.allowMultipleParticipation)
+              p
+                strong #{test.name}
+              p
+                strong #{test.description}
             else if doneArray.includes(test.slug)
               p #{test.name}
               p #{test.description}
-            if test.slug == nextTask
+            if(test.slug == nextTask || project.allowMultipleParticipation)
               a(class='button', href=`/test/${nextTask}/${user._id}`) #{l.table_not_done}
             else if doneArray.includes(test.slug)
               p #{l.table_done}

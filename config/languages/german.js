@@ -272,9 +272,10 @@ module.exports = {
       'confirmMessage_4': ' Diese Aktion ist nicht umkehrbar.',
       'delete': 'Löschen',
       'description': 'Beschreibung',
-      'showCompletionCode': 'Den individuellen Erledigungscode am Ende aller Aufgaben anzeigen',
+      'showCompletionCode': 'Erstellen und zeigen den Teilnehmern einen individuellen Code, wenn alle Aufgaben erledigt sind.',
       'completionMessage': 'Nachricht an die Teilnehmer nach Abschluss der Aufgaben',
       'askNotifications': 'Fragen an die Benutzer, ob sie Benachrichtigungen zulassen dürfen (wir testen derzeit Benachrichtigungen, Teilnehmer sollten Chrome auf einem Desktop-Computer verwenden).',
+      'allowMultipleParticipation': 'Erlauben den Teilnehmern eine mehrfache Teilnahme am gleichen Test.',
     },
 
     'constructor': {

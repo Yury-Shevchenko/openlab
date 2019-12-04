@@ -275,9 +275,10 @@ module.exports =
         'confirmMessage_4': ' This action is not reversable.',
         'delete': 'Delete',
         'description': 'Description',
-        'showCompletionCode': 'Display the unique completion code at the end of all tasks',
+        'showCompletionCode': 'Generate and show participants a unique individual code when all tasks are completed.',
         'completionMessage': 'Message to participants after completion of tasks',
         'askNotifications': 'Ask users to allow notifications (we are currently testing notifications, participants should use Chrome on a desktop computer).',
+        'allowMultipleParticipation': 'Allow participants multiple participation in the same test.',
       },
 
       'constructor': {

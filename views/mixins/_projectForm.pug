@@ -10,7 +10,11 @@ mixin projectForm(project = {})
     label(for='completionMessage') #{l.completionMessage}
     textarea(type='text' name='completionMessage')= project.completionMessage
     p
-      
+    div.inputCheckBox
+      input(type= 'checkbox' id= 'allowMultipleParticipation' name= 'allowMultipleParticipation' checked = project.allowMultipleParticipation)
+      label(for='allowMultipleParticipation')
+        span.
+          #{l.allowMultipleParticipation}
     div.inputCheckBox
       input(type= 'checkbox' id= 'showCompletionCode' name= 'showCompletionCode' checked = project.showCompletionCode)
       label(for='showCompletionCode')

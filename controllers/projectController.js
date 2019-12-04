@@ -62,6 +62,7 @@ exports.createProject = async (req, res) => {
           creator: req.user._id,
           members: membersData,
           currentlyActive: req.body.currentlyActive,
+          allowMultipleParticipation: req.body.allowMultipleParticipation == 'on',
           showCompletionCode: req.body.showCompletionCode == 'on',
           useNotifications: req.body.useNotifications == 'on',
         }
@@ -103,6 +104,7 @@ exports.updateProject = async (req, res) => {
     project.name = req.body.name;
     project.description = req.body.description;
     project.completionMessage = req.body.completionMessage;
+    project.allowMultipleParticipation = req.body.allowMultipleParticipation == 'on',
     project.showCompletionCode = req.body.showCompletionCode == 'on';
     project.useNotifications = req.body.useNotifications == 'on';
     project.members = membersData;

@@ -19,6 +19,10 @@ const projectSchema = new mongoose.Schema({
     type: String,
     trim: true
   },
+  allowMultipleParticipation: {
+    type: Boolean,
+    default: false
+  },
   showCompletionCode: {
     type: Boolean,
     default: false
