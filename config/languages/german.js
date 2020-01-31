@@ -477,7 +477,7 @@ module.exports = {
       'step_1': `Verwenden Sie vorhandene Vorlagen oder erstellen Sie Ihre eigene Studie mit <a target="_blank" href="https://labjs.felixhenninger.com/">lab.js experiment builder</a>`,
       'step_2': `Importieren Sie die Experimentdatei in Open Lab`,
       'step_3': `Senden Sie den Einladungslink an Ihre Teilnehmer und überwachen Sie deren Fortschritt in Echtzeit`,
-      'step_4': `Für weitere Information lesen Sie bitte die <a href='../docs/intro'>Dokumentation</a> oder besuchen Sie unseren <a target='blank' href='https://join.slack.com/t/open-lab-online/shared_invite/enQtNDU3MzgzMzY4NDcxLTBjZTg1NmViYTEwYWI0NmE3MDZmM2QwMzNhZmRmNmZkMDRhMzhlNTZlZWU2OWU0MmU5YTBhMjU4MWFlYjcwYjA'>Slack chat</a> für Fragen und Hilfe.`,
+      'step_4': `Für weitere Information lesen Sie bitte die <a href='../docs/intro'>Dokumentation</a> oder besuchen Sie unseren <a target='blank' href='https://join.slack.com/t/open-lab-online/shared_invite/enQtNDU3MzgzMzY4NDcxLWZhYzU0MGU3MDFkNTNlZmI2MjQ4YzdlNzE3ZmYwMThmM2I1YTg5YjNiYjg3MzEzOGI5YzhkYzI0OTQ2Yjg1Y2Q'>Slack chat</a> für Fragen und Hilfe.`,
       'header_features': `Besonderheiten`,
       'feature_1': `Sie müssen zur Erhebung einer Studie keinen eigenen Server einrichten.`,
       'feature_2': `Open Lab kann jede Art von Skript hosten, die in <a target='_blank' href='https://labjs.felixhenninger.com/'>lab.js</a>. erstellt wurden.`,

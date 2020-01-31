@@ -476,7 +476,7 @@ module.exports =
         'step_1': `Используйте готовые шаблоны или создайте ваш собственный эксперимент с помощью <a target="_blank" href="https://labjs.felixhenninger.com/">lab.js</a>`,
         'step_2': `Загрузите файл эксперимента в Открытую Лабораторию`,
         'step_3': `Отправьте приглашение участникам и следите за прогрессом в реальном времени`,
-        'step_4': `Пожуйста, ознакомьтесь с <a href='../docs/intro'>документацией</a> по работе или посетите наш <a target='blank' href='https://join.slack.com/t/open-lab-online/shared_invite/enQtNDU3MzgzMzY4NDcxLTBjZTg1NmViYTEwYWI0NmE3MDZmM2QwMzNhZmRmNmZkMDRhMzhlNTZlZWU2OWU0MmU5YTBhMjU4MWFlYjcwYjA'>Slack чат</a>, чтобы задать вопрос или получить помощь.`,
+        'step_4': `Пожуйста, ознакомьтесь с <a href='../docs/intro'>документацией</a> по работе или посетите наш <a target='blank' href='https://join.slack.com/t/open-lab-online/shared_invite/enQtNDU3MzgzMzY4NDcxLWZhYzU0MGU3MDFkNTNlZmI2MjQ4YzdlNzE3ZmYwMThmM2I1YTg5YjNiYjg3MzEzOGI5YzhkYzI0OTQ2Yjg1Y2Q'>Slack чат</a>, чтобы задать вопрос или получить помощь.`,
         'header_features': `Особенности`,
         'feature_1': `Вам не нужно устанавливать и настраивать ваше собственный сервер, чтобы провести Интернет исследование.`,
         'feature_2': `Открытая Лаборатория может размещать любые типы скриптов, созданных в <a target="_blank" href="https://labjs.felixhenninger.com/">lab.js</a>.`,
