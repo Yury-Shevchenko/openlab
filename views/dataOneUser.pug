@@ -10,6 +10,7 @@ block content
         .nav__section.nav__section--pages
           li.nav__item: a.nav__link(href="/users", class=(currentPath.startsWith('/users') ? 'nav__link--active' : '')) #{layout.participants}
           li.nav__item: a.nav__link(href="/data", class=(currentPath.startsWith('/data') ? 'nav__link--active' : '')) #{layout.results}
+          li.nav__item: a.nav__link(href="/osf", class=(currentPath.startsWith('/osf') ? 'nav__link--active' : '')) OSF (beta)
     p
 
     .userTable

@@ -273,6 +273,7 @@ module.exports = {
       'delete': 'Löschen',
       'description': 'Beschreibung',
       'showCompletionCode': 'Erstellen und zeigen den Teilnehmern einen individuellen Code, wenn alle Aufgaben erledigt sind.',
+      'welcomeMessage': 'Nachricht an die Teilnehmer vor Abschluss der Aufgaben',
       'completionMessage': 'Nachricht an die Teilnehmer nach Abschluss der Aufgaben',
       'askNotifications': 'Fragen an die Benutzer, ob sie Benachrichtigungen zulassen dürfen (wir testen derzeit Benachrichtigungen, Teilnehmer sollten Chrome auf einem Desktop-Computer verwenden).',
       'allowMultipleParticipation': 'Erlauben den Teilnehmern eine mehrfache Teilnahme am gleichen Test.',

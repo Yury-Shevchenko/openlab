@@ -73,11 +73,13 @@ block content
               h5(style="color: #3b4051;") #{l.your_code}
               p #{confirmationCode}
       else
-        if(user.name)
-          p= `${l.message_welcome}, ${user.name}!`
-        else
-          p= `${l.message_welcome}!`
-        
+        if(project.welcomeMessage)
+          p= `${project.welcomeMessage}`
+        else 
+          if(user.name)
+            p= `${l.message_welcome}, ${user.name}!`
+          else
+            p= `${l.message_welcome}!`
 
       if (project.useNotifications)
         .notificationsPanel

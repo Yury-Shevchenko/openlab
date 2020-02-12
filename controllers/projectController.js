@@ -58,6 +58,7 @@ exports.createProject = async (req, res) => {
         {
           name: req.body.name,
           description: req.body.description,
+          welcomeMessage: req.body.welcomeMessage,
           completionMessage: req.body.completionMessage,
           creator: req.user._id,
           members: membersData,
@@ -103,6 +104,7 @@ exports.updateProject = async (req, res) => {
     confirmOwner(project, req.user);
     project.name = req.body.name;
     project.description = req.body.description;
+    project.welcomeMessage = req.body.welcomeMessage;
     project.completionMessage = req.body.completionMessage;
     project.allowMultipleParticipation = req.body.allowMultipleParticipation == 'on',
     project.showCompletionCode = req.body.showCompletionCode == 'on';

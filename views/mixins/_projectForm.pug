@@ -6,7 +6,10 @@ mixin projectForm(project = {})
       
     label(for='description') #{l.description}
     textarea(type='text' name='description')= project.description
-
+  
+    label(for='welcomeMessage') #{l.welcomeMessage}
+    textarea(type='text' name='welcomeMessage')= project.welcomeMessage
+    
     label(for='completionMessage') #{l.completionMessage}
     textarea(type='text' name='completionMessage')= project.completionMessage
     p

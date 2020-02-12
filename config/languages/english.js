@@ -276,6 +276,7 @@ module.exports =
         'delete': 'Delete',
         'description': 'Description',
         'showCompletionCode': 'Generate and show participants a unique individual code when all tasks are completed.',
+        'welcomeMessage': 'Message to participants before completion of tasks',
         'completionMessage': 'Message to participants after completion of tasks',
         'askNotifications': 'Ask users to allow notifications (we are currently testing notifications, participants should use Chrome on a desktop computer).',
         'allowMultipleParticipation': 'Allow participants multiple participation in the same test.',

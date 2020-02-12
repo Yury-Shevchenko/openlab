@@ -27,6 +27,10 @@ const projectSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  welcomeMessage: {
+    type: String,
+    default: ''
+  },
   completionMessage: {
     type: String,
     default: ''
