@@ -567,3 +567,44 @@ exports.osfIntegration = async (req, res) => {
   });
   res.render('osf', {project});
 }
+
+exports.invite = async (req, res) => {
+  let joined_project, temporary_code;
+  if(req.params.project){
+    // the specific project was requested
+    joined_project = await Project.findOne({ name: req.params.project });
+    // user is logged in
+    if(req.user && req.user.level & req.user.level < 10){
+      // the project exists
+      if (joined_project && joined_project._id){
+        User.findById(req.user._id, (err, user) => {
+          user.participantInProject = joined_project._id;
+          user.save((saveErr, updatedUser) => {
+            if(saveErr) {
+              console.log("Authorisation error", saveErr);
+            }
+            res.redirect('/testing');
+          });
+        });
+      } else {
+        // no project found
+        req.flash('error', `There is no project with the name ${req.params.project} found. Please choose the project from the list.`);
+        res.redirect('/studies');
+      }
+    } else {
+      // user is not logged in
+      if (joined_project && joined_project._id){
+        // project exists
+        temporary_code = uniqid();
+        res.render('invite', {joined_project, code: req.params.code || temporary_code});
+      } else {
+        // no project found
+        req.flash('error', `There is no project with the name ${req.params.project} found. Please choose the project from the list.`);
+        res.redirect('/studies');
+      }
+    }
+  } else {
+    req.flash('error', `There is no project found. Please choose the project from the list.`);
+    res.redirect('/studies');
+  }
+};

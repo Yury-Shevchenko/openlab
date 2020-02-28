@@ -1,0 +1,21 @@
+extends layout
+
+block header 
+  
+block content
+  .inner
+    .card
+      if !user
+        form.form(action="/auth/code" method="POST")
+          if (code)
+            input(type="text" name="code" value=code readonly=code hidden=true)
+          
+          if (joined_project)
+            input(type="text" name="participantInProject" value=joined_project._id readonly=joined_project hidden=true)
+            if (joined_project.description)
+              p= joined_project.description
+            if (joined_project.welcomeMessage)
+              p= joined_project.welcomeMessage
+      
+          p
+          input.button(type="submit" value=layout.enter)

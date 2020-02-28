@@ -28,6 +28,10 @@ router.get('/code/:project/:code', userController.code);
 router.get('/sign/:project', userController.sign);
 router.get('/sign/:project/:code', userController.sign);
 
+// with a simplified invite
+router.get('/invite/:project', userController.invite);
+router.get('/invite/:project/:code', userController.invite);
+
 //authentification strategies
 router.post('/auth/code', passport.authenticate('local-code', {
   successRedirect : '/testing/start', // redirect directly to the first test
