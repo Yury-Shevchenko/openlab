@@ -131,7 +131,7 @@ exports.labjs = async (req, res) => {
       req.body.css = script.files['style.css'].content;
       req.body.params = script.params;
       req.body.production = script.production;
-      req.body.labjsVersion = json.version;
+      req.body.labjsVersion = typeof(json.version) === 'string' ? json.version : json.version.join(',');
       req.body.json = json_string;
       req.body.open = false;
       req.body.token = crypto.randomBytes(20).toString('hex');

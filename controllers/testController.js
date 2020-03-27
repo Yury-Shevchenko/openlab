@@ -103,7 +103,7 @@ exports.createTest = async (req, res, next) => {
     req.body.scriptUpdated = new Date().toISOString();
     req.body.json = json_string;
     req.body.production = script.production;
-    req.body.labjsVersion = json.version;
+    req.body.labjsVersion = typeof(json.version) === 'string' ? json.version : json.version.join(',');
   }
   const test = await (new Test(req.body)).save();
   req.body.slug = test.slug;
@@ -130,11 +130,12 @@ exports.updateTest = async (req, res, next) => {
     const json = JSON.parse(json_string);
     const script = await assemble.convertJSON(json, req.body.name);
     req.body.file = script.files.script.content.data;
+    req.body.index = script.files['index.html'].content;
     req.body.css = script.files['style.css'].content;
     req.body.params = script.params;
     req.body.json = json_string;
     req.body.production = script.production;
-    req.body.labjsVersion = json.version;
+    req.body.labjsVersion = typeof(json.version) === 'string' ? json.version : json.version.join(',');
     req.body.scriptUpdated = new Date().toISOString();
   };
 

@@ -38,6 +38,7 @@ exports.convertJSON = async (state, foldername, production = 'alpha', stateModif
 
   const params = Object.values(updatedState.components)
     .filter(el => el.id == main_sequence_number)
+    .filter(e => e.parameters)
     .map(e => e.parameters)
     .map(r => r.rows)
     .reduce((flat, next) => flat.concat(next), [])
