@@ -437,7 +437,7 @@ module.exports = {
       'delete': 'Löschen',
       'version': 'Aufgabenversion',
       'authorInformation': 'Informationen über den Autor',
-      'feeling_lucky' : `Ich möchte dieser Stuide ein zufälliges Bild zuordnen.`
+      'feeling_lucky' : `Ich möchte dieser Studie ein zufälliges Bild zuordnen.`
     },
 
     'results': {
