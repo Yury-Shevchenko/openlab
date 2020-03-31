@@ -547,7 +547,13 @@ module.exports =
         'invitations': {
           'invite': 'Invite more participants with the following links:',
           'signing_code': 'Signing up with a participant code ',
-          'signing_temp_code': 'Signing up with a unique randomly generated code',
+          'signing_empty_invite': 'Direct invite',
+          'direct_invite_strategy': `
+            With this link, participants will see your study description and welcome message before starting the task.
+            The Open Lab user interface will be hidden.
+            Each participant will be assigned a random code.
+            Use this type of invitation if you post the link to the study online.`,
+          'signing_temp_code': 'Invitation with a random participant code',
           'signing_email': 'Signing up with an email ',
           'message_create_project': `To invite new participants to your study, activate or create a study <a href="/projects">here</a>.`,
           'message_invitation': `Invite new participants to take part in experiments of the current study.
@@ -557,9 +563,11 @@ module.exports =
           'button_invite': 'Invite',
           'email' : 'Email',
           'code' : 'Code',
-          'temp_code_strategy': 'A random participation code will be created for every user. Use this link if you publish the study online.',
-          'code_strategy': 'Users will be prompted to sign up with entering a participation code. Use this way of authentication if your participants already have their unique codes assigned by your study.',
-          'email_strategy': 'Users will be prompted to sign up with an email and a password. Use this authentication strategy if your participants already have an account on Open Lab or ready to create a new one.',
+          'temp_code_strategy': `A random code will be created and displayed for every participant, who enters the study.
+            Use this link if you publish the study online.
+            Read <a target='_blank' href="/docs/project">more</a> about other ways to customize your invitation link, for example by assigning different groups of participants.`,
+          'code_strategy': 'Participants will be prompted to enter their participant code. Use this way of authentication if your participants already know their codes.',
+          'email_strategy': 'Participants will be prompted to sign up or login with an email and a password. Use this authentication strategy if your participants already have an account on Open Lab or are ready to create a new one.',
           'copy_link': 'Copy link',
           'link_copied': 'Copied the link: ',
         },

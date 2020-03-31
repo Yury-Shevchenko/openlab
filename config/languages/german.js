@@ -545,7 +545,12 @@ module.exports = {
       'invitations': {
         'invite': 'Mehr Teilnehmer mit den folgenden Links einladen:',
         'signing_code': 'Anmeldung mit einem Teilnehmercode ',
-        'signing_temp_code': 'Anmeldung mit einem einzigartigen, zufällig generierten Code',
+        'signing_empty_invite': 'Direkte Einladung',
+        'direct_invite_strategy': `Mit diesem Link sehen die Teilnehmer Ihre Studienbeschreibung und die Begrüßungsnachricht, bevor sie mit der Aufgabe beginnen.
+          Die Open Lab-Benutzeroberfläche wird ausgeblendet.
+          Jedem Teilnehmer wird ein Zufallscode zugewiesen.
+          Verwenden Sie diese Art der Einladung, wenn Sie den Link zur Studie online stellen.`,
+        'signing_temp_code': 'Einladung mit einem zufälligen Teilnehmercode',
         'signing_email': 'Anmeldung mit einer E-Mail ',
         'message_create_project': 'Um neue Teilnehmer zu Ihrer Studie einzuladen, aktivieren oder erstellen Sie eine Studie <a href="/projects")>hier</a>.',
         'message_invitation': `Laden Sie neue Teilnehmer zu Experimenten der aktuellen Studie ein.
@@ -555,9 +560,11 @@ module.exports = {
         'button_invite': 'Einladen',
         'email' : 'Email',
         'code' : 'Code',
-        'temp_code_strategy': 'Für jeden Benutzer wird ein Zufallscode erstellt. Benutzen Sie diesen Link, wenn Sie die Studie online veröffentlichen.',
-        'code_strategy': 'Die Benutzer werden aufgefordert, sich mit der Eingabe eines Teilnahmecodes anzumelden. Verwenden Sie diese Art der Authentifizierung, wenn Ihre Teilnehmer bereits über ihre individuellen Codes verfügen, die von Ihrer Studie vergeben wurden.',
-        'email_strategy': 'Die Benutzer werden aufgefordert, sich mit einer E-Mail und einem Passwort anzumelden. Verwenden Sie diese Authentifizierungsstrategie, wenn Ihre Teilnehmer bereits ein Profil bei Open Lab haben oder bereit sind, ein neues zu erstellen.',
+        'temp_code_strategy': `Für jeden Teilnehmer, der an der Studie teilnimmt, wird ein Zufallscode erstellt und angezeigt.
+          Verwenden Sie diesen Link, wenn Sie die Studie online veröffentlichen.
+          Lesen Sie <a target='_blank' href="/docs/project">mehr</a> über weitere Möglichkeiten, Ihren Einladungslink individuell anzupassen, z.B. durch Zuweisung verschiedener Teilnehmergruppen.`,
+        'code_strategy': 'Die Teilnehmer werden aufgefordert, sich mit der Eingabe eines Teilnahmecodes anzumelden. Verwenden Sie diese Art der Authentifizierung, wenn Ihre Teilnehmer bereits über ihre individuellen Codes verfügen, die von Ihrer Studie vergeben wurden.',
+        'email_strategy': 'Die Teilnehmer werden aufgefordert, sich mit einer E-Mail und einem Passwort anzumelden. Verwenden Sie diese Authentifizierungsstrategie, wenn Ihre Teilnehmer bereits ein Profil bei Open Lab haben oder bereit sind, ein neues zu erstellen.',
         'copy_link': 'Link kopieren',
         'link_copied': 'Der Link wurde kopiert: ',
       },

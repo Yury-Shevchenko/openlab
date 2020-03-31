@@ -8,11 +8,8 @@ mixin researcherCard(person = {}, i)
         td= person.name
         td= person.institute
         td= h.moment(person.created).locale(language).format('MM-DD-YY, H:mm')
-
         td= person.language
         td= (person.project && person.project.name) || person.participantInProject
-        td= person.numberResearcherTests
-        td= person.numberResearcherCreatedProjects
         if person.subscription
           td= `${person.subscription_id}-${person.subscription_plan}-${person.subscription_period}-${person.subscription_status}-${person.subscription_expires}`
         else 

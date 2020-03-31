@@ -228,44 +228,44 @@ userSchema.statics.getUsers = function() {
 userSchema.statics.getResearchers = function() {
   return this.aggregate([
     { $match: { 'level' : { $gt: 10 }} }, // filter only researchers
-    { $lookup:
-      {
-        from: 'tests',
-        let: { current_creator: '$_id' },
-        pipeline: [
-          { $match:
-            { $expr:
-              { $and:
-                [
-                  { $eq: ['$author', '$$current_creator' ]}
-                ]
-              }
-            }
-          },
-          {$project: {_id: 1}}
-        ],
-        as: 'tests'
-      }
-    },
-    { $lookup:
-      {
-        from: 'projects',
-        let: { current_leader: '$_id' },
-        pipeline: [
-          { $match:
-            { $expr:
-              { $and:
-                [
-                  { $eq: ['$creator', '$$current_leader' ]}
-                ]
-              }
-            }
-          },
-          {$project: {_id: 1}}
-        ],
-        as: 'projects'
-      }
-    },
+    // { $lookup:
+    //   {
+    //     from: 'tests',
+    //     let: { current_creator: '$_id' },
+    //     pipeline: [
+    //       { $match:
+    //         { $expr:
+    //           { $and:
+    //             [
+    //               { $eq: ['$author', '$$current_creator' ]}
+    //             ]
+    //           }
+    //         }
+    //       },
+    //       {$project: {_id: 1}}
+    //     ],
+    //     as: 'tests'
+    //   }
+    // },
+    // { $lookup:
+    //   {
+    //     from: 'projects',
+    //     let: { current_leader: '$_id' },
+    //     pipeline: [
+    //       { $match:
+    //         { $expr:
+    //           { $and:
+    //             [
+    //               { $eq: ['$creator', '$$current_leader' ]}
+    //             ]
+    //           }
+    //         }
+    //       },
+    //       {$project: {_id: 1}}
+    //     ],
+    //     as: 'projects'
+    //   }
+    // },
     { $project: {
         email: '$$ROOT.email',
         participant_id: '$$ROOT.openLabId',
@@ -281,12 +281,12 @@ userSchema.statics.getResearchers = function() {
         subscription_period: '$$ROOT.subscription_period',
         subscription_plan: '$$ROOT.subscription_plan',
         subscription_status: '$$ROOT.subscription_status',
-        numberResearcherTests: {$size:
-          { $setUnion: '$tests._id' }
-        },
-        numberResearcherCreatedProjects: {$size:
-          { $setUnion: '$projects._id' }
-        },
+        // numberResearcherTests: {$size:
+        //   { $setUnion: '$tests._id' }
+        // },
+        // numberResearcherCreatedProjects: {$size:
+        //   { $setUnion: '$projects._id' }
+        // },
       }
     },
     { $sort : {identity: 1}} // from highest to lowest
