@@ -93,7 +93,8 @@ exports.downloadprojectdata = async (req, res) => {
   confirmOwner(project, req.user);
   let keys = [];
   const name = req.user.project.name;
-  res.setHeader('Content-disposition', 'attachment; filename=' + name +'.csv');
+  const croppedName = name.split(' ').join('-');
+  res.setHeader('Content-disposition', 'attachment; filename=' + croppedName +'.csv');
   const input = new stream.Readable({ objectMode: true });
   input._read = () => {};
   var cursor = await Result
@@ -129,7 +130,8 @@ exports.downloadprojectmetadata = async (req, res) => {
   confirmOwner(project, req.user);
   let first = true;
   const name = req.user.project.name;
-  res.setHeader('Content-disposition', 'attachment; filename=meta_' + name +'.csv');
+  const croppedName = name.split(' ').join('-');
+  res.setHeader('Content-disposition', 'attachment; filename=meta_' + croppedName +'.csv');
   const input = new stream.Readable({ objectMode: true });
   input._read = () => {};
   var cursor = await Result
@@ -159,7 +161,8 @@ exports.downloadprojectmetadata = async (req, res) => {
 exports.downloadSummaryData = async (req, res) => {
   let keys = [];
   const name = req.user.project.name;
-  res.setHeader('Content-disposition', 'attachment; filename=' + name +'.csv');
+  const croppedName = name.split(' ').join('-');
+  res.setHeader('Content-disposition', 'attachment; filename=' + croppedName +'.csv');
   const input = new stream.Readable({ objectMode: true });
   input._read = () => {};
   var cursor = await Result
