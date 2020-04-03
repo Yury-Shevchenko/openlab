@@ -569,6 +569,12 @@ exports.osfIntegration = async (req, res) => {
 }
 
 exports.invite = async (req, res) => {
+  // queries
+  let queryParams;
+  if(req.query && Object.keys(req.query).length){
+    queryParams = req.query;
+    console.log("queries", Object.keys(req.query).length, req.query);
+  }
   let joined_project, temporary_code;
   if(req.params.project){
     // the specific project was requested
@@ -583,7 +589,12 @@ exports.invite = async (req, res) => {
             if(saveErr) {
               console.log("Authorisation error", saveErr);
             }
-            res.redirect('/testing');
+            if(queryParams){
+              const queryString = Object.keys(queryParams).map(key => key + '=' + queryParams[key]).join('&');
+              res.redirect(`/testing/start/?${queryString}`);
+            } else {
+              res.redirect('/testing/start');
+            }
           });
         });
       } else {
@@ -596,7 +607,7 @@ exports.invite = async (req, res) => {
       if (joined_project && joined_project._id){
         // project exists
         temporary_code = uniqid();
-        res.render('invite', {joined_project, code: req.params.code || temporary_code});
+        res.render('invite', {joined_project, code: req.params.code || temporary_code, query: JSON.stringify(queryParams)});
       } else {
         // no project found
         req.flash('error', `There is no project with the name ${req.params.project} found. Please choose the project from the list.`);

@@ -16,6 +16,11 @@ block content
               p= joined_project.description
             if (joined_project.welcomeMessage)
               p= joined_project.welcomeMessage
-      
+          
+          if (query)
+            input(type="text" name="queryParams" value=query readonly hidden=true)
+        
           p
           input.button(type="submit" value=layout.enter)
+          
+          

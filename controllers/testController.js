@@ -542,7 +542,7 @@ exports.testing = async (req, res) => {
       };
     };
 
-    if(req.params.selector === 'start' && projectTests && projectTests.length ){
+    if(req.params.selector === 'start' && projectTests && projectTests.length){
       const arrayTests = projectTests.map(function(test) {return test.slug});
       const arrayResults = results.map(function(result) {return result.taskslug});
       const doneArray = arrayTests.filter(function(test) {return arrayResults.includes(test)});
@@ -551,7 +551,14 @@ exports.testing = async (req, res) => {
       if(nextTask === 'allDone'){
         res.render('testing', {project, projects, results, study, confirmationCode, projectTests});
       } else {
-        res.redirect(`/test/${nextTask}/${req.user.id}`);
+        let queryString;
+        if(req.query && Object.keys(req.query).length){
+          const params = req.query;
+          queryString = Object.keys(params).map(key => key + '=' + params[key]).join('&');
+          res.redirect(`/test/${nextTask}/${req.user.id}/?${queryString}`);
+        } else {
+          res.redirect(`/test/${nextTask}/${req.user.id}`);
+        }
       }
     } else {
       res.render('testing', {project, projects, results, study, confirmationCode, projectTests});

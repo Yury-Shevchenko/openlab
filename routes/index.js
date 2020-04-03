@@ -33,11 +33,21 @@ router.get('/invite/:project', userController.invite);
 router.get('/invite/:project/:code', userController.invite);
 
 //authentification strategies
-router.post('/auth/code', passport.authenticate('local-code', {
-  successRedirect : '/testing/start', // redirect directly to the first test
-  failureRedirect: '/code',
-  failureFlash : true
-}))
+router.post('/auth/code', passport.authenticate('local-code'), function(req, res) {
+  if(req.body.queryParams){
+    const params = JSON.parse(req.body.queryParams);
+    const queryString = Object.keys(params).map(key => key + '=' + params[key]).join('&');
+    res.redirect(`/testing/start/?${queryString}`);
+  } else {
+    res.redirect('/testing/start');
+  }
+})
+
+// router.post('/auth/code', passport.authenticate('local-code', {
+//   successRedirect : '/testing/start/', // redirect directly to the first test
+//   failureRedirect: '/code',
+//   failureFlash : true
+// }))
 
 //signing up
 router.post('/auth/participant/email/sign',
