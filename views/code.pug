@@ -34,7 +34,9 @@ block content
             p= joined_project.name
             if(joined_project.description)
               h7 #{layout.description}
-              p= joined_project.description
+              p !{joined_project.description}
+            if(joined_project.welcomeMessage)
+              p !{joined_project.welcomeMessage}
             
           if (projects)    
             h7(for="participantInProject") #{layout.choose_project}
