@@ -13,7 +13,7 @@ block content
           if (joined_project)
             input(type="text" name="participantInProject" value=joined_project._id readonly=joined_project hidden=true)
             if (joined_project.description)
-              p !{joined_project.description}
+              p #{joined_project.description}
             if (joined_project.welcomeMessage)
               p !{joined_project.welcomeMessage}
           
