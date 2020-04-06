@@ -290,7 +290,7 @@ const processItems = items =>
       if (['text', 'divider'].includes(i.type)) {
         return i
       } else {
-        console.log('i', slugify(i.label))
+        // console.log('i', slugify(i.label || ''))
         return ({
           ...i,
           name: i.name || slugify(i.label || '')
