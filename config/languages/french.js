@@ -57,10 +57,11 @@ module.exports =
       'tryDemo' : 'Try demo',
       'demoResults' : 'Demo results',
       'results' : 'Results by tasks',
+      'myResults': 'Results',
       'participants': 'Participants',
       'invitations': 'Invitations',
-      'upgradeNeededMessage': 'Please <a href="/subscribe")>upgrade</a> your plan in order to add unlimited amount of studies.',
-      'subscriptionNeededMessage': 'Please <a href="/subscribe")>subscribe</a> to a plan in order to add more studies.',
+      'upgradeNeededMessage': 'Please <a href="/subscribe">upgrade</a> your plan in order to add unlimited amount of studies.',
+      'subscriptionNeededMessage': 'Please <a href="/subscribe">subscribe</a> to a plan in order to add more studies.',
       'account': 'Profile',
       'subscription': 'Subscription',
       'currentPlan': 'Current Plan',
@@ -68,7 +69,7 @@ module.exports =
       'mailInvitations': 'Personalized email invitations',
       'build': 'Build',
       'testing': 'Demo',
-      'user_testing': 'Run',
+      'user_testing': 'Start',
       'researchers': 'Research',
       'users': 'Run',
       'tests': 'Tasks',
@@ -177,6 +178,12 @@ module.exports =
       'change_project_confirm': 'Confirm',
       'notifications': 'Notifications',
       'install_app': 'Install App',
+      'participate': 'Participate',
+      'goToTests': 'Go to tests',
+      'currentlyActive': 'Current study',
+      'flash_json_too_big' : `Your JSON file is larger than 16 Mb.
+        You still can host and run your task, but unfortunately we cannot store the original JSON file on the platform.
+        Please make sure that you keep your JSON file safely in your local storage.`,
     },
 
     'passport': {
@@ -213,6 +220,13 @@ module.exports =
        'It is made for researchers who want to create and conduct their study on the Internet. ' +
        'Open Lab is integrated with the ' + '<a target="_blank" href="https://labjs.felixhenninger.com/">lab.js experiment builder</a>' + ', with which you can design your own study. ' +
        'The Open Lab server application takes care of running your experiment online and collecting, storing and managing data.',
+      'announcement_header': 'Announcement',
+      'announcement': 'We are very excited and proud to present the integration of Open Lab with ' +
+        '<a target="_blank" href="https://osf.io/">Open Science Framework (OSF)</a>. ' +
+        'From now on you can store the data in your OSF repository. ' +
+        'Each time a participant completes your study, the data are uploaded to your OSF project. ' +
+        'This means that you can have an unlimited number of participants if you store your data in the OSF. '
+        ,
       'forResearchers': 'For researchers',
       'forParticipants': 'For participants',
       'res_1': 'Hosting your study created in lab.js',
@@ -264,9 +278,11 @@ module.exports =
         'confirmMessage_4': ' This action is not reversable.',
         'delete': 'Delete',
         'description': 'Description',
-        'showCompletionCode': 'Display the unique completion code at the end of all tasks',
+        'showCompletionCode': 'Generate and show participants a unique individual code when all tasks are completed.',
+        'welcomeMessage': 'Message to participants before completion of tasks',
         'completionMessage': 'Message to participants after completion of tasks',
         'askNotifications': 'Ask users to allow notifications (we are currently testing notifications, participants should use Chrome on a desktop computer).',
+        'allowMultipleParticipation': 'Allow participants multiple participation in the same test.',
       },
 
       'constructor': {
@@ -274,7 +290,7 @@ module.exports =
         'title_tasks': 'Available tasks',
         'title_project': 'Your study',
         'not_chosen_message': 'Add tasks to your study',
-        'no_project_message': 'To add tasks to your study, create a study ' + '<a href="/projects">here.</a>',
+        'no_project_message': 'To add tasks to your study, create or activate a study ' + '<a href="/projects">here.</a>',
       },
 
       'tasks' : {
@@ -335,7 +351,7 @@ module.exports =
         'table_description': 'Description',
         'table_status': 'Status',
         'table_done' : 'Completed',
-        'table_not_done': 'Not done yet',
+        'table_not_done': 'Start',
         'your_code': 'This code confirms the completion of your tasks: ',
       },
 
@@ -365,6 +381,7 @@ module.exports =
         'pagination_page_2': ' of ',
         'pagination_page_3': ' total results',
         'download_all_data': 'Download all data',
+        'download_full_data': 'Download data of completed tasks',
         'message_invitation': `Invite new participants to the current study.
           Write each email address on a separate line.
           The unique participation code will be generated and sent to each participant.`,
@@ -413,7 +430,10 @@ module.exports =
         'edit_private' : 'Private',
         'edit_private_description' : 'Make your task available only to you and your participants  ',
         'edit_save' : 'Save',
-        'test_card_run' : 'Run',
+        'test_card_run' : 'Run the task',
+        'test_card_download': 'Download JSON',
+        'test_card_open' : 'Open in lab.js builder',
+        'test_card_open_beta' : 'Open in lab.js builder (beta)',
         'upgradeNeededMessage': 'Please <a target="_blank" href="/subscribe")>upgrade</a> your subscription in order to make your tasks private.',
         'deleteTask': 'Delete task',
         'savedResults': 'Results: ',
@@ -427,9 +447,13 @@ module.exports =
       },
 
       'results': {
-        'title': 'Results',
+        'title': 'Your results',
         'result_download': 'Download',
+        'result_download_all': 'Download all data',
+        'result_download_completed': 'Download data of completed tasks',
         'result_delete': 'Delete',
+        'result_delete_all': 'Delete all data',
+        'result_delete_confirm': 'Are you sure to delete all the results?',
         'result_full': 'Full',
         'result_incremental': 'Incremental',
         'results_rows': 'records',
@@ -441,7 +465,7 @@ module.exports =
       },
 
       'myresults': {
-        'title': 'Results',
+        'title': 'Your results',
         'result_download': 'Download',
         'result_delete': 'Delete',
         'result_full': 'Full',
@@ -459,7 +483,7 @@ module.exports =
         'step_1': `Use existing templates or create your own study with <a target="blank" href="https://labjs.felixhenninger.com/">lab.js experiment builder</a>`,
         'step_2': `Import the experiment file into Open Lab`,
         'step_3': `Send the invitation link to participants and monitor their progress in real time`,
-        'step_4': `Please check the <a href='../docs/intro'>documentation</a> for more information or join our <a target='blank' href='https://join.slack.com/t/open-lab-online/shared_invite/enQtNDU3MzgzMzY4NDcxLTBjZTg1NmViYTEwYWI0NmE3MDZmM2QwMzNhZmRmNmZkMDRhMzhlNTZlZWU2OWU0MmU5YTBhMjU4MWFlYjcwYjA'>Slack chat</a> to ask questions and get help.`,
+        'step_4': `Please check the <a href='../docs/intro'>documentation</a> for more information or join our <a target='blank' href='https://join.slack.com/t/open-lab-online/shared_invite/enQtNDU3MzgzMzY4NDcxLWZhYzU0MGU3MDFkNTNlZmI2MjQ4YzdlNzE3ZmYwMThmM2I1YTg5YjNiYjg3MzEzOGI5YzhkYzI0OTQ2Yjg1Y2Q'>Slack chat</a> to ask questions and get help.`,
         'header_features': `Special features`,
         'feature_1': `You do not need to set up your own server to run a study.`,
         'feature_2': `Open Lab can host any type of scripts created in <a target="_blank" href="https://labjs.felixhenninger.com/">lab.js</a>.`,
@@ -519,13 +543,20 @@ module.exports =
           'your_project': 'Your study',
           'create_your_project': `Create or activate your study <a href="/projects">here</a>.`,
           'results_download_test_results' : 'Download all results for this task',
-          'noTests': 'There are no tasks in the study'
+          'noTests': 'There are no tasks in the study',
+          'download_full_data': 'Download data of completed tasks',
         },
 
         'invitations': {
           'invite': 'Invite more participants with the following links:',
           'signing_code': 'Signing up with a participant code ',
-          'signing_temp_code': 'Signing up with a unique randomly generated code',
+          'signing_empty_invite': 'Direct invite',
+          'direct_invite_strategy': `
+            With this link, participants will see your study description and welcome message before starting the task.
+            The Open Lab user interface will be hidden.
+            Each participant will be assigned a random code.
+            Use this type of invitation if you post the link to the study online.`,
+          'signing_temp_code': 'Invitation with a random participant code',
           'signing_email': 'Signing up with an email ',
           'message_create_project': `To invite new participants to your study, activate or create a study <a href="/projects">here</a>.`,
           'message_invitation': `Invite new participants to take part in experiments of the current study.
@@ -535,9 +566,11 @@ module.exports =
           'button_invite': 'Invite',
           'email' : 'Email',
           'code' : 'Code',
-          'temp_code_strategy': 'A random participation code will be created for every user. Use this link if you publish the study online.',
-          'code_strategy': 'Users will be prompted to sign up with entering a participation code. Use this way of authentication if your participants already have their unique codes assigned by your study.',
-          'email_strategy': 'Users will be prompted to sign up with an email and a password. Use this authentication strategy if your participants already have an account on Open Lab or ready to create a new one.',
+          'temp_code_strategy': `A random code will be created and displayed for every participant, who enters the study.
+            Use this link if you publish the study online.
+            Read <a target='_blank' href="/docs/project">more</a> about other ways to customize your invitation link, for example by assigning different groups of participants.`,
+          'code_strategy': 'Participants will be prompted to enter their participant code. Use this way of authentication if your participants already know their codes.',
+          'email_strategy': 'Participants will be prompted to sign up or login with an email and a password. Use this authentication strategy if your participants already have an account on Open Lab or are ready to create a new one.',
           'copy_link': 'Copy link',
           'link_copied': 'Copied the link: ',
         },
@@ -550,28 +583,31 @@ module.exports =
           'billingInfo': 'Please enter your billing information',
           'creditDebitCard': 'Credit or debit card',
           'completeSubscription': 'Pay',
-
-
         },
 
         'docs': {
           'intro_title': 'Introduction',
+          'introduction_title': 'Introduction',
+          'introduction_1': 'Welcome to Open Lab, a platform for running online experiments! ',
+          'introduction_2': 'We are glad to have you here. This documentation is written for researchers, so please first register as a researcher. ',
+          'introduction_3': 'The registration is simple and requires only an email and a password. ',
           'navigation_title': 'Navigation',
-          'navigation_1': 'The Tasks, Studies, Data panes provide access to three main steps of running an online study:',
-          'navigation_1_1': 'Browse available tasks and upload your own task',
-          'navigation_1_2': 'Set up your study',
-          'navigation_1_3': 'Review and download collected data',
-          'navigation_2': 'In the Search Tasks field, enter the name of the task you want to search for.',
-          'navigation_3': 'Only one study can be activated at a time. If you have more than one study, you can switch between them by using the “Choose study” drop-down menu on the right.',
-          'navigation_4': 'Under “Account”, you can edit your name, email address and language. English, German and Russian are currently supported.',
-          'upload_title': 'Uploading the study',
+          'navigation_1': 'After registering as a researcher, you can explore available tasks and run your own study. ' +
+          'The navigation menu in the header contains the links to three main steps for conducting an online study.',
+          'navigation_1_1': `<a href='../docs/upload'>Tasks</a> Browse available tasks and upload your own task`,
+          'navigation_1_2': `<a href='../docs/project'>Studies</a> Set up your study`,
+          'navigation_1_3': `<a href='../docs/data'>Data</a> Review and download collected data`,
+          'navigation_2': 'In the Search tasks field, you can enter the name of the task you want to search for.',
+          'navigation_3': 'Only one study can be activated at a time. If you have more than one study, you can switch between them by using the “Choose a study” drop-down menu on the right.',
+          'navigation_4': 'Under “Account”, you can edit your name, email address and language. English, German and Russian are supported at the moment.',
+          'upload_title': 'Upload a task',
           'upload_allTasks_title': `<a target='blank' href='../tests/all'>All tasks</a>`,
           'upload_allTasks_1': `A dashboard with all publicly viewable tasks gives you quick access to the range of tasks already running in Open Lab. You can try the task by running it or, if you want to see the code behind it, download the json file, go to the <a target='blank' href="https://labjs.felixhenninger.com/">lab.js builder</a> and open the file there.`,
           'upload_myTasks_title': `<a target='blank' href='../tests/my'>My tasks</a>`,
           'upload_myTasks_1': 'It is a separate dashboard for the tasks you have added. It is empty at the beginning, but will be filled with your tasks. After you have added your first task, you can run the task, edit it, download the json file or delete the task using shortcut buttons on the task card.',
           'upload_newTask_title': `<a target='blank' href='../tests/add'>New task</a>`,
           'upload_newTask_1': 'Adding a new task is straightforward. Enter the name and description of the task, select the json file, and add a cover photo, if you wish. Tags are not necessary, but can help other researchers to find your task. At the end, choose how the task should be displayed. Public tasks are available to other researchers so they can see, run them and download the json file. If you don’t want to share your task yet, make it private so that only you and your participants can see it. After saving, your task will appear on “My tasks” page.',
-          'project_title': 'Managing the study',
+          'project_title': 'Manage your study',
           'project_projects_title': `<a target='blank' href='../projects'>Studies</a> `,
           'project_projects_1': 'The Open Lab is organized by studies. A study contains a number of tasks and aggregates the data of the participants. After registering as a researcher, the first page you see suggests creating a new study. Just give it a name and click “Enter”. If you already know someone in the Open Lab with whom you want to share the study, you can enter their email address (or leave it blank and do it later).',
           'project_projects_2': 'After adding a study, you will see the card of the new study, which shows the name and status of the study along with two buttons (to edit and delete the study). The toggle switch at the bottom of the card is grey – this means that your study is currently not publicly available, i.e., hidden from Open Lab participants. However, you can invite participants with a special link that provided to you. When you are ready with tasks and want to open your study to the public, you can toggle the button to activate it.',
@@ -585,7 +621,7 @@ module.exports =
           'project_demo_1': `You can already start each task individually, but this demo page will show you what the whole experiment will look like for participants. A participant will see the name of the test, its description and the status (completed or not yet completed). The tasks on the list appear in the order you specified in the study. Once a task is completed, a participant cannot repeat it.`,
           'project_demoResults_title': `<a target='blank' href='../results'>Demo results</a>  `,
           'project_demoResults_1': `To give you an idea what the raw data looks like, you can view and download your own demo results here. The data is stored as a CSV-file with comma-separated values. The data during the experiment is saved in two formats: “incremental” – a new part of the data is logged each time there is a sufficient time window during the experiment (e.g., when a participant reads the instruction of a new experimental block), and “full” – the data is transferred at the end of the experiment. So if a participant interrupts the task, only the incremental data up to the last snapshot will be saved. The results of the demo also show you how many records (rows) are stored in the data file.`,
-          'data_title': 'Collecting data',
+          'data_title': 'Collect data',
           'data_results_title': `<a target='blank' href='../data'>Results</a> `,
           'data_results_1': 'By clicking on the tasks on the left, you can switch between results for different tasks. The table contains information about a participant and the type of data. The Open Lab ID is a unique number assigned to each user regardless of the participant code and name. You can either download data for a specific participant or download all results for that task.',
           'data_participants_title': `<a target='blank' href='../users'>Participants</a> `,
@@ -595,7 +631,7 @@ module.exports =
           'data_invitations_2': `Registration with an email address requests a participant to create an account with an email address and password. Later, the email and password will be used for authorization. This provides a higher level of security than a participant code.`,
           'data_invitations_3': `If your study is publicly accessible, it can also be discovered by participants after registration by all available methods (code, email or social networks such as Facebook, Google or Github). Your study will appear in the list of studies in which a user can participate.`,
           'help_title' : 'Help',
-          'help_1': `Please, join the <a target='blank' href='https://join.slack.com/t/open-lab-online/shared_invite/enQtNDU3MzgzMzY4NDcxLTBjZTg1NmViYTEwYWI0NmE3MDZmM2QwMzNhZmRmNmZkMDRhMzhlNTZlZWU2OWU0MmU5YTBhMjU4MWFlYjcwYjA'>Slack chat</a> to ask questions and get help. `,
+          'help_1': `Please, join the <a target='blank' href='https://join.slack.com/t/open-lab-online/shared_invite/enQtNDU3MzgzMzY4NDcxLWZhYzU0MGU3MDFkNTNlZmI2MjQ4YzdlNzE3ZmYwMThmM2I1YTg5YjNiYjg3MzEzOGI5YzhkYzI0OTQ2Yjg1Y2Q'>Slack chat</a> to ask questions and get help. `,
           'forum': 'Forum',
           // 'offer_title': 'Outsource programming',
           // 'offer': `Do you have an idea of a task, but don't know how to program it? We would be happy to program it for you. Fill out the form and we will send you an offer. The price depends on the estimated number of working hours.`,
@@ -632,7 +668,7 @@ module.exports =
 
         'notifications': {
           'message_create_project': `To set up notifications, activate or create a study <a href="/projects">here</a>.`,
-          'testing_message': 'We are testing notifications now, so it might not work as expected. The participants should use Chrome (Desktop) to recieve notifications.',
+          'testing_message': 'Participants should use an Android phone or Google Chrome on desktops to enable and receive notifications.',
           'title': 'Title',
           'title_placeholder': 'Open Lab',
           'message': 'Message',
@@ -664,8 +700,56 @@ module.exports =
           'table_delete': 'Delete',
           'delete_notifications': 'Delete all notifications',
           'registering_busy_message': 'Registering notification ...',
-
         },
+
+        'osf': {
+          'announcement_header': 'Announcement',
+          'announcement': 'We are very excited and proud to present the integration of Open Lab with ' +
+            '<a target="_blank" href="https://osf.io/">Open Science Framework (OSF)</a>. ' +
+            'From now on you can store the data in your OSF repository. ' +
+            'Each time a participant completes your study, the data are uploaded to your OSF project. ' +
+            'This means that you can have an unlimited number of participants if you store your data in the OSF. '
+            ,
+          'announcement_errors': 'If you notice some errors, please let us know via our ' +
+            '<a target="_blank" href="https://join.slack.com/t/open-lab-online/shared_invite/enQtNDU3MzgzMzY4NDcxLTBjZTg1NmViYTEwYWI0NmE3MDZmM2QwMzNhZmRmNmZkMDRhMzhlNTZlZWU2OWU0MmU5YTBhMjU4MWFlYjcwYjA">Slack channel</a> ' +
+            ' or the ' +
+            '<a target="_blank" href="/docs/faq"> support form</a>.',
+          'sync_header_1': 'Your Open Lab project ',
+          'sync_header_2': ' is synced with the OSF project ',
+          'sync_header_3': '',
+          'recording_header': 'Data recording',
+          'recording_1': 'OSF + Open Lab',
+          'recording_1_desc': 'Record the data on OSF + save the data in Open Lab',
+          'recording_2': 'OSF',
+          'recording_2_desc': 'Record the data only on OSF and do not save in Open Lab',
+          'recording_3': 'Open Lab',
+          'recording_3_desc': 'Save the data in Open Lab and do not send the data to OSF',
+          'goToOSF': 'Go to the OSF project',
+          'removeLink': 'Remove the link',
+          'create': 'Create a new project in OSF to sync with ',
+          'create_2': '',
+          'create_title': 'OSF project title',
+          'create_desc': 'OSF project description',
+          'create_status': 'OSF project status',
+          'status_private': 'Private',
+          'status_private_desc': 'Only for you',
+          'status_public': 'Public',
+          'status_public_desc': 'For everybody',
+          'token_explained': 'We need your OSF token to be able to write data in the new project. '+
+            'We will keep this token safe and only use it to store the data of the participants of the study ',
+          'token_explained_2': '. You can delete the token later if you decide to remove the link between the Open Lab and the OSF project. ',
+          'token_explained_3': 'Read about ' +
+          '<a target="_blank" href="https://developer.osf.io/#tag/Authentication">tokens</a>' +
+          ' and create your own ' +
+          '<a target="_blank" href="https://osf.io/settings/tokens">token</a>' +
+          ' with the scope ' +
+          '<kbd>osf.full_write</kbd>',
+          'token_paste': 'Paste the OSF token here',
+          'create_OSF': 'Create OSF project',
+          'no_studies_yet': 'Please create or activate an Open Lab study <a href="/projects">here</a> to start the integration.',
+          'update': 'Update',
+        },
+
 
 
 

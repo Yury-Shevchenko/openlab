@@ -14,7 +14,12 @@ html
         script(src=`/labjs/lib/lab.js` nonce=`${noncevalue}`)
         script(src=`/labjs/lib/lab.fallback.js` nonce=`${noncevalue}`)
         link(rel="stylesheet" href="/labjs/lib/lab.css")
-  
+    
+    if(test.plugins)
+      each plugin in test.plugins
+        if(plugin.url)
+          script(src=`${plugin.url}` nonce=`${noncevalue}`)
+        
   body
     div(class="container fullscreen" data-labjs-section="main")
       main(class="content-vertical-center content-horizontal-center")

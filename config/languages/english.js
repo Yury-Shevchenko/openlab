@@ -181,6 +181,9 @@ module.exports =
       'participate': 'Participate',
       'goToTests': 'Go to tests',
       'currentlyActive': 'Current study',
+      'flash_json_too_big' : `Your JSON file is larger than 16 Mb.
+        You still can host and run your test in Open Lab, but unfortunately we cannot store the original JSON file on the platform.
+        Please make sure that you keep your JSON file safely in your local storage.`,
     },
 
     'passport': {
@@ -580,8 +583,6 @@ module.exports =
           'billingInfo': 'Please enter your billing information',
           'creditDebitCard': 'Credit or debit card',
           'completeSubscription': 'Pay',
-
-
         },
 
         'docs': {
@@ -599,7 +600,7 @@ module.exports =
           'navigation_2': 'In the Search tasks field, you can enter the name of the task you want to search for.',
           'navigation_3': 'Only one study can be activated at a time. If you have more than one study, you can switch between them by using the “Choose a study” drop-down menu on the right.',
           'navigation_4': 'Under “Account”, you can edit your name, email address and language. English, German and Russian are supported at the moment.',
-          'upload_title': 'Uploade a task',
+          'upload_title': 'Upload a task',
           'upload_allTasks_title': `<a target='blank' href='../tests/all'>All tasks</a>`,
           'upload_allTasks_1': `A dashboard with all publicly viewable tasks gives you quick access to the range of tasks already running in Open Lab. You can try the task by running it or, if you want to see the code behind it, download the json file, go to the <a target='blank' href="https://labjs.felixhenninger.com/">lab.js builder</a> and open the file there.`,
           'upload_myTasks_title': `<a target='blank' href='../tests/my'>My tasks</a>`,

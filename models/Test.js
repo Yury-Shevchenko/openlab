@@ -20,7 +20,6 @@ const testSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  // script: String,
   scriptUpdated: {
     type: Date
   },
@@ -28,9 +27,9 @@ const testSchema = new mongoose.Schema({
   tokenExpires: Date,
   timer: Number,
   photo: String,
+  index: String,
   file: String,
   css: String,
-  //json: mongoose.Schema.Types.Mixed,
   json: String,
   params: mongoose.Schema.Types.Mixed,
   production: String,
@@ -44,6 +43,10 @@ const testSchema = new mongoose.Schema({
     ref: 'Project'
   },
   version: String,
+  plugins: [{
+    name: String,
+    url: String,
+  }]
 },{
   toJSON: {virtuals: true},//make virtuals visible
   toObject: {virtuals: true}
@@ -61,34 +64,15 @@ testSchema.statics.getTests = function(tests) {
       position: '$$ROOT.position',
       photo: '$$ROOT.photo',
     }},
-    //{ $match: { 'position': { $gt: 0} } },
-    //{ $sort: { position: 1 } }
   ]);
 };
 
-testSchema.statics.showMyTests = function(userID) {
+testSchema.statics.showAllTests = function(userID, tagQuery) {
   return this.aggregate([
-    { $match: { author: userID }},
-    // { $lookup:
-    //   {
-    //     from: 'results',
-    //     let: { current_test: '$_id' },
-    //     pipeline: [
-    //       { $match:
-    //         { $expr:
-    //           { $and:
-    //             [
-    //               { $eq: ['$test', '$$current_test'] },
-    //               { $eq: ['$uploadType', 'full' ]}
-    //             ]
-    //           }
-    //         }
-    //       },
-    //       {$project: {_id:1, project: 1}}
-    //     ],
-    //     as: 'results'
-    //   }
-    // },
+    { $match: { $or: [
+      { author: userID, open: false, tags: tagQuery },
+      { author: { $exists: true }, open: true, tags: tagQuery},
+    ]}},
     { $project: {
       name: '$$ROOT.name',
       fullName: '$$ROOT.fullName',
@@ -98,12 +82,25 @@ testSchema.statics.showMyTests = function(userID) {
       author: '$$ROOT.author',
       photo: '$$ROOT.photo',
       production: '$$ROOT.production',
-      // numberResults: {$size:
-      //   { $setUnion: '$results._id' }
-      // },
-      // numberProjects: {$size:
-      //   { $setUnion: '$results.project' }
-      // }
+      json: { $cond: { if: '$$ROOT.json', then: true, else: false } },
+    }},
+    { $sort: { position: 1 } }
+  ]);
+};
+
+testSchema.statics.showMyTests = function(userID) {
+  return this.aggregate([
+    { $match: { author: userID }},
+    { $project: {
+      name: '$$ROOT.name',
+      fullName: '$$ROOT.fullName',
+      slug: '$$ROOT.slug',
+      open: '$$ROOT.open',
+      description: '$$ROOT.description',
+      author: '$$ROOT.author',
+      photo: '$$ROOT.photo',
+      production: '$$ROOT.production',
+      json: { $cond: { if: '$$ROOT.json', then: true, else: false } },
     }},
     { $sort: { position: 1 } }
   ]);
@@ -125,7 +122,6 @@ testSchema.statics.showChosenTests = function(project_id, tests) {
       author: '$$ROOT.author',
       photo: '$$ROOT.photo',
       numberResults: {$size:
-        //{ $setUnion: '$results' }
         { $setUnion: {
           $filter:
           {
@@ -135,7 +131,6 @@ testSchema.statics.showChosenTests = function(project_id, tests) {
           }
         } }
       }
-      //results: '$$ROOT.results'
     }},
     { $sort: { position: 1 } }
   ]);
@@ -196,8 +191,5 @@ function autopopulate(next){
   this.populate('results');
   next();
 };
-
-//testSchema.pre('find', autopopulate);
-//testSchema.pre('findOne', autopopulate);
 
 module.exports = mongoose.model('Test', testSchema);

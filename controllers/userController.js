@@ -12,13 +12,13 @@ const Test = mongoose.model('Test');
 const Project = mongoose.model('Project');
 const keys = require('../config/keys');
 const stripe = require('stripe')(keys.stripeSecretKey);
-const assemble = require('../handlers/assemble');
 const mail = require('../handlers/mail');
 const webpush = require('web-push');
 const formidable = require('formidable');
 const fs = require('fs');
 const schedule = require('node-schedule');
 const validator = require('validator');
+const { assembleFile } = require('../handlers/assemble/index');
 
 exports.login = (req, res) => {
   res.render('login', {title: 'Login', message: req.flash('loginMessage')})
@@ -122,22 +122,28 @@ exports.labjs = async (req, res) => {
         req.body.author = req.user._id;
         req.body.project = req.user.project._id;
       };
-      console.log('req.headers.referer', req.headers.referer);
       const prod = (req.headers.referer == 'https://labjs-beta.netlify.com/' || req.headers.referer == 'http://localhost:3000/') ? 'beta': 'alpha';//check from where the upload comes
       const json_string = req.files.script[0].buffer.toString();
       const json = JSON.parse(json_string);
-      const script = await assemble.convertJSON(json, req.body.name, production = prod);
-      req.body.file = script.files.script.content.data;
+      const script = await assembleFile(json, req.body.name);
+      if (req.files.script[0].buffer.length > 16000000) {
+        req.body.json = null;
+        req.flash('error', `${res.locals.layout.flash_json_too_big}`);
+      } else {
+        req.body.json = json_string;
+      }
+      req.body.index = script.files['index.html'].content;
       req.body.css = script.files['style.css'].content;
+      req.body.file = script.files['script.js'].content.data;
       req.body.params = script.params;
-      req.body.production = script.production;
+      req.body.production = prod;
       req.body.labjsVersion = typeof(json.version) === 'string' ? json.version : json.version.join(',');
-      req.body.json = json_string;
+      req.body.created = new Date().toISOString();
+      req.body.scriptUpdated = new Date().toISOString();
+      req.body.plugins = script.plugins;
       req.body.open = false;
       req.body.token = crypto.randomBytes(20).toString('hex');
       req.body.tokenExpires = Date.now() + 3600000; //1 hour to upload the test
-      req.body.created = new Date().toISOString();
-      req.body.scriptUpdated = new Date().toISOString();
       const test = await (new Test(req.body)).save();
       req.flash('success', `${res.locals.layout.flash_labjs_upload_success} <strong>${req.body.name}</strong>. ${res.locals.layout.flash_labjs_edit_message}`);
       res.setHeader('Access-Control-Allow-Origin', '*');

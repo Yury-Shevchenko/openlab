@@ -14,14 +14,9 @@ mixin constructorTestCard(test = {})
                 if (testClass)
                   != h.icon('checked')
                 else 
-                  != h.icon('add-plus')         
-        if user 
-          .store__action.store__action--edit
-            a.heart__button(href=`/tests/${test._id}/json`)
-              != h.icon('download-blue')
+                  != h.icon('add-plus')        
               
       if(test && test.description)
         p= test.description.split(' ').length > 10 ? test.description.split(' ').slice(0,10).join(' ').concat(' ...') : test.description
 
-      //- img(src=`/uploads/${test.photo || 'store.png' }`)
-      
+    

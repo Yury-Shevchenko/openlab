@@ -12,8 +12,8 @@ const User = mongoose.model('User');
 const Result = mongoose.model('Result');
 const Param = mongoose.model('Param');
 const keys = require('../config/keys');
-const assemble = require('../handlers/assemble');
 const slug = require('slugs');
+const { assembleFile } = require('../handlers/assemble/index');
 
 const multerOptions = {
   storage: multer.memoryStorage(),
@@ -95,15 +95,22 @@ exports.createTest = async (req, res, next) => {
   if(req.files.script){
     const json_string = req.files.script[0].buffer.toString();
     const json = JSON.parse(json_string);
-    const script = await assemble.convertJSON(json, req.body.name);
-    req.body.file = script.files.script.content.data;
+    const script = await assembleFile(json, req.body.name);
+    if (req.files.script[0].buffer.length > 16000000) {
+      req.body.json = null;
+      req.flash('error', `${res.locals.layout.flash_json_too_big}`);
+    } else {
+      req.body.json = json_string;
+    }
+    req.body.index = script.files['index.html'].content;
     req.body.css = script.files['style.css'].content;
+    req.body.file = script.files['script.js'].content.data;
     req.body.params = script.params;
+    req.body.production = 'alpha'; // assume that users use the alpha version
+    req.body.labjsVersion = typeof(json.version) === 'string' ? json.version : json.version.join(',');
     req.body.created = new Date().toISOString();
     req.body.scriptUpdated = new Date().toISOString();
-    req.body.json = json_string;
-    req.body.production = script.production;
-    req.body.labjsVersion = typeof(json.version) === 'string' ? json.version : json.version.join(',');
+    req.body.plugins = script.plugins;
   }
   const test = await (new Test(req.body)).save();
   req.body.slug = test.slug;
@@ -128,15 +135,23 @@ exports.updateTest = async (req, res, next) => {
   if(req.files.script){
     const json_string = req.files.script[0].buffer.toString();
     const json = JSON.parse(json_string);
-    const script = await assemble.convertJSON(json, req.body.name);
-    req.body.file = script.files.script.content.data;
+    const script = await assembleFile(json, req.body.name);
+    // console.log('script', script);
+
+    if (req.files.script[0].buffer.length > 16000000) {
+      req.body.json = null;
+      req.flash('error', `${res.locals.layout.flash_json_too_big}`);
+    } else {
+      req.body.json = json_string;
+    }
     req.body.index = script.files['index.html'].content;
     req.body.css = script.files['style.css'].content;
+    req.body.file = script.files['script.js'].content.data;
     req.body.params = script.params;
-    req.body.json = json_string;
-    req.body.production = script.production;
+    req.body.production = 'alpha'; // assume that users use the alpha version
     req.body.labjsVersion = typeof(json.version) === 'string' ? json.version : json.version.join(',');
     req.body.scriptUpdated = new Date().toISOString();
+    req.body.plugins = script.plugins;
   };
 
   let newSlug = slug(req.body.name);
@@ -194,24 +209,9 @@ exports.getAllTests = async (req, res) => {
   const tagQuery = tag || { $exists: true };
   const tagsPromise = Test.getTagsList(req.user._id); //use a custom function to get tags list
   const testsPromise = Test
-    .find({
-      $or:[
-        {
-          tags: tagQuery,
-          open: true,
-          author: { $exists: true }
-        },
-        {
-          tags: tagQuery,
-          open: false,
-          author: { $eq: req.user._id}
-        }
-      ]
-    },{
-      name: 1, slug: 1, description: 1, author: 1, photo: 1, open: 1, production: 1,
-    })
+    .showAllTests(req.user._id, tagQuery)
     .skip(skip)
-    .limit(limit);
+    .limit(limit)
   const countPromise = Test.where({
     $or:[
       {
@@ -342,12 +342,11 @@ exports.constructor = async (req, res) => {
         ]
       })
       .select({author:1, slug:1, name:1, description: 1});
-      // .sort({name: 1});
-      [tags, tests, unsortedProjectTests] = await Promise.all([ tagsPromise, testsPromise, projectTestsPromise ]);
-      //order projectTests
-      projectTests = unsortedProjectTests.sort( (a, b) => {
-        return project.tests.indexOf(a.id) - project.tests.indexOf(b.id);
-      });
+    [tags, tests, unsortedProjectTests] = await Promise.all([ tagsPromise, testsPromise, projectTestsPromise ]);
+    //order projectTests
+    projectTests = unsortedProjectTests.sort( (a, b) => {
+      return project.tests.indexOf(a.id) - project.tests.indexOf(b.id);
+    });
   } else {
     testsPromise = Test.find({
       $or:[
@@ -363,8 +362,8 @@ exports.constructor = async (req, res) => {
         }
       ]
     })
-    .select({author:1, slug:1, name:1, description: 1});
-    // .sort({name: 1});
+    .select({author:1, slug:1, name:1, description: 1})
+    .sort({name: 1});
     [tags, tests] = await Promise.all([ tagsPromise, testsPromise ]);
   };
   res.render('construct', { title: 'Select tests', tag, tags, tests, projectTests, project });

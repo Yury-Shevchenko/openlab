@@ -180,6 +180,10 @@ module.exports = {
     'participate': 'Teilnehmen',
     'goToTests': 'Zu den Tests',
     'currentlyActive': 'Aktuelle Studie',
+    'flash_json_too_big' : `Ihre JSON-Datei ist größer als 16 Mb.
+        Sie können Ihren Test immer noch in Open Lab hosten und ausführen, aber leider können wir die ursprüngliche JSON-Datei nicht auf der Plattform speichern.
+        Bitte stellen Sie sicher, dass Sie Ihre JSON-Datei sicher in Ihrem lokalen Speicher aufbewahren.`,
+
   },
 
   'passport': {
