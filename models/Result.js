@@ -6,7 +6,7 @@ const resultSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  author:{
+  author: {
     type: mongoose.Schema.ObjectId,
     ref: 'User',
     required: 'You must supply a user!'
@@ -50,7 +50,6 @@ const resultSchema = new mongoose.Schema({
 //get results of particular user
 resultSchema.statics.getUserResults = function(feature) {
   return this.aggregate([
-    //{ $match: { 'uploadType' : 'full'} },
     { $match: { 'rawdata' : { $exists: true }} },
     { $match: { 'project' : mongoose.Types.ObjectId(feature.project) } },
     { $lookup: {
@@ -139,13 +138,6 @@ resultSchema.statics.getMyResults = function(feature) {
   return this.aggregate([
     { $match: { 'rawdata' : { $exists: true }} },
     { $match: { 'author' : mongoose.Types.ObjectId(feature.author) } },
-    // { $match: { 'uploadType' : 'full'} },
-    //{ $match: { 'project' : mongoose.Types.ObjectId(feature.project) } },
-    // { $lookup: {
-    //   from: 'users', localField: 'author', foreignField: '_id', as: 'author'
-    //   }
-    // },
-    // { $match: { 'author._id' : mongoose.Types.ObjectId(feature.author) } },
     { $lookup: {
       from: 'tests', localField: 'test', foreignField: '_id', as: 'originTest'
       }
@@ -158,9 +150,6 @@ resultSchema.statics.getMyResults = function(feature) {
       created: '$$ROOT.created',
       project_name: '$$ROOT.originProject.name',
       participant_id: '$$ROOT.author.openLabId',
-      // participant_name: '$$ROOT.author.name',
-      // participant_code: '$$ROOT.author.code.id',
-      // user_id: '$$ROOT.author._id',
       test: '$$ROOT.test',
       name: '$$ROOT.originTest.name',
       slug: '$$ROOT.originTest.slug',
@@ -206,11 +195,10 @@ resultSchema.statics.getParticipantResults = function(feature) {
 
 //method to get results with the defined data
 resultSchema.statics.getResults = function(feature) {
-  //console.log(feature);
   return this.aggregate([
-    { $match: { 'rawdata' : { $exists: true }} },
     { $match: { test : mongoose.Types.ObjectId(feature.test) } },//filter only users
     { $match: { project : feature.project } },//filter only users
+    { $match: { 'rawdata' : { $exists: true }} },
     { $lookup: {
       from: 'users', localField: 'author', foreignField: '_id', as: 'author'
       }
@@ -220,11 +208,8 @@ resultSchema.statics.getResults = function(feature) {
       }
     },
     { $match: { 'author.level' : { $lt: 10 }} },//filter only users
-    //{ $match: { 'text' : feature.text } },//filter only users
     { $project: {
       created: '$$ROOT.created',
-      //author: '$$ROOT.author',
-      //project: '$$ROOT.project',
       participant_id: '$$ROOT.author.openLabId',
       participant_name: '$$ROOT.author.name',
       participant_code: '$$ROOT.author.code.id',
@@ -235,17 +220,12 @@ resultSchema.statics.getResults = function(feature) {
       uploadType: '$$ROOT.uploadType',
       fileSize: {$size: '$$ROOT.rawdata'},
       aggregated: '$$ROOT.aggregated',
-      //parameters: '$$ROOT.parameters',
-      //keys: '$$ROOT.keys',
-      //meta: '$$ROOT.meta'
     }},
-    //{ $match: { test : "59b6dc2e812af17c60b958b2" } },//filter only users
     { $sort: { created: 1 } }
   ]);
 };
 
 function autopopulate(next) {
-  //this.populate('test');
   this.populate('author');
   next();
 };
@@ -261,6 +241,6 @@ resultSchema.index({
 
 resultSchema.pre('find', autopopulate);
 resultSchema.pre('findOne', autopopulate);
-resultSchema.pre('getResults', autopopulate);
+// resultSchema.pre('getResults', autopopulate);
 
 module.exports = mongoose.model('Result', resultSchema);
