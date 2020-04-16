@@ -79,8 +79,9 @@ const confirmOwner = (project, user) => {
   // check whether the user is a creator or a member of the project
   const isCreator = project.creator.equals(user._id);
   const isMember = project.members.map(id => id.toString()).includes(user._id.toString());
+  const isSuperAdmin = user.level > 100;
   const isParticipant = user.level <= 10;
-  if(!(isCreator || isMember) || isParticipant){
+  if(!(isCreator || isMember || isSuperAdmin) || isParticipant){
     throw Error('You must be a creator or a member of a project in order to do it!');
   }
 };
