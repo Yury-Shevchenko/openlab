@@ -387,6 +387,7 @@ exports.featureTest = async (req, res) => {
 exports.searchTests = async (req, res) => {
   const tests = await Test
   .find({
+    open: true,
     $text: {
       $search: req.query.q
     }
