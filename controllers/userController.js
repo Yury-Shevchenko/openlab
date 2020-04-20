@@ -170,8 +170,7 @@ exports.editlabjsupload = async (req, res) => {
   res.setHeader('Access-Control-Allow-Methods', 'GET');
   res.setHeader('Content-Type', 'text/html');
   res.status(200);
-  res.render('editlabjsupload', {test: test}, function (err, html) {
-    // if(err) console.log('Upload lab.js file error:', err);
+  res.render('editlabjsupload', { test: test }, function (err, html) {
     res.send(html)
   })
 };

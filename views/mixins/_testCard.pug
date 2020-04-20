@@ -48,3 +48,5 @@ mixin testCard(test = {})
     if (user && user.level > 100)
       form(action=`/tests/${test._id}/remove` method = 'POST' id="testform")
         input(type='submit' id="btnAddTest" value="delete" class="button")
+    if (user && user.level > 100 && !test.author)
+      p No author
