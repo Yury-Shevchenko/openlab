@@ -156,7 +156,6 @@ exports.labjs = async (req, res) => {
 };
 
 exports.editlabjsupload = async (req, res) => {
-  console.log('request came', req);
   const test = await Test.findOne({
     token: req.params.token,
     tokenExpires: { $gt: Date.now() }
@@ -171,6 +170,7 @@ exports.editlabjsupload = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET');
   res.setHeader('Content-Type', 'text/html');
+  console.log('request came', test);
   res.render('editlabjsupload', {test});
 };
 
