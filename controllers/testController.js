@@ -264,7 +264,7 @@ exports.openJSONinLabJS = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET');
   res.setHeader('Content-disposition', 'attachment; filename=' + test.name +'.json');
-  res.send(file);
+  res.status(200).send(file);
 };
 
 
