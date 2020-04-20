@@ -171,8 +171,8 @@ exports.editlabjsupload = async (req, res) => {
   res.setHeader('Access-Control-Allow-Methods', 'GET');
   res.setHeader('Content-Type', 'text/html');
   console.log('request came', test);
-  res.sendStatus(200);
-  // res.render('editlabjsupload', {test});
+  res.status(200);
+  res.render('editlabjsupload', {test});
 };
 
 exports.updateAccount = async (req, res) => {
