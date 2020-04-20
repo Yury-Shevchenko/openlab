@@ -172,7 +172,11 @@ exports.editlabjsupload = async (req, res) => {
   res.setHeader('Content-Type', 'text/html');
   console.log('request came', test);
   res.status(200);
-  res.render('editlabjsupload', {test});
+  // res.render('editlabjsupload', {test: test});
+  res.render('editlabjsupload', {test: test}, function (err, html) {
+    if(err) console.log('err', err);
+    res.send(html)
+  })
 };
 
 exports.updateAccount = async (req, res) => {
