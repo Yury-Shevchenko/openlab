@@ -77,11 +77,20 @@
   }
 }
 
-.card-message{
+.card-message {
   font-size: 1.8rem;
   line-height: 1.5;
   -webkit-margin-after: 1em;
   margin: 1rem;
+  text-align: justify;
+}
+
+.list-item {
+  font-size: 1.7rem;
+  line-height: 1.5;
+  -webkit-margin-after: 1em;
+  margin: 1rem;
+  text-align: justify;
 }
 
 pre.error {

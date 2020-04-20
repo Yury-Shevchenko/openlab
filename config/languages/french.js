@@ -184,6 +184,8 @@ module.exports =
       'flash_json_too_big' : `Your JSON file is larger than 16 Mb.
         You still can host and run your task, but unfortunately we cannot store the original JSON file on the platform.
         Please make sure that you keep your JSON file safely in your local storage.`,
+      'agree_toOpenLab' : `I agree to the Open Lab <a target="_blank" href="/docs/terms">Terms of Service</a> and <a target="_blank" href="/docs/policy">Privacy Policy</a>`,
+
     },
 
     'passport': {

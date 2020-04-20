@@ -6,6 +6,8 @@ include mixins_docs/_project
 include mixins_docs/_data
 include mixins_docs/_help
 include mixins_docs/_faq
+include mixins_docs/_policy
+include mixins_docs/_terms
 
 block content
   
@@ -20,7 +22,9 @@ block content
           li.nav__item: a.nav__link(href=`/docs/data`, class=(currentPath.startsWith(`/docs/data`) ? 'nav__link--active' : '')) #{l.data_title}
           li.nav__item: a.nav__link(href=`/docs/help`, class=(currentPath.startsWith(`/docs/help`) ? 'nav__link--active' : '')) #{l.help_title}
           li.nav__item: a.nav__link(href=`/docs/faq`, class=(currentPath.startsWith(`/docs/faq`) ? 'nav__link--active' : '')) #{l.faq_title}
-    
+          li.nav__item: a.nav__link(href=`/docs/policy`, class=(currentPath.startsWith(`/docs/policy`) ? 'nav__link--active' : '')) Policy
+          li.nav__item: a.nav__link(href=`/docs/terms`, class=(currentPath.startsWith(`/docs/terms`) ? 'nav__link--active' : '')) Terms & Conditions
+
     .card 
       .card-message
         +#{page}()
