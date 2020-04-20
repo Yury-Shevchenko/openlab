@@ -163,18 +163,15 @@ exports.editlabjsupload = async (req, res) => {
   if(!test){
     req.flash('error', `${res.locals.layout.flash_labjs_upload_invalid}`);
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
+    res.setHeader('Access-Control-Allow-Methods', 'GET');
     return res.redirect('/login');
   };
-  // req.flash('success', `${res.locals.layout.flash_labjs_finalize}`);
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET');
   res.setHeader('Content-Type', 'text/html');
-  console.log('request came', test);
   res.status(200);
-  // res.render('editlabjsupload', {test: test});
   res.render('editlabjsupload', {test: test}, function (err, html) {
-    if(err) console.log('err', err);
+    // if(err) console.log('Upload lab.js file error:', err);
     res.send(html)
   })
 };
