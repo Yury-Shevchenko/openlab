@@ -347,25 +347,7 @@ exports.constructor = async (req, res) => {
     projectTests = unsortedProjectTests.sort( (a, b) => {
       return project.tests.indexOf(a.id) - project.tests.indexOf(b.id);
     });
-  } else {
-    testsPromise = Test.find({
-      $or:[
-        {
-          tags: tagQuery,
-          open: true,
-          author: { $exists: true }
-        },
-        {
-          tags: tagQuery,
-          open: false,
-          author: { $eq: req.user._id}
-        }
-      ]
-    })
-    .select({author:1, slug:1, name:1, description: 1})
-    .sort({name: 1});
-    [tags, tests] = await Promise.all([ tagsPromise, testsPromise ]);
-  };
+  }
   res.render('construct', { title: 'Select tests', tag, tags, tests, projectTests, project });
 };
 
