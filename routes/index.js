@@ -206,9 +206,6 @@ router.post('/tests/labjs',
 router.get('/tests/labjs/:token/edit',
   catchErrors(userController.editlabjsupload));
 
-router.post('/tests/labjs/:token/edit',
-  catchErrors(userController.editlabjsupload));
-
 //test constructor
 router.get('/constructor', authController.isAdminLoggedIn, catchErrors(testController.constructor));
 router.get('/constructor/:tag', authController.isAdminLoggedIn, catchErrors(testController.constructor));

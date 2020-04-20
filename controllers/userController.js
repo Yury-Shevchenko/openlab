@@ -147,7 +147,7 @@ exports.labjs = async (req, res) => {
       const test = await (new Test(req.body)).save();
       req.flash('success', `${res.locals.layout.flash_labjs_upload_success} <strong>${req.body.name}</strong>. ${res.locals.layout.flash_labjs_edit_message}`);
       res.setHeader('Access-Control-Allow-Origin', '*');
-      res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
+      res.setHeader('Access-Control-Allow-Methods', 'GET');
       res.setHeader('Content-Type', 'text/html');
       res.redirect(303, `/tests/labjs/${req.body.token}/edit`);
   } else {
@@ -156,6 +156,7 @@ exports.labjs = async (req, res) => {
 };
 
 exports.editlabjsupload = async (req, res) => {
+  console.log('request came', req);
   const test = await Test.findOne({
     token: req.params.token,
     tokenExpires: { $gt: Date.now() }
@@ -168,7 +169,8 @@ exports.editlabjsupload = async (req, res) => {
   };
   // req.flash('success', `${res.locals.layout.flash_labjs_finalize}`);
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
+  res.setHeader('Access-Control-Allow-Methods', 'GET');
+  res.setHeader('Content-Type', 'text/html');
   res.render('editlabjsupload', {test});
 };
 
