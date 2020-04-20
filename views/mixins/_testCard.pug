@@ -45,7 +45,7 @@ mixin testCard(test = {})
           != h.icon('private')
         span.tooltiptext #{layout.test_card_privacy_message}
           
-    if (user && user.level > 100)
+    if (user && user.level > 100 && !test.author)
       form(action=`/tests/${test._id}/remove` method = 'POST' id="testform")
         input(type='submit' id="btnAddTest" value="delete" class="button")
     if (user && user.level > 100 && !test.author)
