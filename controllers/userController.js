@@ -148,7 +148,7 @@ exports.labjs = async (req, res) => {
       req.flash('success', `${res.locals.layout.flash_labjs_upload_success} <strong>${req.body.name}</strong>. ${res.locals.layout.flash_labjs_edit_message}`);
       res.setHeader('Access-Control-Allow-Origin', '*');
       res.setHeader('Access-Control-Allow-Methods', 'GET');
-      res.redirect(`/tests/labjs/${req.body.token}/edit`);
+      res.status(303).redirect(`/tests/labjs/${req.body.token}/edit`);
   } else {
     res.sendStatus(500);
   }
