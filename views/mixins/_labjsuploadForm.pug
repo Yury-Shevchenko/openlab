@@ -86,7 +86,9 @@ mixin labjsuploadForm(test = {})
         input(type="password" name="password" value=password)
         label(for="password-confirm") #{layout.password_confirm}
         input(type="password" name="password-confirm" value=password-confirm)
-        p
+        p(style="display:grid; align-items: center; grid-template-columns: 30px auto;")
+          input(type="checkbox" id="agree" required style="zoom: 1.8;") 
+          label(for="agree") !{layout.agree_toOpenLab}
           
     input(type='submit' value=l.edit_save class="button")
 
