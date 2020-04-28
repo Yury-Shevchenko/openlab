@@ -61,7 +61,12 @@ const assembleFile = async (state, foldername,
 
   const uploadFile = async (item) => {
     const name = item[0].split(`${item[1].source == "embedded" ? "embedded" : "static"}/`)[1];
-    const string = item[1].content;
+    let string;
+    if(item[1].content.startsWith('data:image/svg+xml')){
+      string = item[1].content.replace('data:image/svg+xml', 'data:image/svg');
+    } else {
+      string = item[1].content;
+    }
     const truncatedName = name.split('.')[0];
     const location = `${foldername}/${truncatedName}`;
     const upload_preset = "openlab";
