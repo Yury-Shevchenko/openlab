@@ -455,7 +455,11 @@ exports.saveIncrementalResults = async (req, res) => {
     // upload data to osf
     if(project && project.osf && project.osf.upload_link && project.osf.upload_token && project.osf.policy !== 'OL'){
       const link = project.osf.upload_link + '?kind=file&name=' + openLabId + '-' + req.body.metadata.id + '.csv';
-      const data = papaparse.unparse(req.body.data);
+      const keys = req.body.data.map(e => Object.keys(e)).reduce( (a,b) => Array.from(new Set(a.concat(b))) );
+      const data = papaparse.unparse({
+         fields: keys,
+    	   data: req.body.data
+       });
       fetch(link, {
         method:'PUT',
         headers: {
