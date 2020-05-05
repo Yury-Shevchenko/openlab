@@ -25,9 +25,8 @@ const generateHTML = (filename, options = {} ) => {
 exports.send = async (options) => {
   const html = generateHTML(options.filename, options);
   const text = htmlToText.fromString(html);
-  //postmark sending
   client.sendEmail({
-    "From": "no-reply@open-lab.online",
+    "From": `Open Lab <no-reply@open-lab.online>`,
     "To": options.participant.email,
     "Subject": options.subject,
     "TextBody": text,
@@ -39,22 +38,19 @@ exports.send = async (options) => {
 exports.invite = async (options) => {
   const html = generateHTML(options.filename, options);
   const text = htmlToText.fromString(html);
-  const mailOptions = {
-    from: `Open Lab <no-reply@open-lab.online>`,
-    to: options.participant.email,
-    subject: options.subject,
-    html,
-    text
-  };
-  const sendMail = promisify(transport.sendMail, transport);
-  return sendMail(mailOptions);
+  client.sendEmail({
+    "From": `Open Lab <no-reply@open-lab.online>`,
+    "To": options.participant.email,
+    "Subject": options.subject,
+    "TextBody": text,
+    "HtmlBody": html,
+  });
 };
 
 //send test request
 exports.request = async (options) => {
   const html = generateHTML(options.filename, options);
   const text = htmlToText.fromString(html);
-  //postmark sending
   client.sendEmail({
     "From": "no-reply@open-lab.online",
     "To": email_address,
@@ -68,14 +64,11 @@ exports.request = async (options) => {
 exports.sendQuestion = async (options) => {
   const html = generateHTML(options.filename, options);
   const text = htmlToText.fromString(html);
-  //mailtrap sending
-  const mailOptions = {
-    from: `no-reply@open-lab.online`,
-    to: email_address,
-    subject: 'New question',
-    html,
-    text
-  };
-  const sendMail = promisify(transport.sendMail, transport);
-  return sendMail(mailOptions);
+  client.sendEmail({
+    "From": "no-reply@open-lab.online",
+    "To": email_address,
+    "Subject": 'Question from Open Lab',
+    "TextBody": text,
+    "HtmlBody": html,
+  });
 };
