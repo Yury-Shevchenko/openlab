@@ -136,8 +136,6 @@ exports.updateTest = async (req, res, next) => {
     const json_string = req.files.script[0].buffer.toString();
     const json = JSON.parse(json_string);
     const script = await assembleFile(json, req.body.name);
-    // console.log('script', script);
-
     if (req.files.script[0].buffer.length > 16000000) {
       req.body.json = null;
       req.flash('error', `${res.locals.layout.flash_json_too_big}`);
@@ -413,7 +411,7 @@ exports.getTestBySlug = async (req, res, next) => {
 //get tests that are chosen by the researcher
 exports.getProgramTests = async (req, res) => {
   const project = await Project.findOne({_id: req.user.project._id},{
-    name: 1, tests: 1, parameters: 1, 
+    name: 1, tests: 1, parameters: 1,
   });
   if(project){
     const unsortedProjectTests = await Test
@@ -480,11 +478,54 @@ exports.testing = async (req, res) => {
   } else {
     const study = req.query.study;
     const project = await Project.findOne({ _id: req.user.participantInProject || req.user.project._id },{
-      name: 1, allowMultipleParticipation: 1, showCompletionCode: 1, welcomeMessage: 1, completionMessage: 1, useNotifications: 1, tests: 1,
+      name: 1,
+      allowMultipleParticipation: 1,
+      showCompletionCode: 1,
+      welcomeMessage: 1,
+      completionMessage: 1,
+      useNotifications: 1,
+      tests: 1,
+      parameters: 1,
     });
     const projects = await Project.getCurrentProjects();
     let tests, results, confirmationCode, projectTests;
     if(project){
+      // update user parameters if there are project parameters
+      if(project.parameters && project.parameters.length > 0){
+        let userParameters;
+        if(req.user && req.user.parameters){
+          userParameters = req.user.parameters.filter(p => p.project_id.toString() === project._id.toString()).map(p => p.studyParameters);
+        }
+        if(userParameters && userParameters.length > 0){
+        } else {
+          const userParams = project.parameters.map(
+            parameter => {
+              const contentArray = parameter.content.split(',');
+              // random function to assign one of the parameters randomly (with the same probability)
+              const selectedParamContent = contentArray[Math.floor(Math.random() * contentArray.length)];
+              return({
+                name: parameter.name,
+                mode: parameter.mode,
+                content: selectedParamContent,
+              })
+            }
+          )
+          await User.findOneAndUpdate({
+            _id: req.user._id
+          }, {
+            $addToSet: {
+              parameters:
+                {
+                  project_id: project._id,
+                  studyParameters: userParams,
+                }
+              },
+          }, {
+            new: true
+          }).exec();
+        }
+      }
+
       const unsortedProjectTests = await Test
         .find({
           _id: { $in: project.tests},
@@ -565,6 +606,24 @@ exports.runTest = async (req, res) => {
     language: req.params.lang || (req.user && req.user.language) || 'english',
     project: (req.user && req.user.participantInProject) || (req.user && req.user.project._id ) || test.project
   };
+  // get the parameters from the user/study
+  let studyParameters;
+  if(req.user && req.user.parameters && req.user.parameters.length > 0) {
+    const userParamsForThisProject = req.user.parameters.filter(param => param.project_id.toString() === feature.project.toString());
+    if(userParamsForThisProject && userParamsForThisProject.length > 0){
+      studyParameters = userParamsForThisProject[0] && userParamsForThisProject[0].studyParameters;
+    } else {
+      // fallback to project parameters
+      const project = feature.project;
+      if(project){
+        const myProject = await Project.findOne({ _id: project }, { parameters: 1 });
+        if(myProject){
+          studyParameters = myProject.parameters;
+        }
+      }
+    }
+  }
+
   const parameters = await Param.getParameters(feature);
   let params = '';
   if(parameters){
@@ -578,7 +637,7 @@ exports.runTest = async (req, res) => {
     req.flash('error', `${res.locals.layout.flash_no_experiment_file}`);
     res.redirect('back');
   } else {
-    res.render('runTest', { title: test.name, test, params});
+    res.render('runTest', { title: test.name, test, params, studyParameters: studyParameters });
   }
 };
 
@@ -612,8 +671,4 @@ exports.showAllTasksForAdmin = async (req, res) => {
       name: 1, slug: 1, description: 1, author: 1, photo: 1, open: 1, created: 1, scriptUpdated: 1, production: 1, labjsVersion: 1
     })
   res.render('alltestsforadmin', {tests});
-};
-
-exports.mouselab = (req, res) => {
-  res.json({yes: 'it is done'})
 };

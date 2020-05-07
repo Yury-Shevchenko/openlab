@@ -323,8 +323,4 @@ router.get('/debugprojects',
   catchErrors(projectController.debugprojects));
 
 
-router.post('/uploadimage', catchErrors(userController.uploadImage));
-
-router.post('/api/mouselab', testController.mouselab);
-
 module.exports = router;

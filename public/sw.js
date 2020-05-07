@@ -21,19 +21,6 @@ var TEST_FILES = [
   '/test'
 ];
 
-// function trimCache(cacheName, maxItems){
-//   caches.open(cacheName)
-//     .then(cache => {
-//       return cache.keys()
-//         .then(keys => {
-//           if (keys.length > maxItems){
-//             cache.delete(keys[0])
-//               .then(trimCache(cacheName, maxItems));
-//           }
-//         });
-//     })
-// }
-
 self.addEventListener('install', function(event){
   console.log('[Service Worker] Installing Service Worker ...', event);
   event.waitUntil(
@@ -46,8 +33,6 @@ self.addEventListener('install', function(event){
 });
 
 self.addEventListener('activate', function(event){
-  // console.log('[Service Worker] Activating Service Worker ...', event);
-  //clean old cache
   event.waitUntil(
     caches.keys()
       .then(keyList => {
@@ -104,69 +89,11 @@ self.addEventListener('fetch', function(event) {
     );
   } else {
     event.respondWith(fetch(event.request));
-    // event.respondWith(
-    //   caches.match(event.request)
-    //     .then(function (response) {
-    //       if (response) {
-    //         return response;
-    //       } else {
-    //         return fetch(event.request)
-    //       }
-    //     })
-    // );
   }
 });
 
-// self.addEventListener('fetch', function(event){
-//   //console.log('[Service Worker] Fetching something ...', event);
-//   var url = '/code';
-//   if(event.request.url.indexOf(url) > -1){
-//     console.log("You requested the page with use login", event);
-//   // } else if (new RegExp('\\b' + STATIC_FILES.join('\\b|\\b') + '\\b').test(event.request.url)){
-//   } else if(false){
-//     console.log("You requested one of the static files");
-//     event.respondWith(
-//       caches.match(event.request)
-//     );
-//   } else {
-//     event.respondWith(
-//       caches.match(event.request)
-//         .then(response => {
-//           if (response){
-//             return response;
-//           } else {
-//             return fetch(event.request)
-//               .then( res => {
-//                 if(event.request.headers.get('accept').includes('text/html')){
-//                   return caches.open(CACHE_DYNAMIC_NAME)
-//                     .then(cache => {
-//                       // trimCache(CACHE_DYNAMIC_NAME, 5);
-//                       cache.put(event.request.url, res.clone());//responses are consumed, so we need to clone the response
-//                       return res;
-//                     })
-//                 } else {
-//                   return res;
-//                 }
-//               })
-//               .catch(err => {
-//                 console.error(err);
-//                 return caches.open(CACHE_STATIC_NAME)
-//                   .then(cache => {
-//                     //event.request.headers.get('accept').includes('text/html')
-//                     if(event.request.url.indexOf('/testing')){
-//                       return cache.match('/testing')
-//                     }
-//                 })
-//               })
-//           }
-//         })
-//     );
-//   }
-// });
-
 //listen to push messages
 self.addEventListener('push', event => {
-  // console.log('Push notification received', event);
   //Fallback (if there is no data)
   var data = {title: 'New', content: 'Something new', openUrl: '/testing'};
   //check whether data exists
@@ -178,7 +105,6 @@ self.addEventListener('push', event => {
     body: data.content,
     icon: '/images/icons/rat.png', //can be url
     image: 'https://www.visit-mannheim.de/extension/portal-mannheim/var/storage/images/media/bibliothek/grosse-bildbuehnen-1440x900px/mannheim_barockschloss_-c-stadtmarketing-mannheim-gmbh_achim-mende_117_1440x900px/19637-9-ger-DE/mannheim_barockschloss_-c-stadtmarketing-mannheim-gmbh_achim-mende_117_1440x900px_liscms-l.jpg',
-    //badge: '',
     data: {
       url: data.openUrl
     }
@@ -193,8 +119,6 @@ self.addEventListener('push', event => {
 self.addEventListener('notificationclick', (event) => {
   var notification = event.notification;
   var action = event.action;
-  // console.log('Notification info', notification);
-
   if(action === 'confirm'){
     notification.close();
   } else {

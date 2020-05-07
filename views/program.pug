@@ -31,11 +31,27 @@ block content
       .program
       
         .card 
-          h2 
-
-          form(action=`/tasks/${test._id}/${test.slug}/${param_language}` method = 'POST' id ="myStudyParametersForm")
-            input.nav__link(type='submit' value=`Update study parameters` class="button" style='margin-top: 20px')
-            h5= `General parameters`
+          h5= `Custom study parameters (beta)`
+          
+          p !{`Creating study parameters is a new feature which we are currently testing. You can define parameters which will be available for all tasks in the study <strong>${project.name}</strong>. `}
+            | !{`You can also randomize these parameters across your participants. `}
+          p !{`To use it, first, add a new parameter below by entering the name of the parameter and clicking <em>Add</em>. `}
+            | !{`This parameter will be available inside all tasks of this study under the name this.parameters.parameterName. `}
+            | !{`For example, you can create a parameter with the name <em>experimentalCondition</em>. `}
+            | !{`Then, inside of each task in the study, you can get this parameter with <code>this.parameters.experimentalCondition.</code> ` }
+          p !{`After you added the new parameter, you can enter the value of this parameter. `}  
+            | !{`Here is where randomization comes into play. If you need several conditions, separate them by a comma. ` }
+            | !{`For example, if you enter <em>baseline, treatment</em> into the field, then for one group of participants the value of the parameter <em>experimentalCondition</em> will be <em>baseline</em>, and for the other group the value will be <em>treatment</em>. ` }
+            | !{`Click at the end the button "Update study parameters" to save your changes. ` }
+          p !{`In the current moment, randomization is done with the equal probability for each value to be assigned to each participant. `}  
+            | !{`In the future, we plan to extend the functionality to accomodate more complicated designs. ` }
+            | !{`Let us know about your needs, and we will be happy to help. ` }
+          p !{`The parameter value will be accessible for you in the table of all participants (under the tab "Data" in the top navigation bar). `}  
+            | !{`If you don't need randomization across participants, you still can use constant parameters. ` }
+            | !{`For that, do not use the comma in the value of parameter. ` }
+            | !{`If you want to delete a study parameter, clear the field and click the button "Update study parameters". ` }
+          form(action=`/parameters/study/${project._id}` method = 'POST' id ="myStudyParametersForm")
+            
             p
             each parameter in project.parameters 
               .formsforparameters
@@ -60,9 +76,11 @@ block content
                 });
               });
           p
-          h5 #{l.addField}
+          h5 Add new parameter
           input(type="text" name= "new_study_field" id="new_study_field" value="name of the new study parameter")
           button.button(type="button" value="Add a field" id="addStudyParameterFieldButton") #{l.add}
+          
+          input.nav__link(type='submit' value=`Update study parameters` form="myStudyParametersForm" class="button" style='margin-top: 20px')
           
           
         
@@ -199,7 +217,7 @@ block content
         
 
 
-      pre= h.dump(project)
+      //- pre= h.dump(project)
       //- pre= h.dump(slug)
       //- pre= h.dump(original)
       //- pre= h.dump(modified)

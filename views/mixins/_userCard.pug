@@ -50,8 +50,12 @@ mixin userCard(person = {}, i)
       if(person.notifications && person.notifications.length > 0)
         td= person.notifications.length
       else 
+        td 
+        
+      if(person.parameters && person.parameters.length > 0)
+        td= person.parameters && person.parameters[0].studyParameters && person.parameters[0].studyParameters.map(p => `${p.name} ${p.content}`)
+      else 
         td  
-
 
       if user.level > 100 || (person.participant_code && person.level < 10)
         td

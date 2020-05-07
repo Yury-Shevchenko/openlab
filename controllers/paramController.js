@@ -40,11 +40,22 @@ exports.deleteParameters = async (req, res) => {
   }
 };
 
-export.postStudyParameters = async (req, res) => {
+exports.postStudyParameters = async (req, res) => {
   const project = await Project.findOne({ _id: req.params.id }, { creator: 1, parameters: 1 });
   confirmOwner(project, req.user);
-  
+  if(req.body) {
+    const params = Object.keys(req.body).map(key => {
+      return {
+        mode: 'random',
+        name: key,
+        content: req.body[key],
+      }
+    }).filter(param => param.content !== '')
+    project.parameters = params;
+    await project.save();
+  }
   req.flash('success', `${res.locals.layout.flash_param_update}`);
+  res.redirect('/tasks');
 };
 
 const confirmOwner = (project, user) => {
