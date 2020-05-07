@@ -317,7 +317,7 @@ router.post('/registernotification', authController.isLoggedIn, catchErrors(jobC
 router.post('/unregisternotification', authController.isLoggedIn, catchErrors(jobController.unsubscribePushNotification));
 
 router.get('/debugprojects',
-  // authController.isSuperAdminLoggedIn,
+  authController.isSuperAdminLoggedIn,
   catchErrors(projectController.debugprojects));
 
 
