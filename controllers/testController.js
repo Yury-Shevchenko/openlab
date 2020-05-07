@@ -413,7 +413,7 @@ exports.getTestBySlug = async (req, res, next) => {
 //get tests that are chosen by the researcher
 exports.getProgramTests = async (req, res) => {
   const project = await Project.findOne({_id: req.user.project._id},{
-    name: 1, tests: 1,
+    name: 1, tests: 1, parameters: 1, 
   });
   if(project){
     const unsortedProjectTests = await Test

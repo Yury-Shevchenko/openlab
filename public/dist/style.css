@@ -722,7 +722,6 @@ label {
   position: relative;
   width: 100%;
   height: -webkit-min-content;
-  height: -moz-min-content;
   height: min-content;
   display: -ms-flexbox;
   display: flex;
@@ -1141,7 +1140,6 @@ and also iPads specifically.
   display: block;
   margin-right: 1rem;
   width: -webkit-fit-content;
-  width: -moz-fit-content;
   width: fit-content; }
   .tag__choice {
     display: -ms-flexbox;
@@ -1503,7 +1501,15 @@ and also iPads specifically.
   font-size: 1.8rem;
   line-height: 1.5;
   -webkit-margin-after: 1em;
-  margin: 1rem; }
+  margin: 1rem;
+  text-align: justify; }
+
+.list-item {
+  font-size: 1.7rem;
+  line-height: 1.5;
+  -webkit-margin-after: 1em;
+  margin: 1rem;
+  text-align: justify; }
 
 pre.error {
   padding: 5rem;
@@ -2134,7 +2140,6 @@ i.yes:after {
   padding: 20px 5px 20px 5px;
   text-align: center;
   height: -webkit-fit-content;
-  height: -moz-fit-content;
   height: fit-content; }
   .project__hero:before {
     display: block;

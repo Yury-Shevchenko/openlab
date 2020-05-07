@@ -62,8 +62,8 @@ const projectSchema = new mongoose.Schema({
     title          : String,
     policy         : { type: String, default: 'OL' },
     project_link   : String,
-  }
-
+  },
+  parameters       : [{ mode: String, name: String, content: JSON }],
 });
 
 projectSchema.statics.getCurrentProjects = function() {
