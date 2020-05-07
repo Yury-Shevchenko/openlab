@@ -232,6 +232,8 @@ router.get('/test/:slug/:id/:lang', catchErrors(testController.runTest));
 //PARAMETERS controller
 router.post('/tasks/:task/:slug/:lang', authController.isLoggedIn, catchErrors(paramController.postParameters)); //change parameters of the task
 router.get('/parameters/delete/:id', authController.isLoggedIn, catchErrors(paramController.deleteParameters));
+// post general study parameters
+router.post('/parameters/study/:id', authController.isLoggedIn, catchErrors(paramController.postStudyParameters));
 
 //RESULTS controller
 //for participants
@@ -320,9 +322,5 @@ router.get('/debugprojects',
   authController.isSuperAdminLoggedIn,
   catchErrors(projectController.debugprojects));
 
-
-router.post('/uploadimage', catchErrors(userController.uploadImage));
-
-router.post('/api/mouselab', testController.mouselab);
 
 module.exports = router;

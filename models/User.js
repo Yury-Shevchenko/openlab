@@ -81,6 +81,10 @@ const userSchema = new Schema({
           date            : { type: Date, default: Date.now },
         }
     ],
+    parameters            : [{
+          project_id      : { type : mongoose.Schema.ObjectId, ref : 'Project' },
+          studyParameters : [{ mode: String, name: String, content: String }],
+    }],
 }, { toJSON: { virtuals: true } });
 
 //methods
@@ -149,6 +153,14 @@ userSchema.statics.getUsersOfProject = function(project) {
         numberDataRequests: { $sum: '$results.dataRequests' },
         notifications: '$$ROOT.notifications',
         storage: '$results.storage',
+        parameters: {
+          $filter: {
+            input: '$$ROOT.parameters',
+            as: "params",
+            cond: {
+              $eq: [ "$$params.project_id", project]
+            }
+          }}
       }
     },
     { $sort : {identity: 1}}, //from highest to lowest
@@ -198,7 +210,6 @@ userSchema.statics.getUsers = function() {
       }
     },
     //filter where at least one item in results exists (users without results will be filtered out)
-    //{ $match: { 'results.0' : { $exists: true }} },
     { $match: { 'level' : { $lt: 10 }} },//filter only users
     //add the average field ($addField)
     { $project: {
@@ -210,7 +221,6 @@ userSchema.statics.getUsers = function() {
         language: '$$ROOT.language',
         project: '$$ROOT.project',
         projectidentity: '$$ROOT.projectidentity',
-        //results: '$$ROOT.results',
         averageRating: {$avg: '$results.rating'},
         numberTests: {$size:
           { $setUnion: '$results.text' }
@@ -219,8 +229,6 @@ userSchema.statics.getUsers = function() {
     },
     //sort it by new field
     { $sort : {identity: 1}} //from highest to lowest
-    //limit to at most 10
-    //{ $limit : 10 }
   ]);
 };
 
@@ -228,44 +236,6 @@ userSchema.statics.getUsers = function() {
 userSchema.statics.getResearchers = function() {
   return this.aggregate([
     { $match: { 'level' : { $gt: 10 }} }, // filter only researchers
-    // { $lookup:
-    //   {
-    //     from: 'tests',
-    //     let: { current_creator: '$_id' },
-    //     pipeline: [
-    //       { $match:
-    //         { $expr:
-    //           { $and:
-    //             [
-    //               { $eq: ['$author', '$$current_creator' ]}
-    //             ]
-    //           }
-    //         }
-    //       },
-    //       {$project: {_id: 1}}
-    //     ],
-    //     as: 'tests'
-    //   }
-    // },
-    // { $lookup:
-    //   {
-    //     from: 'projects',
-    //     let: { current_leader: '$_id' },
-    //     pipeline: [
-    //       { $match:
-    //         { $expr:
-    //           { $and:
-    //             [
-    //               { $eq: ['$creator', '$$current_leader' ]}
-    //             ]
-    //           }
-    //         }
-    //       },
-    //       {$project: {_id: 1}}
-    //     ],
-    //     as: 'projects'
-    //   }
-    // },
     { $project: {
         email: '$$ROOT.email',
         participant_id: '$$ROOT.openLabId',
@@ -281,18 +251,11 @@ userSchema.statics.getResearchers = function() {
         subscription_period: '$$ROOT.subscription_period',
         subscription_plan: '$$ROOT.subscription_plan',
         subscription_status: '$$ROOT.subscription_status',
-        // numberResearcherTests: {$size:
-        //   { $setUnion: '$tests._id' }
-        // },
-        // numberResearcherCreatedProjects: {$size:
-        //   { $setUnion: '$projects._id' }
-        // },
       }
     },
     { $sort : {identity: 1}} // from highest to lowest
   ]);
 };
-
 
 //the method for tp ranking list, return only general information about users
 userSchema.statics.getTopUsers = function(project_id) {
@@ -308,8 +271,6 @@ userSchema.statics.getTopUsers = function(project_id) {
       //list variables that are needed
         name: '$$ROOT.name',
         level: '$$ROOT.level',
-        //identity: '$$ROOT.identity',
-        //results: '$$ROOT.results',
         averageRating: {$sum: '$results.rating'},//to sum all ratings from all tasks
         numberTests: {$size:
           { $setUnion: '$results.text' }
@@ -318,32 +279,8 @@ userSchema.statics.getTopUsers = function(project_id) {
     },
     //sort it by new field
     { $sort : {averageRating: -1}}, //from highest to lowest
-    //limit to at most 10
-    //{ $limit : 10 }
   ]);
 };
-
-// userSchema.statics.getCurrentProjects = function() {
-//   return this.aggregate([
-//     { $match: { 'level' : { $gt: 10 }} },//filter only users
-//     { $match: { 'created_project' : { $exists: true } }}, //filter users without projects
-//     { $match: { 'created_project' : { $ne: ''} }}, //filter projects without names
-//     { $project: {
-//         created_project: '$$ROOT.created_project'
-//       }},
-//   ]);
-// };
-
-//TODO finish gravatar
-// userSchema.virtual('gravatar').get(function(){
-//   if(this.email){
-//     const hash = md5(this.email);
-//     return `https://gravatar.com/avatar/${hash}?s=200`;
-//   } else {
-//     //return some standard picture
-//     return `https://www.argospetinsurance.co.uk/assets/uploads/2017/12/cat-pet-animal-domestic-104827.jpeg`;
-//   }
-// });
 
 //find projects which user has created
 userSchema.virtual('projects', {

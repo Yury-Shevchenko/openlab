@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Param = mongoose.model('Param');
+const Project = mongoose.model('Project');
 
 //save parameters of the task in the database
 exports.postParameters = async (req, res) => {
@@ -36,5 +37,29 @@ exports.deleteParameters = async (req, res) => {
     await param.remove();
     req.flash('success', `${res.locals.layout.flash_param_update}`);
     res.redirect('/tasks');
+  }
+};
+
+exports.postStudyParameters = async (req, res) => {
+  const project = await Project.findOne({ _id: req.params.id }, { creator: 1, parameters: 1 });
+  confirmOwner(project, req.user);
+  if(req.body) {
+    const params = Object.keys(req.body).map(key => {
+      return {
+        mode: 'random',
+        name: key,
+        content: req.body[key],
+      }
+    }).filter(param => param.content !== '')
+    project.parameters = params;
+    await project.save();
+  }
+  req.flash('success', `${res.locals.layout.flash_param_update}`);
+  res.redirect('/tasks');
+};
+
+const confirmOwner = (project, user) => {
+  if(!project.creator.equals(user._id) || user.level <= 10){
+    throw Error('You must own a project in order to do it!');
   }
 };

@@ -201,7 +201,6 @@ exports.getData = async (req, res) => {
   const skip = (page * limit) - limit;
   const usersPromise = User
     .getUsersOfProject(req.user.project._id)
-    // .sort( {created: 'asc'} )
     .skip(skip)
     .limit(limit);
   const countPromise = User.countDocuments({$or: [{participantInProject: req.user.project._id}, {participant_projects: req.user.project._id}]});
@@ -498,79 +497,6 @@ exports.help = async(req, res) => {
   res.render('help');
 }
 
-// exports.sendPushNotification = async(req, res) => {
-//
-//   //TODO: write better method to extract notifications from users of the project
-//   const users =  await User.getUsersOfProject(req.user.project._id);
-//
-//   //test schedule
-//   //https://www.npmjs.com/package/node-schedule
-//   let startTime = new Date(Date.now() + 5000);
-//   let endTime = new Date(startTime.getTime() + 25000);
-//   var j = schedule.scheduleJob({ start: startTime, end: endTime, rule: '*/5 * * * * *' }, function(){
-//     console.log('Time to send a notification!');
-//     sendNotification();
-//   });
-//   await webpush.setVapidDetails('mailto:shevchenko_yury@mail.ru', process.env.VAPID_PUBLIC_KEY, process.env.VAPID_PRIVATE_KEY);
-//
-//   function sendNotification(){
-//     if (users){
-//       users.map(user => {
-//         if (user.notifications && user.notifications.length > 0){
-//           console.log("User code", user.participant_code);
-//           const subs = user.notifications;
-//           subs.forEach(function(sub){
-//             //console.log('Subscription', sub);
-//             const pushConfig = {
-//               endpoint: sub.endpoint,
-//               keys: {
-//                 auth: sub.keys.auth,
-//                 p256dh: sub.keys.p256dh
-//               }
-//             };
-//             setTimeout(() => {
-//               webpush.sendNotification(pushConfig, JSON.stringify({
-//                 'title': 'New task',
-//                 'content': 'Please complete this test now.',
-//                 'openUrl': '/test/lottery/5c4b9ae7057cf40a046e243b'
-//               })) //payload is limited to 4kb
-//               .then(res => {
-//                 console.log("Notification was sent", res.statusCode);
-//               })
-//               .catch(err => {
-//                 console.log("The error happened", err.statusCode);
-//                 //TODO: remove subscription if it is not valid anymore (check it in response)
-//               })
-//             }, 500);
-//           })
-//         }
-//       })
-//     }
-//   }
-//
-//   res.status(201).json({message: 'Data received'});
-// };
-
-exports.uploadImage = async (req, res) => {
-  const formData = new formidable.IncomingForm();
-  formData.parse(req, function(err, fields, files){
-    // fs.rename(files.image.path, './public/uploads/' + files.image.name);
-    var oldpath = files.image.path;
-    var newpath = 'C:/Yury/' + files.image.name;
-    fs.rename(oldpath, newpath, function (err) {
-       if (err) throw err;
-       res.write('File uploaded and moved!');
-       res.end();
-     });
-  });
-  // fs.writeFile('public/uploads/' + files.image.name, buffer, (err) => {
-  //   if (err) throw err;
-  //   //console.log('The file has been saved!');
-  // });
-
-  res.status(201).json({message: 'Data received'});
-};
-
 exports.osfIntegration = async (req, res) => {
   const project = await Project.findOne({_id: req.user.project._id},{
     name: 1, osf: 1, description: 1,
@@ -583,7 +509,6 @@ exports.invite = async (req, res) => {
   let queryParams;
   if(req.query && Object.keys(req.query).length){
     queryParams = req.query;
-    console.log("queries", Object.keys(req.query).length, req.query);
   }
   let joined_project, temporary_code;
   if(req.params.project){

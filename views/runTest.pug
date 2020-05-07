@@ -31,10 +31,21 @@ html
           p #{layout.lab_js_loading_2}
 
     script(nonce=`${noncevalue}`).
-      const params = !{JSON.stringify(params)}
+      const params = !{JSON.stringify(params)} || {};
+      const studyParameters = !{JSON.stringify(studyParameters)} || [];
+      if(studyParameters && studyParameters.length > 0){
+        const studyParamsObject = studyParameters.map(param => {
+          let content = param.content;
+          if(content.includes(',')){
+            const contentArray = content.split(',');
+            content = contentArray[Math.floor(Math.random() * contentArray.length)];
+          }
+          params[param.name] = content;  
+        });
+      }
       window.addEventListener('message', (event) => {
         //events at the end of the script
-      })
+      });
 
     //-upload script
     script(defer type='text/javascript' nonce=`${noncevalue}`).
