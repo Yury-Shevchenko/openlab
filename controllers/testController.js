@@ -607,7 +607,7 @@ exports.runTest = async (req, res) => {
     project: (req.user && req.user.participantInProject) || (req.user && req.user.project._id ) || test.project
   };
   // get the parameters from the user/study
-  let studyParameters;
+  let studyParameters = [];
   if(req.user && req.user.parameters && req.user.parameters.length > 0) {
     const userParamsForThisProject = req.user.parameters.filter(param => param.project_id.toString() === feature.project.toString());
     if(userParamsForThisProject && userParamsForThisProject.length > 0){
