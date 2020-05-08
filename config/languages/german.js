@@ -74,6 +74,16 @@ module.exports = {
     'users': 'Teilnehmer',
     'tests': 'Meine Tests',
     'message_logged_in': 'Sie sind angemeldet',
+    'message_code_logged_in': `Sie sind bereits bei Open Lab eingeloggt. Bitte loggen Sie sich zuerst aus, um diesen Link zu benutzen.
+      Der Logout-Button befindet sich auf der rechten Seite der oberen Navigationsleiste.
+    `,
+    'message_code_logged_in_researcher': `Lassen Sie mich raten: Sie wollen Ihre eigene Studie testen?
+      Das ist toll, aber Sie sind bereits als Forscher bei Open Lab angemeldet.
+      Um die Studie zu testen, benutzen Sie entweder die <a href="/testing">Demo Page</a>,
+      oder öffnen Sie diesen Link in einem anderen Browser oder im Inkognito-Modus.
+      Natürlich können Sie sich auch zuerst <a href="/logout">ausloggen</a>,
+      und benutzen Sie dann diesen Link.
+    `,
     'message_signup': 'Wenn Sie zum ersten Mal hier sind, melden Sie sich bitte als '+
         '<a href="/sign">Teilnehmer</a>'
          + ' oder als ' +

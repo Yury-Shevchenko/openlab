@@ -13,7 +13,10 @@ block content
 
     .card
       if user
-        h5 #{layout.message_logged_in}
+        if user.level && user.level > 10
+          p !{layout.message_code_logged_in_researcher}
+        else 
+          p #{layout.message_code_logged_in}
 
       if !user
         form.form(action="/auth/code" method="POST")
@@ -45,8 +48,6 @@ block content
                 option(value='' style="" selected=!joined_project) – #{layout.choose_project} –
                 each project in projects
                   option(value=project._id, selected=(project.name==joined_project))= project.name
-            
-   
           
           p
           input.button(type="submit" value=layout.enter)

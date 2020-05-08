@@ -7,7 +7,10 @@ block content
   .inner
     if user
       .card 
-        h2 #{layout.message_logged_in}
+        if user.level && user.level > 10
+          p !{layout.message_code_logged_in_researcher}
+        else 
+          p #{layout.message_code_logged_in}
 
     if !user
       +signParticipantForm()

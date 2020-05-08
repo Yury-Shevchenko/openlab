@@ -43,12 +43,6 @@ router.post('/auth/code', passport.authenticate('local-code'), function(req, res
   }
 })
 
-// router.post('/auth/code', passport.authenticate('local-code', {
-//   successRedirect : '/testing/start/', // redirect directly to the first test
-//   failureRedirect: '/code',
-//   failureFlash : true
-// }))
-
 //signing up
 router.post('/auth/participant/email/sign',
   passport.authenticate('local-signup-participant', {

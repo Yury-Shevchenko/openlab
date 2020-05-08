@@ -5,6 +5,13 @@ block header
 block content
   .inner
     .card
+      
+      if user
+        if user.level && user.level > 10
+          p !{layout.message_code_logged_in_researcher}
+        else 
+          p #{layout.message_code_logged_in}
+          
       if !user
         form.form(action="/auth/code" method="POST")
           if (code)

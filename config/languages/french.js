@@ -74,6 +74,16 @@ module.exports =
       'users': 'Run',
       'tests': 'Tasks',
       'message_logged_in': 'You are logged in',
+      'message_code_logged_in': `You are already logged in on Open Lab. Please, log out first to use this link.
+        The logout button is on the right side of the top navigation bar.
+      `,
+      'message_code_logged_in_researcher': `Let me guess, you want to test your own study?
+        That's great, however you are already logged in on Open Lab as a researcher.
+        To test the study, either use the <a href="/testing">Demo page</a>,
+        or open this link in another browser or incognito mode.
+        Of course, you can also <a href="/logout">log out</a> first,
+        and then use this link.
+      `,
       'message_signup': 'If it is your first time here, please sign up as a '+
         '<a href="/sign">participant</a>'
          + ' or as a ' +
