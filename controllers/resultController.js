@@ -10,12 +10,6 @@ const Param = mongoose.model('Param');
 const Project = mongoose.model('Project');
 const fetch = require('node-fetch');
 
-//show the results on the page with chosen tests
-// exports.getResultsOfTest = async (req, res) => {
-//   const results = await Result.getResults({ test: req.params.task, project_id: req.user._id });//returns an array
-//   res.render('chosentests', {results, task: req.params.task, slug: req.params.slug});
-// };
-
 //show the results of one user on a separate page
 exports.showParticipantResults = async (req, res) => {
   const results = await Result.getParticipantResults({ author: req.user._id });
@@ -95,7 +89,7 @@ exports.downloadprojectdata = async (req, res) => {
   let keys = [];
   const name = req.user.project.name;
   const croppedName = name.split(' ').join('-');
-  res.setHeader('Content-disposition', 'attachment; filename=' + croppedName +'.csv');
+  res.setHeader('Content-disposition', 'attachment; filename=' + croppedName.replace(/[^\x00-\x7F]/g, "") + 'projectData.csv');
   const input = new stream.Readable({ objectMode: true });
   input._read = () => {};
   var cursor = await Result
@@ -132,7 +126,7 @@ exports.downloadprojectmetadata = async (req, res) => {
   let first = true;
   const name = req.user.project.name;
   const croppedName = name.split(' ').join('-');
-  res.setHeader('Content-disposition', 'attachment; filename=meta_' + croppedName +'.csv');
+  res.setHeader('Content-disposition', 'attachment; filename=meta_' + croppedName.replace(/[^\x00-\x7F]/g, "") +'.csv');
   const input = new stream.Readable({ objectMode: true });
   input._read = () => {};
   var cursor = await Result
@@ -163,7 +157,7 @@ exports.downloadSummaryData = async (req, res) => {
   let keys = [];
   const name = req.user.project.name;
   const croppedName = name.split(' ').join('-');
-  res.setHeader('Content-disposition', 'attachment; filename=' + croppedName +'.csv');
+  res.setHeader('Content-disposition', 'attachment; filename=' + croppedName.replace(/[^\x00-\x7F]/g, "") +'.csv');
   const input = new stream.Readable({ objectMode: true });
   input._read = () => {};
   var cursor = await Result

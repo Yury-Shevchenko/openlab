@@ -451,7 +451,7 @@ module.exports =
         'savedResults': 'Results: ',
         'modifiedVersions': 'Other studies using the task: ',
         'confirmMessage_1': 'Type the name of the task ',
-        'confirmMessage_2': ' to confirm that you want to delete the task. This action is not reversable. Please take into account that the deletion of the task will affect the studies that use it.',
+        'confirmMessage_2': ' in the empty text field below to confirm that you want to delete the task. This action is not reversable. Please take into account that the deletion of the task will affect the studies that use it.',
         'delete': 'Delete',
         'version': 'Task version',
         'authorInformation': 'Author information',
