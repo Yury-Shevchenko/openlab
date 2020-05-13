@@ -285,7 +285,7 @@ module.exports =
         'numberResults': 'Results: ',
         'numberParticipants': 'Active participants: ',
         'confirmMessage_1': 'Please type the name of the study ',
-        'confirmMessage_2': ' to confirm that you want to delete the study. ',
+        'confirmMessage_2': ' in the text field below to confirm that you want to delete the study. ',
         'confirmMessage_3': 'All results of this study will be deleted.',
         'confirmMessage_4': ' This action is not reversable.',
         'delete': 'Delete',

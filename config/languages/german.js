@@ -281,7 +281,7 @@ module.exports = {
       'numberResults': 'Ergebnisse: ',
       'numberParticipants': 'Aktive Teilnehmer: ',
       'confirmMessage_1': 'Bitte geben Sie den Namen der Studie ',
-      'confirmMessage_2': ' ein, um zu bestätigen, dass Sie die Studie löschen möchten. ',
+      'confirmMessage_2': ' im Textfeld unten ein, um zu bestätigen, dass Sie die Studie löschen möchten. ',
       'confirmMessage_3': 'Alle Ergebnisse dieser Studie werden gelöscht.',
       'confirmMessage_4': ' Diese Aktion ist nicht umkehrbar.',
       'delete': 'Löschen',
