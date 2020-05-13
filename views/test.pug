@@ -16,9 +16,9 @@ block content
         if user && user.level > 10
           nav
             .nav__section(style='justify-content:center')
-              li.nav__item
-                a.nav__link(target="_blank" href=`/test/${test.slug}/${user._id}`) 
-                  h6 #{l.test_card_run}
+              //- li.nav__item
+              //-   a.nav__link(target="_blank" href=`/test/${test.slug}/${user._id}`) 
+              //-     h6 #{l.test_card_run}
               if (test && test.production && test.production == 'beta')
                 li.nav__item 
                   a.nav__link(target='blank' href=`https://labjs-beta.netlify.com/?url=https://open-lab.online/labjs/${test._id}`) 

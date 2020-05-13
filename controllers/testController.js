@@ -201,7 +201,7 @@ exports.getMyTests = async (req, res) => {
 //show all tests
 exports.getAllTests = async (req, res) => {
   const page = req.params.page || 1;
-  const limit = 18;
+  const limit = 36;
   const skip = (page * limit) - limit;
   const tag = req.params.tag;
   const tagQuery = tag || { $exists: true };
