@@ -261,7 +261,7 @@ exports.openJSONinLabJS = async (req, res) => {
   const file = test.json;
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET');
-  res.setHeader('Content-disposition', 'attachment; filename=' + test.name +'.json');
+  res.setHeader('Content-disposition', 'attachment; filename=' + test.name.replace(/[^\x00-\x7F]/g, "") +'.json');
   res.status(200).send(file);
 };
 
