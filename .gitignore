@@ -4,3 +4,4 @@ node_modules/
 variables.env
 variables.env.now
 public/uploads
+package-lock.json
