@@ -293,7 +293,7 @@ module.exports =
         'showCompletionCode': 'Generate and show participants a unique individual code when all tasks are completed.',
         'welcomeMessage': 'Message to participants before completion of tasks',
         'completionMessage': 'Message to participants after completion of tasks',
-        'askNotifications': 'Ask users to allow notifications (we are currently testing notifications, participants should use Chrome on a desktop computer).',
+        'askNotifications': `Ask users to allow notifications (this functionality is deprecated, check <a target='_blank' href="/notifications"><b>Notifications</b></a> for more information).`,
         'allowMultipleParticipation': 'Allow participants multiple participation in the same test.',
       },
 
@@ -712,6 +712,13 @@ module.exports =
           'table_delete': 'Delete',
           'delete_notifications': 'Delete all notifications',
           'registering_busy_message': 'Registering notification ...',
+          'deprecation_message': `
+            The notification functionality in Open Lab is deprecated and will not be used in the near future.
+            If you want to send notifications to your participants via mobile phone (e.g. for experience sampling studies),
+            please have a look at our other project <a target='blank' href='https://samply.js.org/'>Samply</a>.
+            Samply can be integrated with your study created in Open Lab.
+            We support both Android and iOS mobile operation systems with a mobile application <em>Samply Research</em> for participants available at Google Play and App Store.
+          `,
         },
 
         'osf': {

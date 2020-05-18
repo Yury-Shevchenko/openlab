@@ -709,6 +709,13 @@ module.exports = {
         'table_delete': 'Löschen',
         'delete_notifications': 'Alle Benachrichtigungen löschen',
         'registering_busy_message': 'Registrierung der Benachrichtigung ...',
+        'deprecation_message': `
+          Die Benachrichtigungsfunktionalität in Open Lab ist veraltet und wird in naher Zukunft nicht mehr verwendet werden.
+          Wenn Sie Benachrichtigungen an Ihre Teilnehmer per Handy versenden möchten (z.B. für Experience Sampling Studien),
+          schauen Sie sich bitte unser anderes Projekt an <a target='blank' href='https://samply.js.org/'>Samply</a>.
+          Samply kann in Ihre im Open Lab erstellte Studie integriert werden.
+          Wir unterstützen sowohl Android- als auch iOS-Mobilbetriebssysteme mit einer mobilen Anwendung <em>Samply Research</em> für Teilnehmer, die im Google Play und App Store verfügbar ist.
+        `,
       },
 
       'osf': {

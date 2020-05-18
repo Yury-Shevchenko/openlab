@@ -30,6 +30,8 @@ block content
         link(href='/javascripts/datepicker/bootstrap-duration-picker.css', rel='stylesheet', type='text/css' nonce=`${noncevalue}`)
         
         .notificationsPanel
+          .card
+            p !{l.deprecation_message}
           p #{l.testing_message}
           h6 #{l.title} 
           input#titleContent(type='text', value = l.title_placeholder)
