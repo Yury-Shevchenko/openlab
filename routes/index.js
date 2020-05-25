@@ -316,5 +316,7 @@ router.get('/debugprojects',
   authController.isSuperAdminLoggedIn,
   catchErrors(projectController.debugprojects));
 
+//news page
+router.get('/news', userController.newsPage);
 
 module.exports = router;

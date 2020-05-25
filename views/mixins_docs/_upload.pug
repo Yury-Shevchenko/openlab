@@ -8,8 +8,8 @@ mixin upload()
     | You will see a form for adding a new task that will be filled with information from lab.js. 
     | When you first join Open Lab, the form contains fields to register a new account by entering an email address and a password. 
     | The procedure is simple and fast, as shown here:
-  .videocontainer(style='display: grid; padding: 20px; justify-content: center;') 
-    video(controls='', src='/docs/video/1-upload_test.webm' style="max-width: 800px;")
+  .videoTutorial
+    video(controls='', src='/docs/video/1-upload_test.webm')
 
   h5
     .headerLink !{l.upload_allTasks_title}
@@ -25,3 +25,8 @@ mixin upload()
     .headerLink !{l.upload_newTask_title}
   p.card-message 
     | #{l.upload_newTask_1}
+  
+  h5 
+    .headerLink Video tutorial: Upload a lab.js task to Open Lab    
+  .videoTutorial
+    iframe(src="https://www.youtube.com/embed/3L4Xcsc397I" allowfullscreen)

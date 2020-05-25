@@ -11,8 +11,8 @@ mixin project()
   p.card-message 
     | #{l.project_projects_3}
   
-  .videocontainer(style='display: grid; padding: 20px; justify-content: center;') 
-    video(controls='', src='/docs/video/2-create_study.webm' style="max-width: 800px;")
+  .videoTutorial
+    video(controls='', src='/docs/video/2-create_study.webm')
   
   h5 
     .headerLink !{l.project_tasks_title}
@@ -46,4 +46,7 @@ mixin project()
   p.card-message 
     | #{l.project_demoResults_1}
     
-    
+  h5 
+    .headerLink Video tutorial: Managing studies in Open Lab    
+  .videoTutorial
+    iframe(src="https://www.youtube.com/embed/cuu3q4SInWE" allowfullscreen)    

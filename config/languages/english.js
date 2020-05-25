@@ -195,7 +195,10 @@ module.exports =
         You still can host and run your test in Open Lab, but unfortunately we cannot store the original JSON file on the platform.
         Please make sure that you keep your JSON file safely in your local storage.`,
       'agree_toOpenLab' : `I agree to the Open Lab <a target="_blank" href="/docs/terms">Terms of Service</a> and <a target="_blank" href="/docs/policy">Privacy Policy</a>`,
-
+      'footer_docs': `<a href="/docs/intro">Documentation</a>`,
+      'footer_contacts': `<a href="/docs/help">Contacts</a>`,
+      'footer_terms': `<a href="/docs/terms">Terms of Service</a>`,
+      'footer_policy': `<a href="/docs/policy">Privacy Policy</a>`,
     },
 
     'passport': {
@@ -256,7 +259,7 @@ module.exports =
       'part_2': 'Easy and convenient authorization',
       'part_2_text': 'Registered once on Open Lab, you do not have to sign up for each individual study.',
       'part_3': 'Data protection compliance',
-      'part_3_text': 'Check what kind of data is available to researchers, request the deletion of your data if you wish.',
+      'part_3_text': `Check our <a target="_blank" href="/docs/terms">Terms & Conditions</a> and <a target="_blank" href="/docs/policy">Privacy Policy</a>.`,
 
     },
 
@@ -730,7 +733,7 @@ module.exports =
             'This means that you can have an unlimited number of participants if you store your data in the OSF. '
             ,
           'announcement_errors': 'If you notice some errors, please let us know via our ' +
-            '<a target="_blank" href="https://join.slack.com/t/open-lab-online/shared_invite/enQtNDU3MzgzMzY4NDcxLTBjZTg1NmViYTEwYWI0NmE3MDZmM2QwMzNhZmRmNmZkMDRhMzhlNTZlZWU2OWU0MmU5YTBhMjU4MWFlYjcwYjA">Slack channel</a> ' +
+            '<a target="_blank" href="https://join.slack.com/t/open-lab-online/shared_invite/enQtNDU3MzgzMzY4NDcxLWZhYzU0MGU3MDFkNTNlZmI2MjQ4YzdlNzE3ZmYwMThmM2I1YTg5YjNiYjg3MzEzOGI5YzhkYzI0OTQ2Yjg1Y2Q">Slack channel</a> ' +
             ' or the ' +
             '<a target="_blank" href="/docs/faq"> support form</a>.',
           'sync_header_1': 'Your Open Lab project ',

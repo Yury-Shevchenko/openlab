@@ -195,6 +195,10 @@ module.exports =
         Пожалуйста, убедитесь, что вы храните ваш JSON-файл в безопасном месте в вашем компьютере.`,
       'agree_toOpenLab' : `Настоящим подтверждаю, что я ознакомлен и согласен с <a target="_blank" href="/docs/terms">условиями сервиса</a> и <a target="_blank" href="/docs/policy">политикой конфиденциальности</a>.`,
 
+      'footer_docs': `<a href="/docs/intro">Документация</a>`,
+      'footer_contacts': `<a href="/docs/help">Контакты</a>`,
+      'footer_terms': `<a href="/docs/terms">Условия</a>`,
+      'footer_policy': `<a href="/docs/policy">Политика конфиденциальности</a>`,
     },
 
     'passport': {
@@ -734,7 +738,7 @@ module.exports =
           'Это означает, что в вашем эксперименте можете принять участие неограниченное количество испытуемых, если вы решили хранить результаты на OSF. '
           ,
         'announcement_errors': 'Если вы заметили ошибку, пожалуйста сообщите нам через ' +
-          '<a target="_blank" href="https://join.slack.com/t/open-lab-online/shared_invite/enQtNDU3MzgzMzY4NDcxLTBjZTg1NmViYTEwYWI0NmE3MDZmM2QwMzNhZmRmNmZkMDRhMzhlNTZlZWU2OWU0MmU5YTBhMjU4MWFlYjcwYjA">Slack канал</a> ' +
+          '<a target="_blank" href="https://join.slack.com/t/open-lab-online/shared_invite/enQtNDU3MzgzMzY4NDcxLWZhYzU0MGU3MDFkNTNlZmI2MjQ4YzdlNzE3ZmYwMThmM2I1YTg5YjNiYjg3MzEzOGI5YzhkYzI0OTQ2Yjg1Y2Q">Slack канал</a> ' +
           ' или ' +
           '<a target="_blank" href="/docs/faq"> отправьте сообщение на сайте</a>.',
         'sync_header_1': 'Ваш проект ',

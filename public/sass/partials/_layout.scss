@@ -1,21 +1,34 @@
 html {
   font-size: 10px;
+  height: 100%;
 }
 
 body {
-  //background: $purple;
+  height: 100%;
   background: #fcfcff;
   &:before {
-    // content: '';
-    // display: block;
-    // //background: $grad;
-    // background: linear-gradient(10deg, lightskyblue 80%, deepskyblue 90%) fixed;
-    // height: 10px;
-    // width: 100%;
   }
 }
 
+.content {
+  min-height: 94%;
+  display: grid;
+  grid-template-rows: 1fr auto;
+}
+
+.content-inside {
+  padding-bottom: 100px;
+}
+
+footer {
+  border-top: 1px #e8e8f1 solid;
+  background: #fcfcff;
+  padding: 20px;
+  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 1);
+}
+
 .inner {
+  width: 100%;
   max-width: 1300px;
   margin: 0 auto;
   padding: 1rem;
@@ -56,16 +69,10 @@ body {
 
 .notificationsPanel {
   display: grid;
-  // grid-template-columns: 1fr 1fr;
-  // grid-column-gap: 20px;
 }
 
 .notificationContainer{
   display: grid;
-  // grid-template-columns: repeat(auto-fit, minmax(40px, 120px));
-  // grid-column-gap: 20px;
-  // align-items: stretch;
-  // font-size: larger;
 }
 
 .cronintervalPicker{

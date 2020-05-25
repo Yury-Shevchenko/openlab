@@ -10,10 +10,13 @@ block content
           li.nav__item: a.nav__link(href="/data", class=(currentPath.startsWith('/data') ? 'nav__link--active' : '')) #{layout.results}
           li.nav__item: a.nav__link(href="/osf", class=(currentPath.startsWith('/osf') ? 'nav__link--active' : '')) OSF
     p
-    p #{l.announcement_header}
-    p !{l.announcement}
-    p !{l.announcement_errors}
-    
+    .imageOSFContainer    
+      .div
+        p(style="font-weight: 700;") #{l.announcement_header}
+        p(style="text-align: justify") !{l.announcement}
+        p !{l.announcement_errors}
+      <img src="/images/artwork/Ol-oSf_Done.png"/>
+  
     .userTable
       
       if(project && user.project && user.project.name)

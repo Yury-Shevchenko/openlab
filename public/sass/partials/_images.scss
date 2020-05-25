@@ -1,0 +1,98 @@
+.imageLeftContainer {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  grid-column-gap: 30px;
+  align-items: center;
+  margin: 20px;
+  @media (max-width: 725px) {
+    grid-template-columns: 1fr;
+    grid-row-gap: 30px;
+    img {
+      width: 80%;
+      margin: 0 auto;
+    }
+  }
+}
+
+.imageRightContainer {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  grid-column-gap: 30px;
+  align-items: center;
+  margin: 20px;
+  @media (max-width: 725px) {
+    grid-template-columns: 1fr;
+    grid-row-gap: 30px;
+    img {
+      width: 80%;
+      margin: 0 auto;
+    }
+  }
+}
+
+.imageOSFContainer {
+  display: grid;
+  grid-template-columns: 4fr 1fr;
+  grid-column-gap: 30px;
+  align-items: center;
+  margin: 20px;
+  @media (max-width: 725px) {
+    grid-template-columns: 1fr;
+    grid-row-gap: 30px;
+    img {
+      width: 50%;
+      margin: 0 auto;
+    }
+  }
+}
+
+.headerImageText {
+  margin: 0;
+  color: #007dcc;
+  font-weight: 700;
+  font-size: 2.5rem;
+}
+
+.imageText {
+  margin: 0 0 2em;
+  color: #636161;
+  font-size: 2rem;
+  text-align: justify;
+}
+
+.videoTutorial {
+  overflow: hidden;
+  // Calculated from the aspect ration of the content (in case of 16:9 it is 9/16= 0.5625)
+  padding-top: 56.25%;
+  position: relative;
+}
+
+.videoTutorial iframe {
+   border: 0;
+   height: 100%;
+   left: 0;
+   position: absolute;
+   top: 0;
+   width: 100%;
+}
+
+.videoTutorial video {
+   border: 0;
+   height: 100%;
+   left: 0;
+   position: absolute;
+   top: 0;
+   width: 100%;
+}
+
+.news-card {
+  background: white;
+  padding: 3rem;
+  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
+  height: inherit;
+  margin: 10px;
+  .header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}

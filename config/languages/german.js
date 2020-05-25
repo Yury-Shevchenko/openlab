@@ -194,6 +194,11 @@ module.exports = {
         Sie können Ihren Test immer noch in Open Lab hosten und ausführen, aber leider können wir die ursprüngliche JSON-Datei nicht auf der Plattform speichern.
         Bitte stellen Sie sicher, dass Sie Ihre JSON-Datei sicher in Ihrem lokalen Speicher aufbewahren.`,
     'agree_toOpenLab' : `Ich habe die <a target="_blank" href="/docs/terms">Servicebedinungen</a> und <a target="_blank" href="/docs/policy">Datenschutzrichtlinie</a> von Open Lab gelesen und stimme ihnen zu.`,
+
+    'footer_docs': `<a href="/docs/intro">Dokumentation</a>`,
+    'footer_contacts': `<a href="/docs/help">Kontakte</a>`,
+    'footer_terms': `<a href="/docs/terms">Dienstbedingungen</a>`,
+    'footer_policy': `<a href="/docs/policy">Datenschutzpolitik</a>`,
   },
 
   'passport': {
@@ -253,7 +258,7 @@ module.exports = {
     'part_2': 'Einfache und komfortable Autorisierung',
     'part_2_text': 'Einmal registriert, müssen sie für weitere Studien keinen neuen Account anlegen.',
     'part_3': 'Einhaltung des Datenschutzes',
-    'part_3_text': 'Kontrollieren Sie, welche Art von Daten den Forschern zur Verfügung stehen. Fordern Sie die Löschung Ihrer Daten an, wenn Sie dies wünschen.',
+    'part_3_text': `Schauen Sie sich unsere <a target="_blank" href="/docs/terms">Allgemeinen Geschäftsbedingungen</a> und <a target="_blank" href="/docs/policy">Datenschutzrichtlinie</a> an.`,
     },
 
     'projects': {
@@ -727,7 +732,7 @@ module.exports = {
           'Das bedeutet, dass Sie eine unbegrenzte Anzahl von Teilnehmern haben können, wenn Sie Ihre Daten im OSF speichern. '
           ,
         'announcement_errors': 'Wenn Sie Fehler bemerken, lassen Sie es uns bitte über unser ' +
-          '<a target="_blank" href="https://join.slack.com/t/open-lab-online/shared_invite/enQtNDU3MzgzMzY4NDcxLTBjZTg1NmViYTEwYWI0NmE3MDZmM2QwMzNhZmRmNmZkMDRhMzhlNTZlZWU2OWU0MmU5YTBhMjU4MWFlYjcwYjA">Slack channel</a> ' +
+          '<a target="_blank" href="https://join.slack.com/t/open-lab-online/shared_invite/enQtNDU3MzgzMzY4NDcxLWZhYzU0MGU3MDFkNTNlZmI2MjQ4YzdlNzE3ZmYwMThmM2I1YTg5YjNiYjg3MzEzOGI5YzhkYzI0OTQ2Yjg1Y2Q">Slack channel</a> ' +
           ' oder der ' +
           '<a target="_blank" href="/docs/faq"> Support Formular</a> wissen.',
         'sync_header_1': 'Ihr Open Lab Projekt ',

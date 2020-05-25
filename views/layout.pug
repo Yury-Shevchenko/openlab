@@ -5,13 +5,12 @@ html
     link(rel="preload" href='/fonts/BebasNeue Bold.ttf' as="font" type="font/ttf" crossorigin)
     link(rel="preload" href='/fonts/OpenSans-Regular.ttf' as="font" type="font/ttf" crossorigin)
     link(rel='stylesheet', href='/dist/style.css')
-    //- script(src='https://js.stripe.com/v3/' nonce=`${noncevalue}`)
     link(rel="shortcut icon" type="image/png" href="/images/icons/rat.png")
     link(rel="manifest" href="/manifest.json")
     script(src="/javascripts/modules/service.js" nonce=`${noncevalue}`)
     meta(name="viewport" content="width=device-width, initial-scale=1")
     block headers
-    //- script(src="/javascripts/modules/analytics.js" async defer nonce=`${noncevalue}`)
+    
   body
     block header
       header.top
@@ -45,7 +44,6 @@ html
                   li.nav__item
                     a.nav__main_link(href='/listing', class=(currentPath.startsWith('/listing') ? 'nav__main_link--active' : ''))
                       h6 #{layout && layout.tasks}
-
 
             if user
               if user.level < 10
@@ -90,7 +88,7 @@ html
                 a.nav__main_link
                   if(layout && layout.install_app)
                     h6 #{layout.install_app}
-              //- if user.level > 10 && user.project && user.projects && user.projects.length > 0
+              
               if user.level > 10 
                 script(nonce=`${noncevalue}`).
                   document.addEventListener('DOMContentLoaded', function () {
@@ -101,8 +99,7 @@ html
                       }
                     });
                   });
-
-                //- li.nav__item.nav__main_link
+    
                 nav__section.nav__section--search
                   h6
                     .custom-select-header
@@ -124,7 +121,7 @@ html
                 h6 #{layout && layout.forResearchers}
               li.nav__item: a.nav__main_link(href="/participant/login", class=(currentPath.startsWith('/participant') ? 'nav__main_link--active' : ''))
                 h6 #{layout && layout.forParticipants}
-
+    
     block messages
       if locals.flashes
         .inner
@@ -142,7 +139,10 @@ html
                     });
                   button.flash__remove(id="button_flash") &times;
     .content
-      block content
-
+      .content-inside
+        block content
+      
+      include footer
+  
     block scripts
       script(src="/dist/App.bundle.js" nonce=`${noncevalue}`)

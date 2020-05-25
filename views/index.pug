@@ -6,40 +6,72 @@ block headers
 block content
   .inner
     
-    p
-    .card(style="border:1px")
-      h5 #{l.announcement_header}
-      p.card-message !{l.announcement}
-    
-    p
     .card
-      .card-message
-        h4 #{l.title}
-        p.card-message !{l.intro}
+      .imageLeftContainer
+        <img src="/images/artwork/Ol-Wheel-Done.png"/>
+        .div
+          h4 #{l.title}
+          p.imageText !{l.intro}
+    
+      .imageRightContainer
+        .div 
+          p.headerImageText #{l.res_1}
+          p.imageText #{l.res_1_text}
+        <img src="/images/artwork/Ol-ljint-done.png"/>  
+  
+      .imageLeftContainer
+        <img src="/images/artwork/Ol-data-doing.png"/>
+        .div
+          p.headerImageText #{l.res_3}
+          p.imageText #{l.res_3_text}
+          
+      .imageRightContainer
+        .div 
+          p.headerImageText #{l.res_2}
+          p.imageText #{l.res_2_text}
+        <img src="/images/artwork/Ol-Teaching_Done.png"/>  
+            
+      .imageLeftContainer
+        <img src="/images/artwork/Ol-col-done.png"/>  
+        .div 
+          p.headerImageText #{l.res_5}
+          p.imageText #{l.res_5_text}
+      
+      .imageRightContainer
+        .div
+          p.headerImageText #{l.part_3}
+          p.imageText !{l.part_3_text}
+        <img src="/images/artwork/Ol-tc-done.png"/>
+        
 
-        .plan-compare
-          a(type="link" href=`/researcher/register` style="display:grid")
-            .panel
-              <span class="plan-current">#{l.forResearchers}</span>
-              p.
-              p.plan_emails #{l.res_1}
-              p.plan_emails-label #{l.res_1_text}
-              p.plan_emails #{l.res_2}
-              p.plan_emails-label #{l.res_2_text}
-              p.plan_emails #{l.res_3}
-              p.plan_emails-label #{l.res_3_text}
-              p.plan_emails #{l.res_4}
-              p.plan_emails-label #{l.res_4_text}
-              p.plan_emails #{l.res_5}
-              p.plan_emails-label #{l.res_5_text}
-
-          a(type="link" href=`/participant/register` style="display:grid")
-            .panel
-              <span class="plan-current">#{l.forParticipants}</span>
-              p.
-              p.plan_emails #{l.part_1}
-              p.plan_emails-label #{l.part_1_text}
-              p.plan_emails #{l.part_2}
-              p.plan_emails-label #{l.part_2_text}
-              p.plan_emails #{l.part_3}
-              p.plan_emails-label #{l.part_3_text}
+                
+    //- .card
+    //-   .card-message
+    //- 
+    //- 
+    //-     .plan-compare
+    //-       a(type="link" href=`/researcher/register` style="display:grid")
+    //-         .panel
+    //-           <span class="plan-current">#{l.forResearchers}</span>
+    //-           p.
+    //-           p.plan_emails #{l.res_1}
+    //-           p.plan_emails-label #{l.res_1_text}
+    //-           p.plan_emails #{l.res_2}
+    //-           p.plan_emails-label #{l.res_2_text}
+    //-           p.plan_emails #{l.res_3}
+    //-           p.plan_emails-label #{l.res_3_text}
+    //-           p.plan_emails #{l.res_4}
+    //-           p.plan_emails-label #{l.res_4_text}
+    //-           p.plan_emails #{l.res_5}
+    //-           p.plan_emails-label #{l.res_5_text}
+    //- 
+    //-       a(type="link" href=`/participant/register` style="display:grid")
+    //-         .panel
+    //-           <span class="plan-current">#{l.forParticipants}</span>
+    //-           p.
+    //-           p.plan_emails #{l.part_1}
+    //-           p.plan_emails-label #{l.part_1_text}
+    //-           p.plan_emails #{l.part_2}
+    //-           p.plan_emails-label #{l.part_2_text}
+    //-           p.plan_emails #{l.part_3}
+    //-           p.plan_emails-label #{l.part_3_text}

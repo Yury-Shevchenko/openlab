@@ -554,3 +554,7 @@ exports.invite = async (req, res) => {
     res.redirect('/studies');
   }
 };
+
+exports.newsPage = async (req, res) => {
+  res.render('news');
+};
