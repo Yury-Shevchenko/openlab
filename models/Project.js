@@ -54,7 +54,7 @@ const projectSchema = new mongoose.Schema({
       title        : { type: String, default: 'Open Lab' },
       message      : { type: String, default: 'Please complete a test.' },
       duration     : { type: Number, default: 0 }
-    }  
+    }
   ],
   osf              : {
     upload_link    : String,
@@ -63,7 +63,13 @@ const projectSchema = new mongoose.Schema({
     policy         : { type: String, default: 'OL' },
     project_link   : String,
   },
-  parameters       : [{ mode: String, name: String, content: String }],
+  parameters       : [{
+    mode: String,
+    name: String,
+    template: JSON,
+    sample: JSON,
+    content: String,
+  }],
 });
 
 projectSchema.statics.getCurrentProjects = function() {

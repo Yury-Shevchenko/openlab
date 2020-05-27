@@ -339,7 +339,7 @@ exports.saveIncrementalResults = async (req, res) => {
   const projectId = (req.user && req.user.participantInProject) || (req.user && req.user.project._id) || test.project || "undefined";
 
   const project = await Project.findOne({ _id: projectId },{
-    name: 1, osf: 1,
+    name: 1, osf: 1, parameters: 1,
   });
 
   if(req.body.data && req.body.data.length !== 0){
@@ -470,6 +470,7 @@ exports.saveIncrementalResults = async (req, res) => {
         console.log(err);
       })
     };
+
     res.send('Data were saved');
   } else {
     res.send('Nothing was saved');

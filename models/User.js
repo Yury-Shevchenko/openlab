@@ -83,7 +83,13 @@ const userSchema = new Schema({
     ],
     parameters            : [{
           project_id      : { type : mongoose.Schema.ObjectId, ref : 'Project' },
-          studyParameters : [{ mode: String, name: String, content: String }],
+          studyParameters : [{
+            mode: String,
+            name: String,
+            template: String,
+            sample: String,
+            content: String,
+          }],
     }],
 }, { toJSON: { virtuals: true } });
 

@@ -489,6 +489,7 @@ exports.testing = async (req, res) => {
     });
     const projects = await Project.getCurrentProjects();
     let tests, results, confirmationCode, projectTests;
+
     if(project){
       // update user parameters if there are project parameters
       if(project.parameters && project.parameters.length > 0){
@@ -497,19 +498,47 @@ exports.testing = async (req, res) => {
           userParameters = req.user.parameters.filter(p => p.project_id.toString() === project._id.toString()).map(p => p.studyParameters);
         }
         if(userParameters && userParameters.length > 0){
+          // user already has assigned parameters
         } else {
           const userParams = project.parameters.map(
             parameter => {
-              const contentArray = parameter.content.split(',');
-              // random function to assign one of the parameters randomly (with the same probability)
-              const selectedParamContent = contentArray[Math.floor(Math.random() * contentArray.length)];
-              return({
-                name: parameter.name,
-                mode: parameter.mode,
-                content: selectedParamContent,
-              })
+              let selectedParamContent, sample;
+              // check if the mode is "urn" then sample without replacement
+              if(parameter.mode === 'urnBefore'){
+                // get one value from parameter.sample (if there is no value create parameter.sample as a copy of parameter.content
+                if(parameter.sample && parameter.sample.length > 0){
+                  sample = parameter.sample;
+                } else {
+                  sample = parameter.template;
+                }
+                selectedParamContent = sample.splice([Math.floor(Math.random() * sample.length)], 1);
+                // fill out the urn if it is empty
+                if(sample && sample.length === 0){
+                  sample = parameter.template;
+                }
+                return({
+                  name: parameter.name,
+                  mode: parameter.mode,
+                  template: parameter.template,
+                  sample: sample,
+                  content: selectedParamContent[0],
+                })
+              } else {
+                const contentArray = parameter.sample;
+                // random function to assign one of the parameters randomly (with the same probability)
+                selectedParamContent = contentArray[Math.floor(Math.random() * contentArray.length)];
+                return({
+                  name: parameter.name,
+                  mode: parameter.mode,
+                  template: parameter.template,
+                  sample: parameter.sample,
+                  content: selectedParamContent,
+                })
+              }
             }
           )
+          project.parameters = userParams;
+          await project.save();
           await User.findOneAndUpdate({
             _id: req.user._id
           }, {
@@ -540,6 +569,7 @@ exports.testing = async (req, res) => {
       const arrayTests = projectTests.map(function(test) {return test.slug;});
       const arrayResults = results.map(function(result) {return result.taskslug;});
       const remainingArray = arrayTests.filter(function(test) {return !arrayResults.includes(test)});
+
       if(remainingArray.length == 0 && req.user.level < 10){
         const recordedCode = req.user.participantHistory.filter(e => e.project_id.toString() == req.user.participantInProject.toString());
         if (recordedCode.length == 0){
@@ -562,6 +592,49 @@ exports.testing = async (req, res) => {
         } else {
           confirmationCode = req.user.participantHistory.filter(e => e.project_id.toString() == req.user.participantInProject.toString())[0].individual_code;
         };
+
+        // if all tests are done, then we can update project parameters
+        // update parameters (only after the last task)
+        if(project.parameters && project.parameters.length > 0){
+          if(req.user && req.user.parameters){
+            userParameters = req.user.parameters.filter(p => p.project_id.toString() === project._id.toString()).map(p => p.studyParameters);
+          }
+          if(userParameters && userParameters.length > 0){
+            const userParams = project.parameters.map(
+              parameter => {
+                // check if the mode is "urn" then sample without replacement
+                if(parameter.mode === 'urnAfter'){
+                  let sample;
+                  if(parameter.sample && parameter.sample.length > 0){
+                    sample = parameter.sample;
+                  } else {
+                    sample = parameter.template;
+                  }
+                  const userValue = userParameters[0].filter(p => p.name === parameter.name).map(p => p.content);
+                  const index = sample.indexOf(userValue[0]);
+                  if(index > -1){
+                    sample.splice(index, 1)
+                  }
+                  if(sample.length === 0){
+                    sample = parameter.template;
+                  }
+                  return({
+                    name: parameter.name,
+                    mode: parameter.mode,
+                    template: parameter.template,
+                    sample: sample,
+                    content: parameter.content,
+                  })
+                } else {
+                  return parameter;
+                }
+              }
+            )
+            project.parameters = userParams;
+            await project.save();
+          }
+        }
+
       };
     };
 

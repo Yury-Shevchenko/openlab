@@ -737,6 +737,15 @@ label {
     margin-bottom: 2rem;
     border-bottom: 1px solid #e6e6e6; }
 
+.formsforparameters {
+  border: 1px solid #b8e2fc;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 10px; }
+  .formsforparameters .parameterLabel {
+    font-size: 2rem;
+    font-weight: 600; }
+
 .search {
   position: relative;
   width: 100%;

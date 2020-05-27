@@ -44,13 +44,23 @@ exports.postStudyParameters = async (req, res) => {
   const project = await Project.findOne({ _id: req.params.id }, { creator: 1, parameters: 1 });
   confirmOwner(project, req.user);
   if(req.body) {
-    const params = Object.keys(req.body).map(key => {
-      return {
-        mode: 'random',
-        name: key,
-        content: req.body[key],
-      }
-    }).filter(param => param.content !== '')
+    const params = Object.keys(req.body)
+      .filter(rawkey => {
+        return !(rawkey.endsWith('-$mode$') || rawkey.endsWith('-$sample$'));
+      })
+      .map(key => {
+        const template = req.body[key].trim().split(',').map(e => e.trim()).filter(e => e != '');
+        const sample = req.body[`${key}-$sample$`] && req.body[`${key}-$sample$`].trim().split(',').map(e => e.trim()).filter(e => e != '');
+        return {
+          mode: req.body[`${key}-$mode$`],
+          name: key,
+          template: template,
+          sample: sample || template,
+        }
+      })
+      .filter(param => {
+        return (param.template.length !== 0)
+      })
     project.parameters = params;
     await project.save();
   }

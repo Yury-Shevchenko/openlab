@@ -35,3 +35,14 @@ label {
     border-bottom: 1px solid $grey;
   }
 }
+
+.formsforparameters {
+  border: 1px solid #b8e2fc;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  .parameterLabel {
+    font-size: 2rem;
+    font-weight: 600;
+  }
+}

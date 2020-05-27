@@ -50,13 +50,21 @@ block content
             | !{`If you don't need randomization across participants, you still can use constant parameters. ` }
             | !{`For that, do not use the comma in the value of parameter. ` }
             | !{`If you want to delete a study parameter, clear the field and click the button "Update study parameters". ` }
+          
           form(action=`/parameters/study/${project._id}` method = 'POST' id ="myStudyParametersForm")
             
             p
             each parameter in project.parameters 
               .formsforparameters
-                label(for= parameter.name) #{parameter.name}
-                input(type='text' name= parameter.name value= parameter.content)
+                label(for= parameter.name class="parameterLabel") #{parameter.name}
+                input(type='text' name= parameter.name value= parameter.template.join(','))
+                select(name=`${parameter.name}-$mode$`)
+                  - var options = [{value: 'random', label: 'With replacement'}, {value: 'urnBefore', label: 'Without replacement (update with the start of the task)'},{value: 'urnAfter', label: 'Without replacement (update after the task completion)'}]
+                  each option in options
+                    option(value=option.value, selected=(parameter.mode === option.value))= option.label
+                
+                label Variables that are left in the urn
+                input(type='text' name=`${parameter.name}-$sample$` value= parameter.sample.join(','))
 
             script(nonce=`${noncevalue}`).
               document.addEventListener('DOMContentLoaded', function (){
@@ -70,8 +78,19 @@ block content
                   new_field_holder.className = 'formsforparameters';
                   var label = document.createElement('label');
                   label.innerText = nameOfNewField;
+                  label.classList.add('parameterLabel');
+                  var selectMode = document.createElement("select");
+                  selectMode.name = `${nameOfNewField}-$mode$`;
+                  var selectOptions = [{value: 'random', label: 'With replacement'}, {value: 'urnBefore', label: 'Without replacement (update with the start of the task)'},{value: 'urnAfter', label: 'Without replacement (update after the task completion)'}]
+                  for (let option of selectOptions) {
+                    var opt = document.createElement("option");
+                    opt.value = option.value;
+                    opt.text = option.label;
+                    selectMode.appendChild(opt);
+                  }
                   new_field_holder.appendChild(label);
                   new_field_holder.appendChild(input);
+                  new_field_holder.appendChild(selectMode);
                   container_form.appendChild(new_field_holder);
                 });
               });
@@ -217,7 +236,7 @@ block content
         
 
 
-      //- pre= h.dump(project)
+      pre= h.dump(project)
       //- pre= h.dump(slug)
       //- pre= h.dump(original)
       //- pre= h.dump(modified)
