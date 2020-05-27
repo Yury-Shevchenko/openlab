@@ -86,8 +86,8 @@ const userSchema = new Schema({
           studyParameters : [{
             mode: String,
             name: String,
-            template: String,
-            sample: String,
+            template: JSON,
+            sample: JSON,
             content: String,
           }],
     }],
