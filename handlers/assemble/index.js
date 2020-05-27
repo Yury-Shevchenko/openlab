@@ -49,6 +49,7 @@ const assembleFile = async (state, foldername,
     .reduce((flat, next) => flat.concat(next), [])
     .filter(p => typeof(p) != "undefined" && p.name != '')
 
+
   // Filter files that are not embedded in components
   const filesInUse = embeddedFiles(updatedState.components)
 

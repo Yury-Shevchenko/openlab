@@ -111,7 +111,7 @@ const processItems = items =>
       } else {
         return ({
           ...i,
-          name: i.name || slugify(i.label || '')
+          name: (i.name && i.name.replace(/\./g,'-')) || slugify(i.label.replace(/\./g,'-') || '')
         })
       }
     })

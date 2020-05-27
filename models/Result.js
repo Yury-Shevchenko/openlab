@@ -136,8 +136,9 @@ resultSchema.statics.getResultsForUserTesting = function(feature) {
 //get my results from different projects
 resultSchema.statics.getMyResults = function(feature) {
   return this.aggregate([
-    { $match: { 'rawdata' : { $exists: true }} },
     { $match: { 'author' : mongoose.Types.ObjectId(feature.author) } },
+    { $match: { 'rawdata' : { $exists: true }} },
+
     { $lookup: {
       from: 'tests', localField: 'test', foreignField: '_id', as: 'originTest'
       }
