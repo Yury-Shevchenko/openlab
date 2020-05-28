@@ -525,15 +525,20 @@ exports.testing = async (req, res) => {
                 })
               } else {
                 const contentArray = parameter.sample;
-                // random function to assign one of the parameters randomly (with the same probability)
-                selectedParamContent = contentArray[Math.floor(Math.random() * contentArray.length)];
-                return({
-                  name: parameter.name,
-                  mode: parameter.mode,
-                  template: parameter.template,
-                  sample: parameter.sample,
-                  content: selectedParamContent,
-                })
+                if(contentArray){
+                  // random function to assign one of the parameters randomly (with the same probability)
+                  selectedParamContent = contentArray[Math.floor(Math.random() * contentArray.length)];
+                  return({
+                    name: parameter.name,
+                    mode: parameter.mode,
+                    template: parameter.template,
+                    sample: parameter.sample,
+                    content: selectedParamContent,
+                  })
+                } else {
+                  return parameter;
+                }
+
               }
             }
           )
