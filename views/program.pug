@@ -57,14 +57,14 @@ block content
             each parameter in project.parameters 
               .formsforparameters
                 label(for= parameter.name class="parameterLabel") #{parameter.name}
-                input(type='text' name= parameter.name value= parameter.template.join(','))
+                input(type='text' name= parameter.name value= parameter.template && parameter.template.join(','))
                 select(name=`${parameter.name}-$mode$`)
                   - var options = [{value: 'random', label: 'With replacement'}, {value: 'urnBefore', label: 'Without replacement (update with the start of the task)'},{value: 'urnAfter', label: 'Without replacement (update after the task completion)'}]
                   each option in options
                     option(value=option.value, selected=(parameter.mode === option.value))= option.label
                 
                 label Variables that are left in the urn
-                input(type='text' name=`${parameter.name}-$sample$` value= parameter.sample.join(','))
+                input(type='text' name=`${parameter.name}-$sample$` value= parameter.sample && parameter.sample.join(','))
 
             script(nonce=`${noncevalue}`).
               document.addEventListener('DOMContentLoaded', function (){
