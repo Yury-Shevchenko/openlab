@@ -10,7 +10,7 @@ block content
         .nav__section.nav__section--pages
           li.nav__item: a.nav__link(href="/users", class=(currentPath.startsWith('/users') ? 'nav__link--active' : '')) #{layout.participants}
           li.nav__item: a.nav__link(href="/data", class=(currentPath.startsWith('/data') ? 'nav__link--active' : '')) #{layout.results}
-          li.nav__item: a.nav__link(href="/osf", class=(currentPath.startsWith('/osf') ? 'nav__link--active' : '')) OSF (beta)
+          li.nav__item: a.nav__link(href="/osf", class=(currentPath.startsWith('/osf') ? 'nav__link--active' : '')) OSF
     p
 
     .userTable
@@ -42,7 +42,7 @@ block content
                 td #{i + 1}
                 td= result.name
                 td= result.participant_code
-                td= h.moment(result.created).locale(language).format('MM-DD-YYYY, h:mm:ss a')
+                td= h.moment.utc(result.created).locale(language).local().format('MM-DD-YYYY, h:mm:ss a')
                 if result.aggregated && result.aggregated.length > 0
                   td
                     each row in result.aggregated

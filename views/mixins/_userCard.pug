@@ -13,7 +13,7 @@ mixin userCard(person = {}, i)
           td= `${person.confirmationCodes.filter(e => e.project_id.toString() == person.participantInProject.toString())[0].individual_code}`
         else
           td= ``
-      td= h.moment(person.created).locale(language).local().format('MM-DD-YY, H:mm')
+      td= h.moment.utc(person.created).locale(language).local().format('MM-DD-YY, H:mm')
       if (person.level > 10)
         td= l.table_researcher
       else

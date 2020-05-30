@@ -5,7 +5,7 @@ mixin resultLine(result = {}, i)
       td #{i + 1}
       td= result.participant_id
       td= result.participant_code
-      td= h.moment(result.created).locale(language).format('MM-DD-YY, H:mm:ss')
+      td= h.moment.utc(result.created).locale(language).local().format('MM-DD-YY, H:mm:ss')
       if result.aggregated && result.aggregated.length > 0
         td
           each row in result.aggregated

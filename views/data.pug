@@ -26,14 +26,11 @@ block content
             a(style={color:'black'} href=`/downloadprojectdata/${project._id}/full`) #{l.download_full_data}
           p
             a(style={color:'black'} href=`/downloadprojectmetadata/${project._id}`) #{l.download_all_meta_data}
-        //- p
-        //-   a(style={color:'black'} href=`/downloadsummarydata/`) Download summary data
 
         .card
           .users
             table.table
               thead
-                //- td #{l.table_number}
                 td №
                 td #{l.table_openlabid}
                 td #{l.table_code}
