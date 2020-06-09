@@ -11,7 +11,7 @@ const language = require('../config/lang');
 const validator = require('validator');
 
 const makeOpenLabId = () => {
-  const time = Date.now() / 1000 | 0;
+  const time = Math.floor(Date.now() / 1000 + Math.random() * 1000) | 0;
   return time;
 };
 
@@ -52,7 +52,7 @@ passport.use('local-signup-participant', new LocalStrategy({
     const normEmail = validator.normalizeEmail(email);
     process.nextTick(function() {
       User.findOne({ email :  normEmail }, function(err, user) {
-        const user_lang = req.res.locals.locale_language;
+        const user_lang = (req && req.res && req.res.locals && req.res.locals.locale_language) || 'english';
         if (req.body.password !== req.body['password-confirm']) {
           return done(null, false, req.flash('signupMessage', `${language[user_lang]['passport'].passwords_mismatch}` ));
         }
@@ -87,7 +87,7 @@ passport.use('local-signup-researcher', new LocalStrategy({
     const normEmail = validator.normalizeEmail(email);
     process.nextTick(function() {
       User.findOne({ email :  normEmail }, function(err, user) {
-        const user_lang = req.res.locals.locale_language;
+        const user_lang = (req && req.res && req.res.locals && req.res.locals.locale_language) || 'english';
         if (req.body.password !== req.body['password-confirm']) {
           return done(null, false, req.flash('signupMessage', `${language[user_lang]['passport'].passwords_mismatch}`));
         }
@@ -119,7 +119,7 @@ passport.use('local-login', new LocalStrategy({
     function(req, email, password, done) {
       const normEmail = validator.normalizeEmail(email);
       User.findOne({ email :  normEmail }, function(err, user) {
-          const user_lang = req.res.locals.locale_language;
+          const user_lang = (req && req.res && req.res.locals && req.res.locals.locale_language) || 'english';
           if (err) return done(err);
           if (!user) return done(null, false, req.flash('loginMessage', `${language[user_lang]['passport'].no_user_found}`));
           if (!user.validPassword(password)) return done(null, false, req.flash('loginMessage', `${language[user_lang]['passport'].wrong_password}`));
@@ -135,7 +135,7 @@ passport.use('local-labjs-researcher', new LocalStrategy({
     function(req, email, password, done) {
       const normEmail = validator.normalizeEmail(email);
       User.findOne({ email :  normEmail }, function(err, user) {
-          const user_lang = req.res.locals.locale_language;
+          const user_lang = (req && req.res && req.res.locals && req.res.locals.locale_language) || 'english';
           if (err) return done(err);
           if (!user) {
             var newUser = new User();
@@ -162,7 +162,7 @@ passport.use('local-code', new LocalStrategy({
     },
     function(req, code, participantInProject, done) {
       User.findOne({ 'code.id' :  code }, function(err, user) {
-        const user_lang = req.res.locals.locale_language;
+        const user_lang = (req && req.res && req.res.locals && req.res.locals.locale_language) || 'english';
         if (err) return done(err);
         if (user) {
           if (!user.validCode(code)) return done(null, false, req.flash('error', `${language[user_lang]['passport'].wrong_credentials}` ));
