@@ -141,6 +141,7 @@ testSchema.index({
   name: 'text',
   description: 'text',
   test: 1,
+  slug: 'text',
 });
 
 //pre-save validation to make sure that the test slug is unique

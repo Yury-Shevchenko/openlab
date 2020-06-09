@@ -237,6 +237,7 @@ resultSchema.index({
   author: 1,
   test: 1,
   uploadType: 1,
+  transfer: 1,
 });
 
 
