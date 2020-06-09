@@ -333,7 +333,7 @@ exports.saveIncrementalResults = async (req, res) => {
   const slug = req.body.url.split('/')[4];
   const test = await Test
     .findOne({ slug })
-    .select({slug:1, project:1, author:1});
+    .select({ slug:1, project:1, author:1 });
 
   const openLabId = (req.user && req.user.openLabId) || anonymParticipantId || "undefined";
   const projectId = (req.user && req.user.participantInProject) || (req.user && req.user.project._id) || test.project || "undefined";
@@ -354,7 +354,7 @@ exports.saveIncrementalResults = async (req, res) => {
   };
 
   if (req.body.metadata.payload == 'incremental' && project && project.osf && project.osf.policy !== 'OSF'){
-    let result = await Result.findOne({transfer: req.body.metadata.id, uploadType: req.body.metadata.payload});
+    let result = await Result.findOne({transfer: req.body.metadata.id, uploadType: req.body.metadata.payload}, { _id:1, author:0 });
     if(!result){
       const parameters = await Param.getParameters({
         slug: slug,
@@ -385,7 +385,7 @@ exports.saveIncrementalResults = async (req, res) => {
       const updatedResult = await Result.findOneAndUpdate({
         transfer: req.body.metadata.id,
         uploadType: req.body.metadata.payload
-      }, { $push: {rawdata: {$each: req.body.data } }}, {
+      }, { $push: { rawdata: { $each: req.body.data } }}, {
         new: true
       }).exec();
     };

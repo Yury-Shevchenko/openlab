@@ -5,7 +5,7 @@ const paramSchema = new mongoose.Schema({
   created: {
     type: Date,
     default: Date.now
-  },          
+  },
   project:{
     type: mongoose.Schema.ObjectId,
     ref: 'Project',
@@ -39,5 +39,11 @@ paramSchema.statics.getParameters = function(feature) {
   ]);
 };
 
+//define indexes for the faster search
+paramSchema.index({
+  slug: 1,
+  language: 1,
+  author: 1,
+});
 
 module.exports = mongoose.model('Param', paramSchema);
