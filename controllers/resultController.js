@@ -326,7 +326,7 @@ exports.changeStatusOfDataRequest = async (req, res) => {
 
 //save results during the task
 exports.saveIncrementalResults = async (req, res) => {
-
+  console.log('329: Starting saving');
   let anonymParticipantId;
   if (!req.user){ anonymParticipantId = req.body.url.split('/')[5] };
 
@@ -337,10 +337,13 @@ exports.saveIncrementalResults = async (req, res) => {
 
   const openLabId = (req.user && req.user.openLabId) || anonymParticipantId || "undefined";
   const projectId = (req.user && req.user.participantInProject) || (req.user && req.user.project._id) || test.project || "undefined";
+  console.log('340: Created variables');
 
+  // todo why do we need project and parameters?
   const project = await Project.findOne({ _id: projectId },{
     name: 1, osf: 1, parameters: 1,
   });
+  console.log('346: Found project');
 
   if(req.body.data && req.body.data.length !== 0){
     req.body.data.map(row => {
@@ -352,9 +355,11 @@ exports.saveIncrementalResults = async (req, res) => {
       row['code'] = (req.user && req.user.code && req.user.code.id) || openLabId;
     })
   };
+  console.log('358: Updated datafile');
 
   if (req.body.metadata.payload == 'incremental' && project && project.osf && project.osf.policy !== 'OSF'){
     let result = await Result.findOne({transfer: req.body.metadata.id, uploadType: req.body.metadata.payload}, { _id:1, author:0 });
+    console.log('362: Found result');
     if(!result){
       const parameters = await Param.getParameters({
         slug: slug,
@@ -380,16 +385,21 @@ exports.saveIncrementalResults = async (req, res) => {
         uploadType: req.body.metadata.payload,
         parameters: params
       });
+      console.log('388: Created new result');
       await result.save();
+      console.log('390: Saved new result');
     } else {
+      console.log('392: Start to update existing result');
       const updatedResult = await Result.findOneAndUpdate({
         transfer: req.body.metadata.id,
         uploadType: req.body.metadata.payload
       }, { $push: { rawdata: { $each: req.body.data } }}, {
         new: true
       }).exec();
+      console.log('399: Updated existing result');
     };
     res.send('saved');
+    console.log('402: After sending saved - should not be shown');
 
   } else if(req.body.metadata.payload == 'full'){
 
