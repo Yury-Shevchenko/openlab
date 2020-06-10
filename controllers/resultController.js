@@ -358,10 +358,10 @@ exports.saveIncrementalResults = async (req, res) => {
   console.log('358: Updated datafile', Date());
 
   if (req.body.metadata.payload == 'incremental' && project && project.osf && project.osf.policy !== 'OSF'){
-    let result = await Result.findOne({transfer: req.body.metadata.id, uploadType: req.body.metadata.payload}, { _id:1, author:0 });
+    let result = await Result.find({transfer: req.body.metadata.id, uploadType: req.body.metadata.payload}, { _id:1, author:0 }).limit(1);
     // that takes a lot of time to find the result
     console.log('362: Found result', Date());
-    if(!result){
+    if(result.length === 0){
       const parameters = await Param.getParameters({
         slug: slug,
         language: (req.user && req.user.language) || req.body.url.split('/')[5] || "english",
@@ -397,6 +397,7 @@ exports.saveIncrementalResults = async (req, res) => {
       // }, { $push: { rawdata: { $each: req.body.data } }}, {
       //   new: true
       // }).exec();
+      // that takes a lot of time to find the result
       await Result.updateOne({
         transfer: req.body.metadata.id,
         uploadType: req.body.metadata.payload
