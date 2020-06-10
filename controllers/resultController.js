@@ -326,7 +326,7 @@ exports.changeStatusOfDataRequest = async (req, res) => {
 
 //save results during the task
 exports.saveIncrementalResults = async (req, res) => {
-  console.log('329: Starting saving');
+  console.log('329: Starting saving', Date.now());
   let anonymParticipantId;
   if (!req.user){ anonymParticipantId = req.body.url.split('/')[5] };
 
@@ -337,13 +337,13 @@ exports.saveIncrementalResults = async (req, res) => {
 
   const openLabId = (req.user && req.user.openLabId) || anonymParticipantId || "undefined";
   const projectId = (req.user && req.user.participantInProject) || (req.user && req.user.project._id) || test.project || "undefined";
-  console.log('340: Created variables');
+  console.log('340: Created variables', Date.now());
 
   // todo why do we need project and parameters?
   const project = await Project.findOne({ _id: projectId },{
     name: 1, osf: 1, parameters: 1,
   });
-  console.log('346: Found project');
+  console.log('346: Found project', Date.now());
 
   if(req.body.data && req.body.data.length !== 0){
     req.body.data.map(row => {
@@ -355,11 +355,11 @@ exports.saveIncrementalResults = async (req, res) => {
       row['code'] = (req.user && req.user.code && req.user.code.id) || openLabId;
     })
   };
-  console.log('358: Updated datafile');
+  console.log('358: Updated datafile', Date.now());
 
   if (req.body.metadata.payload == 'incremental' && project && project.osf && project.osf.policy !== 'OSF'){
     let result = await Result.findOne({transfer: req.body.metadata.id, uploadType: req.body.metadata.payload}, { _id:1, author:0 });
-    console.log('362: Found result');
+    console.log('362: Found result', Date.now());
     if(!result){
       const parameters = await Param.getParameters({
         slug: slug,
@@ -385,11 +385,11 @@ exports.saveIncrementalResults = async (req, res) => {
         uploadType: req.body.metadata.payload,
         parameters: params
       });
-      console.log('388: Created new result');
+      console.log('388: Created new result', Date.now());
       await result.save();
-      console.log('390: Saved new result');
+      console.log('390: Saved new result', Date.now());
     } else {
-      console.log('392: Start to update existing result');
+      console.log('392: Start to update existing result', Date.now());
       const updatedResult = await Result.findOneAndUpdate({
         transfer: req.body.metadata.id,
         uploadType: req.body.metadata.payload
@@ -399,7 +399,7 @@ exports.saveIncrementalResults = async (req, res) => {
       console.log('399: Updated existing result');
     };
     res.send('saved');
-    console.log('402: After sending saved - should not be shown');
+    console.log('402: After sending saved - should not be shown', Date.now());
 
   } else if(req.body.metadata.payload == 'full'){
 
@@ -485,6 +485,7 @@ exports.saveIncrementalResults = async (req, res) => {
   } else {
     res.send('Nothing was saved');
   }
+  console.log('488: Out of the scope - should not be shown', Date.now());
 };
 
 //show the results for each test
