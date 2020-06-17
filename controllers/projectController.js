@@ -95,13 +95,13 @@ exports.updateProject = async (req, res) => {
     if(req.body.members){
       const users = await User.find({ email: { $in : req.body.members }});
       membersData = users.map(e => {
-        if(e.email && e.email != null && typeof(e.email) != 'undefined' && e.email != req.user.email ) {
+        if(e.email && e.email != null && typeof(e.email) != 'undefined') {
           return e._id
         };
       }).filter(e => typeof(e) != 'undefined');
     };
     const project = await Project.findOne({ _id: req.params.id });
-    confirmOwner(project, req.user);
+    confirmOwnerOrMember(project, req.user);
     project.name = req.body.name;
     project.description = req.body.description;
     project.welcomeMessage = req.body.welcomeMessage;
@@ -129,7 +129,7 @@ exports.editProject = async (req, res) => {
       return e.email
     });
   };
-  confirmOwner(project, req.user);
+  confirmOwnerOrMember(project, req.user);
   res.render('editProject', {title: `Edit ${project.name}`, project, membersEmails});
 };
 
