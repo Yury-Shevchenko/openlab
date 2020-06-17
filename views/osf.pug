@@ -71,6 +71,18 @@ block content
           p 
           p
         else
+        
+          .card 
+            p #{l.token_explained} 
+              span(style="color:rgba(135, 206, 250, 0.6); font-size: larger;")= project.name 
+              | #{l.token_explained_2} 
+              
+            p !{l.token_explained_3} 
+              
+            input(type="text" id="osf-token" placeholder=l.token_paste)
+              
+            p
+          
           h2 #{l.create} 
             span(style="color:rgba(135, 206, 250, 0.6); font-size: larger;")= project.name 
             | #{l.create_2}
@@ -103,17 +115,18 @@ block content
                 br
                 small #{l.status_public_desc} 
                   
-            p #{l.token_explained} 
-              span(style="color:rgba(135, 206, 250, 0.6); font-size: larger;")= project.name 
-              | #{l.token_explained_2} 
-              
-            p !{l.token_explained_3} 
-              
-            input(type="text" id="osf-token" placeholder=l.token_paste)
-              
-            p
+            
             
             button(id="osf_testBtn" class="button") #{l.create_OSF} 
+          
+          h2 #{l.connect_existing_title}  
+          .card
+            p #{l.connect_existing} 
+            
+            input(type="text" id="osf-project-code" placeholder=l.connect_placeholder)
+            p
+            
+            button(id="osf_connectBtn" class="button") #{l.connect_existing_title}           
       else 
         .card
           p !{l.no_studies_yet}        

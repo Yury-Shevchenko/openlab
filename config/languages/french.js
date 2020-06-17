@@ -728,6 +728,7 @@ module.exports =
           'announcement': 'We are very excited and proud to present the integration of Open Lab with ' +
             '<a target="_blank" href="https://osf.io/">Open Science Framework (OSF)</a>. ' +
             'From now on you can store the data in your OSF repository. ' +
+            'You can create a new OSF project or connect to an existing OSF project. ' +
             'Each time a participant completes your study, the data are uploaded to your OSF project. ' +
             'This means that you can have an unlimited number of participants if you store your data in the OSF. '
             ,
@@ -756,7 +757,7 @@ module.exports =
           'status_private_desc': 'Only for you',
           'status_public': 'Public',
           'status_public_desc': 'For everybody',
-          'token_explained': 'We need your OSF token to be able to write data in the new project. '+
+          'token_explained': 'We need your OSF token to be able to write data in the new or already existing OSF project. '+
             'We will keep this token safe and only use it to store the data of the participants of the study ',
           'token_explained_2': '. You can delete the token later if you decide to remove the link between the Open Lab and the OSF project. ',
           'token_explained_3': 'Read about ' +
@@ -769,6 +770,11 @@ module.exports =
           'create_OSF': 'Create OSF project',
           'no_studies_yet': 'Please create or activate an Open Lab study <a href="/projects">here</a> to start the integration.',
           'update': 'Update',
+          'connect_existing_title': `Connect to the existing OSF project`,
+          'connect_existing': `To connect to your project, we need to know the ID of the project.
+          If you open the web page of your OSF project, you can find the ID in the URL following https://osf.io/ (e.g., 3kt9w).
+          `,
+          'connect_placeholder': `Paste the ID of your OSF project here`,
         },
 
 

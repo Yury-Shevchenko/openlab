@@ -727,6 +727,7 @@ module.exports = {
         'announcement': 'Wir freuen uns sehr und sind stolz darauf, die Integration von Open Lab mit ' +
           '<a target="_blank" href="https://osf.io/">Open Science Framework (OSF)</a>. ' +
           'Ab sofort können Sie die Daten in Ihrem OSF-Repository speichern. ' +
+          'Sie können ein neues OSF-Projekt erstellen oder eine Verbindung zu einem bestehenden OSF-Projekt herstellen. ' +
           ' Jedes Mal, wenn ein Teilnehmer Ihre Studie abschließt, werden die Daten in Ihr OSF-Projekt hochgeladen. ' +
           'Das bedeutet, dass Sie eine unbegrenzte Anzahl von Teilnehmern haben können, wenn Sie Ihre Daten im OSF speichern. '
           ,
@@ -755,7 +756,7 @@ module.exports = {
         'status_private_desc': 'Nur für Sie',
         'status_public': 'Öffentlich',
         'status_public_desc': 'Für alle',
-        'token_explained': 'Wir benötigen Ihren OSF-Token, um Daten in das neue Projekt schreiben zu können. '+
+        'token_explained': 'Wir benötigen Ihren OSF-Token, um Daten in das neue oder bereits bestehende OSF Projekt schreiben zu können. '+
           'Wir werden diesen Token sicher aufbewahren und nur zur Speicherung der Daten der Studienteilnehmer verwenden. ',
         'token_explained_2': '. Sie können das Token später löschen, wenn Sie sich entscheiden, die Verbindung zwischen dem Open Lab und dem OSF-Projekt zu entfernen. ',
         'token_explained_3': 'Lesen Sie mehr über ' +
@@ -768,5 +769,11 @@ module.exports = {
         'create_OSF': 'OSF-Projekt erstellen',
         'no_studies_yet': 'Bitte erstellen oder aktivieren Sie zuerst eine Open Lab Studie <a href="/projects">hier</a>.',
         'update': 'Aktualisieren',
+        'connect_existing_title': `Connect to the existing OSF project`,
+        'connect_existing': `Um eine Verbindung zu Ihrem Projekt herzustellen, müssen wir die ID des Projekts kennen.
+        Wenn Sie die Webseite Ihres OSF-Projekts öffnen, finden Sie die ID in der URL nach https://osf.io/ (z.B. 3kt9w).
+        `,
+        'connect_placeholder': `Fügen Sie hier die ID Ihres OSF-Projekts ein`,
+
       },
 }
