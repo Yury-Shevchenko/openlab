@@ -70,6 +70,7 @@ const projectSchema = new mongoose.Schema({
     sample: JSON,
     content: String,
   }],
+  tasksInformation: JSON,
 });
 
 projectSchema.statics.getCurrentProjects = function() {

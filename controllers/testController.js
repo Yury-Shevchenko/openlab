@@ -306,7 +306,7 @@ exports.removeTest = async (req, res) => {
 //display constructor of tests (with all tags, tests in the database, and chosen tests)
 exports.constructor = async (req, res) => {
   const project = await Project.findOne({_id: req.user.project._id},{
-    name: 1, tests: 1,
+    name: 1, tests: 1, tasksInformation: 1,
   });
   const tag = req.params.tag;
   const tagQuery = tag === 'all' ? { $exists: true } : (tag || { $exists: true });
@@ -486,6 +486,7 @@ exports.testing = async (req, res) => {
       useNotifications: 1,
       tests: 1,
       parameters: 1,
+      tasksInformation: 1,
     });
     const projects = await Project.getCurrentProjects();
     let tests, results, confirmationCode, projectTests;
@@ -560,15 +561,49 @@ exports.testing = async (req, res) => {
         }
       }
 
+      //  23.06.20: randomize and sample
+      const randomizeProjectTests = (project.tasksInformation && project.tasksInformation.randomize) || false;
+      const sampleProjectTests = (project.tasksInformation && project.tasksInformation.sample) || null;
+
+      function shuffle(a) {
+        for (let i = a.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+      }
+
+      let projectOriginalTests = project.tests;
+
       const unsortedProjectTests = await Test
         .find({
-          _id: { $in: project.tests},
+          _id: { $in: projectOriginalTests},
           author: { $exists: true }
         })
         .select({slug:1, name:1, photo: 1})
-      projectTests = unsortedProjectTests.sort( (a, b) => {
-        return project.tests.indexOf(a.id) - project.tests.indexOf(b.id);
-      });
+
+      if(randomizeProjectTests){
+        projectTests = shuffle(unsortedProjectTests);
+      } else {
+        projectTests = unsortedProjectTests.sort( (a, b) => {
+          return projectOriginalTests.indexOf(a.id) - projectOriginalTests.indexOf(b.id);
+        });
+      }
+
+      if(sampleProjectTests && sampleProjectTests > 0){
+        projectTests = projectTests.slice(0, sampleProjectTests);
+      }
+
+      // old code
+      // const unsortedProjectTests = await Test
+      //   .find({
+      //     _id: { $in: project.tests},
+      //     author: { $exists: true }
+      //   })
+      //   .select({slug:1, name:1, photo: 1})
+      // projectTests = unsortedProjectTests.sort( (a, b) => {
+      //   return project.tests.indexOf(a.id) - project.tests.indexOf(b.id);
+      // });
 
       results = await Result.getResultsForUserTesting({ author: req.user._id, project: project._id });
       const arrayTests = projectTests.map(function(test) {return test.slug;});
@@ -609,6 +644,7 @@ exports.testing = async (req, res) => {
               parameter => {
                 // check if the mode is "urn" then sample without replacement
                 if(parameter.mode === 'urnAfter'){
+                  // TODO: check what happens when two participants at the same time demand one condition
                   let sample;
                   if(parameter.sample && parameter.sample.length > 0){
                     sample = parameter.sample;

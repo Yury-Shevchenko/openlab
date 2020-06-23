@@ -305,6 +305,12 @@ module.exports =
         'title_project': 'Your study',
         'not_chosen_message': 'Add tasks to your study',
         'no_project_message': 'To add tasks to your study, create or activate a study ' + '<a href="/projects">here.</a>',
+        'randomization_header': 'Randomization of tasks',
+        'randomize_order_header': 'Should the order of the tasks be randomized for each participant?',
+        'randomize_yes': 'Yes',
+        'randomize_no': 'No',
+        'sample_header': 'Enter the number of tasks for a participant. Leave the field empty if participants should take part in all tasks.',
+        'randomize_save': 'Save randomization settings',
       },
 
       'tasks' : {

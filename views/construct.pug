@@ -54,7 +54,22 @@ block content
                   p(style="color:hsl(0,0%,45%)") #{l.not_chosen_message}
               else
                 p(style="color:hsl(0,0%,45%)") !{l.no_project_message}
-   
+          
+          .card 
+            h5 #{l.randomization_header}
+            
+            form(action=`/edittaskinformation/study/${project._id}` method = 'POST' id ="tasksOptions")
+              p #{l.randomize_order_header}
+              select(name="randomize" id="randomize")
+                option(value='No', selected=(!project.tasksInformation || (project.tasksInformation && !project.tasksInformation.randomize))) #{l.randomize_no}
+                option(value='Yes', selected=project.tasksInformation && project.tasksInformation.randomize) #{l.randomize_yes}
+
+              p #{l.sample_header}
+              input(type="number" name= "sample" id="sample" value=project.tasksInformation && project.tasksInformation.sample min=1 max=project.tests.length)
+              
+              button(type='submit' form="tasksOptions" class="button" style='margin-top: 20px') #{l.randomize_save}
+            
+            
           .card
             h5 #{l.title_tasks}
             .stores

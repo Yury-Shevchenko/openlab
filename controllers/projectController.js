@@ -266,10 +266,23 @@ exports.debugprojects = async(req, res) => {
 };
 
 exports.updateWithOSF = async(req, res) => {
-  // console.log('request body', req.body);
   const project = await Project.findOne({ _id: req.user.project._id });
   project.set(req.body);
   await project.save();
   req.flash('success', `The OSF project is updated`);
   res.redirect('/osf');
+};
+
+exports.editTaskInformation = async(req, res) => {
+  const project = await Project.findOne({ _id: req.params.id }, { creator: 1, tasksInformation: 1 });
+  confirmOwner(project, req.user);
+  if(req.body) {
+    project.tasksInformation = {
+      randomize: req.body.randomize == 'Yes' ? true : false,
+      sample: parseInt(req.body.sample),
+    }
+    await project.save();
+  }
+  req.flash('success', `${res.locals.layout.flash_param_update}`);
+  res.redirect('back');
 };

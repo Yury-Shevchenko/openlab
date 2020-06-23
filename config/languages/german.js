@@ -302,7 +302,13 @@ module.exports = {
       'title_tasks': 'Verfügbare Aufgaben',
       'title_project': 'Ihre Studie',
       'not_chosen_message': 'Fügen Sie Aufgaben zu Ihrer Studie hinzu.',
-      'no_project_message': 'Um IIhrer Studie Aufgaben hinzuzufügen, erstellen oder aktivieren Sie ' + '<a href="/projects">hier</a>' + ' eine Studie.'
+      'no_project_message': 'Um IIhrer Studie Aufgaben hinzuzufügen, erstellen oder aktivieren Sie ' + '<a href="/projects">hier</a>' + ' eine Studie.',
+      'randomization_header': 'Aufgaben randomisieren',
+      'randomize_order_header': 'Sollte die Reihenfolge der Aufgaben für jeden Teilnehmer randomisiert werden?',
+      'randomize_yes': 'Ja',
+      'randomize_no': 'Nein',
+      'sample_header': 'Geben Sie die Anzahl der Aufgaben für einen Teilnehmer ein. Lassen Sie das Feld leer, wenn die Teilnehmer an allen Aufgaben teilnehmen sollen.',
+      'randomize_save': 'Randomisierungseinstellungen speichern',
     },
 
     'tasks' : {

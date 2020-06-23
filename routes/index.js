@@ -308,6 +308,9 @@ router.post('/createindividualnotification', authController.isAdminLoggedIn, cat
 router.post('/deleteprojectnotifications', authController.isAdminLoggedIn, catchErrors(jobController.deleteProjectNotifications));
 router.get('/removenotification/:id', authController.isAdminLoggedIn, catchErrors(jobController.removeNotificationByID));
 
+// edit the project information about the tasks
+router.post('/edittaskinformation/study/:id', authController.isLoggedIn, catchErrors(projectController.editTaskInformation));
+
 //user-side notifications
 router.post('/registernotification', authController.isLoggedIn, catchErrors(jobController.registerPushNotification));
 router.post('/unregisternotification', authController.isLoggedIn, catchErrors(jobController.unsubscribePushNotification));
