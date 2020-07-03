@@ -100,6 +100,12 @@ const assembleFile = async (state, foldername,
           const updatedStringifiedState = stringifiedState.replace(item[0], result.secure_url);
           const updatedWithImageState = JSON.parse(updatedStringifiedState);
           updatedState = updatedWithImageState;
+          if(updatedState.files && updatedState.files.files && updatedState.files.files['index.html'] && updatedState.files.files['index.html'].content) {
+            const stringifiedHeader = readDataURI(updatedState.files.files['index.html'].content);
+            const updatedStringifiedHeader = stringifiedHeader.data.replace(item[0], result.secure_url);
+            const updatedStringifiedHeaderParsed = makeDataURI(updatedStringifiedHeader);
+            updatedState.files.files['index.html'].content = updatedStringifiedHeaderParsed;
+          }
         }
       }
     );
@@ -168,10 +174,14 @@ const assembleFile = async (state, foldername,
       },
       'index.html': {
         content: makeDataURI(
-          makeHTML(updatedState, updatedHeaderOptions),
+          makeHTML(updatedState, updatedHeaderOptions, true),
           'text/html'
         )
       },
+      header: makeDataURI(
+        makeHTML(updatedState, updatedHeaderOptions, false),
+        'text/html'
+      )
     },
     bundledFiles: fromPairs(Object.entries(updatedState.files.bundledFiles).map(
       // Add source path to data, so that bundled files can be moved

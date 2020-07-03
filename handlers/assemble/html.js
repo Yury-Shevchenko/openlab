@@ -21,23 +21,25 @@ const renderNode = ([type, attrs={}]) => {
   }
 }
 
-const makeHeader = (state, { beforeHeader=[], libraryPath='lib' }={}) => {
-  const defaultHeader = [
-    ['comment', { content: 'lab.js library code' }],
-    ['script', {
-      'src': `${ libraryPath }/lab.js`,
-      'data-labjs-script': 'library'
-    }],
-    ['script', {
-      'src': `${ libraryPath }/lab.fallback.js`,
-      'data-labjs-script': 'fallback'
-    }],
-    ['link', { rel: 'stylesheet', href: `${ libraryPath }/lab.css` }],
-    ['comment', { content: 'study code and styles' }],
-    ['script', { src: 'script.js', defer: true }],
-    ['link', { rel: 'stylesheet', href: 'style.css' }],
-  ]
-
+const makeHeader = (state, { beforeHeader=[], libraryPath='lib' }={}, includeDefaults) => {
+  let defaultHeader = []
+  if(includeDefaults) {
+    defaultHeader = [
+      ['comment', { content: 'lab.js library code' }],
+      ['script', {
+        'src': `${ libraryPath }/lab.js`,
+        'data-labjs-script': 'library'
+      }],
+      ['script', {
+        'src': `${ libraryPath }/lab.fallback.js`,
+        'data-labjs-script': 'fallback'
+      }],
+      ['link', { rel: 'stylesheet', href: `${ libraryPath }/lab.css` }],
+      ['comment', { content: 'study code and styles' }],
+      ['script', { src: 'script.js', defer: true }],
+      ['link', { rel: 'stylesheet', href: 'style.css' }],
+    ]
+  }
   // TBC ...
   return [...beforeHeader, ...defaultHeader]
     .map(renderNode)
@@ -45,14 +47,14 @@ const makeHeader = (state, { beforeHeader=[], libraryPath='lib' }={}) => {
     .join('\n')
 }
 
-const makeHTML = (state, headerOptions) => {
+const makeHTML = (state, headerOptions, includeDefaults) => {
   const { data } = readDataURI(state.files.files['index.html'].content)
 
   const updatedHTML = template(data, {
     escape: '',
     evaluate: '',
   })({
-    header: makeHeader(state, headerOptions)
+    header: makeHeader(state, headerOptions, includeDefaults)
   })
 
   return updatedHTML

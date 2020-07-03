@@ -28,6 +28,7 @@ const testSchema = new mongoose.Schema({
   timer: Number,
   photo: String,
   index: String,
+  header: String,
   file: String,
   css: String,
   json: String,

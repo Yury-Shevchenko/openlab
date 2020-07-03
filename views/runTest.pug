@@ -59,3 +59,30 @@ html
         node.innerHTML = window.decodeURIComponent(style);
         document.body.appendChild(node);
       }
+
+    if(test.header)
+      script(nonce=`${noncevalue}`).
+        const header = !{ JSON.stringify(test.header) || false }
+        if(header){
+          const decodedHeader = window.decodeURIComponent(header);
+          const headerDiv = document.createElement('div');
+          headerDiv.innerHTML = decodedHeader;
+          Array.from(headerDiv.querySelectorAll("link")).map(link => {
+            document.head.appendChild(link)
+            })
+          const scripts = Array.from(headerDiv.querySelectorAll("script"));
+          for (let i = 0; i < scripts.length; i++) {
+            const scr = scripts[i];
+            var script = document.createElement("script");
+            script.type = "text/javascript";
+            const noncevalue = !{ JSON.stringify(noncevalue) || ''};
+            script.nonce = noncevalue;
+            script.id = scr.id;
+            if(scr.src){
+              script.src = scr.src;
+            } else {
+              script.innerHTML = scr.innerHTML;
+            }
+            document.head.appendChild(script);
+          }
+        }

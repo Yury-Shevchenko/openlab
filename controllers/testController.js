@@ -103,6 +103,7 @@ exports.createTest = async (req, res, next) => {
       req.body.json = json_string;
     }
     req.body.index = script.files['index.html'].content;
+    req.body.header = script.files.header;
     req.body.css = script.files['style.css'].content;
     req.body.file = script.files['script.js'].content.data;
     req.body.params = script.params;
@@ -143,6 +144,7 @@ exports.updateTest = async (req, res, next) => {
       req.body.json = json_string;
     }
     req.body.index = script.files['index.html'].content;
+    req.body.header = script.files.header;
     req.body.css = script.files['style.css'].content;
     req.body.file = script.files['script.js'].content.data;
     req.body.params = script.params;
