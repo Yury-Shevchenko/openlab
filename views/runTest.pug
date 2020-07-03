@@ -96,8 +96,14 @@ html
           const decodedHeader = window.decodeURIComponent(header);
           const headerDiv = document.createElement('div');
           headerDiv.innerHTML = decodedHeader;
-          Array.from(headerDiv.querySelectorAll("link")).map(link => {
-            document.head.appendChild(link)
+          Array.from(headerDiv.querySelectorAll("link")).map(l => {
+            var link = document.createElement("link")
+            link.href = l.href;
+            link.id = l.id;
+            if(l.integrity) link.integrity = l.integrity;
+            link.crossOrigin = l.crossOrigin;
+            link.type = "text/css";
+            document.head.appendChild(link);
             })
           const scripts = Array.from(headerDiv.querySelectorAll("script"));  
           const loadScriptAsync = (script) => {
