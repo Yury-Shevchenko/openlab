@@ -14,12 +14,41 @@ html
         script(src=`/labjs/lib/lab.js` nonce=`${noncevalue}`)
         script(src=`/labjs/lib/lab.fallback.js` nonce=`${noncevalue}`)
         link(rel="stylesheet" href="/labjs/lib/lab.css")
-    
     if(test.plugins)
       each plugin in test.plugins
         if(plugin.url)
-          script(src=`${plugin.url}` nonce=`${noncevalue}`)
-        
+          script(src=`${plugin.url}` nonce=`${noncevalue}`)    
+    script(nonce=`${noncevalue}`).
+      function loadScript(scr, callback){
+        var script = document.createElement("script")
+        script.type = "text/javascript";
+        if (script.readyState){
+          script.onreadystatechange = function(){
+            if (script.readyState == "loaded" || script.readyState == "complete"){
+              script.onreadystatechange = null;
+              callback();
+            }
+          };
+        } else { 
+          script.onload = function(){
+            callback();
+          };
+        }
+        script.onerror = function() {
+          callback();
+        };
+        const noncevalue = !{ JSON.stringify(noncevalue) || ''};
+        script.nonce = noncevalue;
+        if(scr.src){
+          script.src = scr.src;
+        } else {
+          script.innerHTML = scr.innerHTML;
+          callback();
+        }
+        script.id = scr.id;
+        document.getElementsByTagName("head")[0].appendChild(script);
+      }
+  
   body
     div(class="container fullscreen" data-labjs-section="main")
       main(class="content-vertical-center content-horizontal-center")
@@ -70,19 +99,18 @@ html
           Array.from(headerDiv.querySelectorAll("link")).map(link => {
             document.head.appendChild(link)
             })
-          const scripts = Array.from(headerDiv.querySelectorAll("script"));
-          for (let i = 0; i < scripts.length; i++) {
-            const scr = scripts[i];
-            var script = document.createElement("script");
-            script.type = "text/javascript";
-            const noncevalue = !{ JSON.stringify(noncevalue) || ''};
-            script.nonce = noncevalue;
-            script.id = scr.id;
-            if(scr.src){
-              script.src = scr.src;
-            } else {
-              script.innerHTML = scr.innerHTML;
+          const scripts = Array.from(headerDiv.querySelectorAll("script"));  
+          const loadScriptAsync = (script) => {
+            return new Promise((resolve, reject) => {
+              loadScript(script, function(){
+                 resolve();
+              });
+            });
+          }    
+          async function processArray(array) {
+            for (const script of array) {
+              const res = await loadScriptAsync(script);
             }
-            document.head.appendChild(script);
           }
+          processArray(scripts)
         }
