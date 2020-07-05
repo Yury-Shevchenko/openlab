@@ -258,7 +258,9 @@ exports.editTest = async (req, res) => {
 //to confirm the owner
 const confirmOwner = (test, user) => {
   if(!test.author.equals(user._id) || user.level <= 10){
-    throw Error('You must own a test in order to edit it!');
+    if(user.level < 100){
+      throw Error('You must own a test in order to edit it!');
+    }
   }
 };
 
