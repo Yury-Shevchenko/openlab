@@ -147,7 +147,7 @@ testSchema.index({
 
 //pre-save validation to make sure that the test slug is unique
 testSchema.pre('save', async function(next){
-  if (!this.isModified('name')){
+  if (!this.isModified('name') || this.slug){
     next();//skip it
     return;//stop this function
   };

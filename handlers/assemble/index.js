@@ -11,6 +11,9 @@ const { makeHTML } = require('./html');
 
 const cloudinary = require('cloudinary');
 
+const fs = require('fs');
+const getUri = require('get-uri');
+const path = require('path');
 // TODO: At some later point, header options
 // should be derived from the study state
 // to the greatest possible extent (i.e. via plugins).
@@ -59,6 +62,18 @@ const assembleFile = async (state, foldername,
       file.source !== 'embedded' ||
       filesInUse.includes(filename)
   )
+
+  for (let [key, value] of Object.entries(updatedState.components)){
+    if (value.files && value.files.rows && value.files.rows.length > 0) {
+      value.files.rows.map(o => {
+        o.map(e => {
+          const name = e.poolPath.split(`/`)[1];
+          const poolPath = path.join('..', '..', 'embedded', foldername, name);
+          e.poolPath = poolPath;
+        })
+      });
+    }
+  }
 
   const uploadFile = async (item) => {
     const name = item[0].split(`${item[1].source == "embedded" ? "embedded" : "static"}/`)[1];
@@ -111,12 +126,39 @@ const assembleFile = async (state, foldername,
     );
   }
 
+  const uploadFileLocally = async (item) => {
+    const name = item[0].split(`${item[1].source == "embedded" ? "embedded" : "static"}/`)[1];
+    const string = item[1].content;
+    const dir = path.join('public', 'embedded', foldername);
+    !fs.existsSync(dir) && fs.mkdirSync(dir);
+    const address = path.join(dir, name);
+    const writableAddress = path.join('..', '..', 'embedded', foldername, name);
+    const writableStream = fs.createWriteStream(address);
+    getUri(string, (err, res) => {
+      if (err) throw err;
+      res.pipe(writableStream);
+    })
+    if(item[1].source === "embedded-global"){
+      const stringifiedState = JSON.stringify(updatedState);
+      const updatedStringifiedState = stringifiedState.replace(item[0], writableAddress);
+      const updatedWithImageState = JSON.parse(updatedStringifiedState);
+      updatedState = updatedWithImageState;
+      if(updatedState.files && updatedState.files.files && updatedState.files.files['index.html'] && updatedState.files.files['index.html'].content) {
+        const stringifiedHeader = readDataURI(updatedState.files.files['index.html'].content);
+        const updatedStringifiedHeader = stringifiedHeader.data.replace(item[0], writableAddress);
+        const updatedStringifiedHeaderParsed = makeDataURI(updatedStringifiedHeader);
+        updatedState.files.files['index.html'].content = updatedStringifiedHeaderParsed;
+      }
+    }
+  }
+
   const arr = Object.entries(files).filter(i => {
     return (i && i[1] && (i[1].source == "embedded" || i[1].source == "embedded-global"))
   });
 
   await Promise.all(arr.map(item => {
-    return uploadFile(item)
+    // return uploadFile(item)
+    return uploadFileLocally(item)
   }))
 
   // Collect plugin data

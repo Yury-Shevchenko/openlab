@@ -19,6 +19,7 @@ const fs = require('fs');
 const schedule = require('node-schedule');
 const validator = require('validator');
 const { assembleFile } = require('../handlers/assemble/index');
+const slug = require('slugs');
 
 exports.login = (req, res) => {
   res.render('login', {title: 'Login', message: req.flash('loginMessage')})
@@ -113,44 +114,53 @@ const multerOptions = {
 };
 
 exports.uploadfromlabjs = multer(multerOptions).fields([
-  {name: 'script'}
+  { name: 'script' }
 ]);
 
 exports.labjs = async (req, res) => {
   if(req.files.script){
-      if(req.user){
-        req.body.author = req.user._id;
-        req.body.project = req.user.project._id;
-      };
-      const prod = (req.headers.referer == 'https://labjs-beta.netlify.com/' || req.headers.referer == 'https://labjs-beta.netlify.app/' || req.headers.referer == 'http://localhost:3000/') ? 'beta': 'alpha';//check from where the upload comes
-      const json_string = req.files.script[0].buffer.toString();
-      const json = JSON.parse(json_string);
-      const script = await assembleFile(json, req.body.name);
-      if (req.files.script[0].buffer.length > 16000000) {
-        req.body.json = null;
-        req.flash('error', `${res.locals.layout.flash_json_too_big}`);
-      } else {
-        req.body.json = json_string;
+    let newSlug = slug(req.body.name);
+    if (newSlug != req.body.slug){
+      const slugRegEx = new RegExp(`^(${newSlug})((-[0-9]*$)?)$`, 'i');
+      const testsWithSlug = await Test.find({ slug: slugRegEx, _id: { $ne: req.params.id } });
+      if(testsWithSlug.length){
+        newSlug = `${newSlug}-${testsWithSlug.length + 1}`;
       }
-      req.body.index = script.files['index.html'].content;
-      req.body.header = script.files.header;
-      req.body.css = script.files['style.css'].content;
-      req.body.file = script.files['script.js'].content.data;
-      req.body.params = script.params;
-      req.body.production = prod;
-      req.body.labjsVersion = typeof(json.version) === 'string' ? json.version : json.version.join(',');
-      req.body.created = new Date().toISOString();
-      req.body.scriptUpdated = new Date().toISOString();
-      req.body.plugins = script.plugins;
-      req.body.open = false;
-      req.body.token = crypto.randomBytes(20).toString('hex');
-      req.body.tokenExpires = Date.now() + 3600000; //1 hour to upload the test
-      const test = await (new Test(req.body)).save();
-      req.flash('success', `${res.locals.layout.flash_labjs_upload_success} <strong>${req.body.name}</strong>. ${res.locals.layout.flash_labjs_edit_message}`);
-      res.setHeader('Access-Control-Allow-Origin', '*');
-      res.setHeader('Access-Control-Allow-Methods', 'GET');
-      res.setHeader('Content-Type', 'text/html');
-      res.redirect(303, `/tests/labjs/${req.body.token}/edit`);
+      req.body.slug = newSlug;
+    };
+    if(req.user){
+      req.body.author = req.user._id;
+      req.body.project = req.user.project._id;
+    };
+    const prod = (req.headers.referer == 'https://labjs-beta.netlify.com/' || req.headers.referer == 'https://labjs-beta.netlify.app/' || req.headers.referer == 'http://localhost:3000/') ? 'beta': 'alpha';//check from where the upload comes
+    const json_string = req.files.script[0].buffer.toString();
+    const json = JSON.parse(json_string);
+    const script = await assembleFile(json, newSlug);
+    if (req.files.script[0].buffer.length > 16000000) {
+      req.body.json = null;
+      req.flash('error', `${res.locals.layout.flash_json_too_big}`);
+    } else {
+      req.body.json = json_string;
+    }
+    req.body.index = script.files['index.html'].content;
+    req.body.header = script.files.header;
+    req.body.css = script.files['style.css'].content;
+    req.body.file = script.files['script.js'].content.data;
+    req.body.params = script.params;
+    req.body.production = prod;
+    req.body.labjsVersion = typeof(json.version) === 'string' ? json.version : json.version.join(',');
+    req.body.created = new Date().toISOString();
+    req.body.scriptUpdated = new Date().toISOString();
+    req.body.plugins = script.plugins;
+    req.body.open = false;
+    req.body.token = crypto.randomBytes(20).toString('hex');
+    req.body.tokenExpires = Date.now() + 3600000; //1 hour to upload the test
+    const test = await (new Test(req.body)).save();
+    req.flash('success', `${res.locals.layout.flash_labjs_upload_success} <strong>${req.body.name}</strong>. ${res.locals.layout.flash_labjs_edit_message}`);
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET');
+    res.setHeader('Content-Type', 'text/html');
+    res.redirect(303, `/tests/labjs/${req.body.token}/edit`);
   } else {
     res.sendStatus(500);
   }

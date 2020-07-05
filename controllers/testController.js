@@ -92,10 +92,21 @@ exports.resize = async (req, res, next) => {
 exports.createTest = async (req, res, next) => {
   req.body.author = req.user._id; //when the test is created the current id is put in the author
   req.body.project = req.user.project._id;
+
+  let newSlug = slug(req.body.name);
+  if (newSlug != req.body.slug){
+    const slugRegEx = new RegExp(`^(${newSlug})((-[0-9]*$)?)$`, 'i');//regular expression
+    const testsWithSlug = await Test.find({ slug: slugRegEx, _id: { $ne: req.params.id } });
+    if(testsWithSlug.length){
+      newSlug = `${newSlug}-${testsWithSlug.length + 1}`;
+    }
+    req.body.slug = newSlug;
+  };
+
   if(req.files.script){
     const json_string = req.files.script[0].buffer.toString();
     const json = JSON.parse(json_string);
-    const script = await assembleFile(json, req.body.name);
+    const script = await assembleFile(json, newSlug);
     if (req.files.script[0].buffer.length > 16000000) {
       req.body.json = null;
       req.flash('error', `${res.locals.layout.flash_json_too_big}`);
@@ -133,10 +144,21 @@ exports.updateTest = async (req, res, next) => {
   }
   req.body.token = undefined;
   req.body.tokenExpires = undefined;
+
+  let newSlug = slug(req.body.name);
+  if (newSlug != req.body.slug){
+    const slugRegEx = new RegExp(`^(${newSlug})((-[0-9]*$)?)$`, 'i');//regular expression
+    const testsWithSlug = await Test.find({ slug: slugRegEx, _id: { $ne: req.params.id } });
+    if(testsWithSlug.length){
+      newSlug = `${newSlug}-${testsWithSlug.length + 1}`;
+    }
+    req.body.slug = newSlug;
+  };
+
   if(req.files.script){
     const json_string = req.files.script[0].buffer.toString();
     const json = JSON.parse(json_string);
-    const script = await assembleFile(json, req.body.name);
+    const script = await assembleFile(json, req.body.slug);
     if (req.files.script[0].buffer.length > 16000000) {
       req.body.json = null;
       req.flash('error', `${res.locals.layout.flash_json_too_big}`);
@@ -152,16 +174,6 @@ exports.updateTest = async (req, res, next) => {
     req.body.labjsVersion = typeof(json.version) === 'string' ? json.version : json.version.join(',');
     req.body.scriptUpdated = new Date().toISOString();
     req.body.plugins = script.plugins;
-  };
-
-  let newSlug = slug(req.body.name);
-  if (newSlug != req.body.slug){
-    const slugRegEx = new RegExp(`^(${newSlug})((-[0-9]*$)?)$`, 'i');//regular expression
-    const testsWithSlug = await Test.find({ slug: slugRegEx, _id: { $ne: req.params.id } });
-    if(testsWithSlug.length){
-      newSlug = `${newSlug}-${testsWithSlug.length + 1}`;
-    }
-    req.body.slug = newSlug;
   };
 
   const test = await Test.findOneAndUpdate({ _id: req.params.id }, req.body, {
@@ -294,6 +306,21 @@ exports.removeTest = async (req, res) => {
           if(err) return console.log(err);
         });
       });
+    }
+    if(test.slug){
+      // need more complicated logic to remove only the user tests
+      // const images_path = `./public/embedded/${test.slug}`;
+      // if (fs.existsSync(images_path)) {
+      //   fs.readdirSync(images_path).forEach((file, index) => {
+      //     const curPath = path.join(images_path, file);
+      //     if (fs.lstatSync(curPath).isDirectory()) { // recurse
+      //       deleteFolderRecursive(curPath);
+      //     } else { // delete file
+      //       fs.unlinkSync(curPath);
+      //     }
+      //   });
+      //   fs.rmdirSync(images_path);
+      // }
     }
     test.remove((testErr, removedTest) => {
       req.flash('success', `${res.locals.layout.flash_test_deleted}`);

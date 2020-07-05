@@ -1,7 +1,7 @@
 mixin labjsuploadForm(test = {})
 
   form(action=`/add/${test._id || ''}` method = 'POST' class='card' enctype="multipart/form-data")
-    
+    input(type='text' name='slug' value=test.slug readonly hidden)
     label(for='name' style="font-weight:600") #{l.edit_name}
     input(type='text' name='name' value=test.name)
     p
