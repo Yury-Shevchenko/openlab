@@ -172,7 +172,9 @@ exports.updateTest = async (req, res, next) => {
     req.body.params = script.params;
     req.body.production = 'alpha'; // assume that users use the alpha version
     req.body.labjsVersion = typeof(json.version) === 'string' ? json.version : json.version.join(',');
-    req.body.scriptUpdated = new Date().toISOString();
+    if(req.user.level < 100){
+      req.body.scriptUpdated = new Date().toISOString();
+    }
     req.body.plugins = script.plugins;
   };
 
