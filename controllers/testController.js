@@ -139,8 +139,11 @@ exports.updateTest = async (req, res, next) => {
     };
   }
   if(req.user){
-    req.body.author = req.user._id;
-    req.body.project = req.user.project._id;
+    if(req.user.level && req.user.level > 100) {
+    } else {
+      req.body.author = req.user._id;
+      req.body.project = req.user.project._id;
+    }
   }
   req.body.token = undefined;
   req.body.tokenExpires = undefined;
