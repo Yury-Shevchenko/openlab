@@ -137,7 +137,7 @@ exports.updateTest = async (req, res, next) => {
       throw Error('You must remove test from your active program before editing it!');
     };
   }
-  if(req.user && req.user.level < 100){
+  if(req.user){
     req.body.author = req.user._id;
     req.body.project = req.user.project._id;
   }
