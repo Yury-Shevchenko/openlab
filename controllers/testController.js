@@ -294,7 +294,16 @@ exports.tryRemoveTest = async (req, res) => {
 
 //delete the test
 exports.removeTest = async (req, res) => {
-  const test = await Test.findOne({_id: req.params.id});
+  const test = await Test.findOne({_id: req.params.id}, {json: 1, name: 1, photo: 1, slug: 1});
+  let fileNames = [];
+  if(test.json){
+    const json = JSON.parse(test.json);
+    if(json && json.files && json.files.files) {
+      const keys = Object.keys(json.files.files)
+      const names = keys.map(name => name.split('/')[1]);
+      fileNames = names.filter(name => typeof(name) !== 'undefined');
+    }
+  }
   if (req.user.level > 100 || req.body.confirmation == test.name){
     if(test.photo){
       const photo_address = `./public/uploads/${test.photo}`;
@@ -307,20 +316,25 @@ exports.removeTest = async (req, res) => {
         });
       });
     }
-    if(test.slug){
-      // need more complicated logic to remove only the user tests
-      // const images_path = `./public/embedded/${test.slug}`;
-      // if (fs.existsSync(images_path)) {
-      //   fs.readdirSync(images_path).forEach((file, index) => {
-      //     const curPath = path.join(images_path, file);
-      //     if (fs.lstatSync(curPath).isDirectory()) { // recurse
-      //       deleteFolderRecursive(curPath);
-      //     } else { // delete file
-      //       fs.unlinkSync(curPath);
-      //     }
-      //   });
-      //   fs.rmdirSync(images_path);
-      // }
+    if(fileNames.length && test.slug){
+      const images_path = `./public/embedded/${test.slug}`;
+      if (fs.existsSync(images_path)) {
+        fs.readdirSync(images_path).forEach((file, index) => {
+          const ownsFile = fileNames.includes(file);
+          if(ownsFile){
+            const curPath = path.join(images_path, file);
+            if (fs.lstatSync(curPath).isDirectory()) {
+              deleteFolderRecursive(curPath);
+            } else {
+              fs.unlinkSync(curPath);
+            }
+          }
+        });
+        const isEmpty = fs.readdirSync(images_path).length === 0;;
+        if(isEmpty){
+          fs.rmdirSync(images_path);
+        }
+      }
     }
     test.remove((testErr, removedTest) => {
       req.flash('success', `${res.locals.layout.flash_test_deleted}`);
@@ -622,17 +636,6 @@ exports.testing = async (req, res) => {
       if(sampleProjectTests && sampleProjectTests > 0){
         projectTests = projectTests.slice(0, sampleProjectTests);
       }
-
-      // old code
-      // const unsortedProjectTests = await Test
-      //   .find({
-      //     _id: { $in: project.tests},
-      //     author: { $exists: true }
-      //   })
-      //   .select({slug:1, name:1, photo: 1})
-      // projectTests = unsortedProjectTests.sort( (a, b) => {
-      //   return project.tests.indexOf(a.id) - project.tests.indexOf(b.id);
-      // });
 
       results = await Result.getResultsForUserTesting({ author: req.user._id, project: project._id });
       const arrayTests = projectTests.map(function(test) {return test.slug;});
