@@ -153,6 +153,9 @@ exports.updateTest = async (req, res, next) => {
     }
     req.body.slug = newSlug;
   };
+  if(!req.body.contentSlug) {
+    req.body.contentSlug = newSlug;
+  }
 
   if(req.files.script){
     const json_string = req.files.script[0].buffer.toString();
