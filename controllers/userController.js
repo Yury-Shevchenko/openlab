@@ -126,8 +126,8 @@ exports.labjs = async (req, res) => {
       newSlug = `${newSlug}-${testsWithSlug.length + 1}`;
     }
     req.body.slug = newSlug;
-    req.body.contentSlug = newSlug;
-    
+    const contentSlug = `${newSlug}-${uniqid()}`;
+    req.body.contentSlug = contentSlug;
     if(req.user){
       req.body.author = req.user._id;
       req.body.project = req.user.project._id;
@@ -135,7 +135,7 @@ exports.labjs = async (req, res) => {
     const prod = (req.headers.referer == 'https://labjs-beta.netlify.com/' || req.headers.referer == 'https://labjs-beta.netlify.app/' || req.headers.referer == 'http://localhost:3000/') ? 'beta': 'alpha';//check from where the upload comes
     const json_string = req.files.script[0].buffer.toString();
     const json = JSON.parse(json_string);
-    const script = await assembleFile(json, newSlug);
+    const script = await assembleFile(json, contentSlug);
     if (req.files.script[0].buffer.length > 16000000) {
       req.body.json = null;
       req.flash('error', `${res.locals.layout.flash_json_too_big}`);

@@ -100,12 +100,13 @@ exports.createTest = async (req, res, next) => {
     newSlug = `${newSlug}-${testsWithSlug.length + 1}`;
   }
   req.body.slug = newSlug;
+  const contentSlug = `${newSlug}-${uniqid()}`;
+  req.body.contentSlug = contentSlug;
 
   if(req.files.script){
-    req.body.contentSlug = newSlug;
     const json_string = req.files.script[0].buffer.toString();
     const json = JSON.parse(json_string);
-    const script = await assembleFile(json, newSlug);
+    const script = await assembleFile(json, contentSlug);
     if (req.files.script[0].buffer.length > 16000000) {
       req.body.json = null;
       req.flash('error', `${res.locals.layout.flash_json_too_big}`);
@@ -154,7 +155,8 @@ exports.updateTest = async (req, res, next) => {
     req.body.slug = newSlug;
   };
   if(!req.body.contentSlug) {
-    req.body.contentSlug = newSlug;
+    const contentSlug = `${newSlug}-${uniqid()}`;
+    req.body.contentSlug = contentSlug;
   }
 
   if(req.files.script){
