@@ -47,7 +47,8 @@ const testSchema = new mongoose.Schema({
   plugins: [{
     name: String,
     url: String,
-  }]
+  }],
+  contentSlug: String,
 },{
   toJSON: {virtuals: true},//make virtuals visible
   toObject: {virtuals: true}

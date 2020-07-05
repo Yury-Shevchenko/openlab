@@ -94,16 +94,15 @@ exports.createTest = async (req, res, next) => {
   req.body.project = req.user.project._id;
 
   let newSlug = slug(req.body.name);
-  if (newSlug != req.body.slug){
-    const slugRegEx = new RegExp(`^(${newSlug})((-[0-9]*$)?)$`, 'i');//regular expression
-    const testsWithSlug = await Test.find({ slug: slugRegEx, _id: { $ne: req.params.id } });
-    if(testsWithSlug.length){
-      newSlug = `${newSlug}-${testsWithSlug.length + 1}`;
-    }
-    req.body.slug = newSlug;
-  };
+  const slugRegEx = new RegExp(`^(${newSlug})((-[0-9]*$)?)$`, 'i');//regular expression
+  const testsWithSlug = await Test.find({ slug: slugRegEx, _id: { $ne: req.params.id } });
+  if(testsWithSlug.length){
+    newSlug = `${newSlug}-${testsWithSlug.length + 1}`;
+  }
+  req.body.slug = newSlug;
 
   if(req.files.script){
+    req.body.contentSlug = newSlug;
     const json_string = req.files.script[0].buffer.toString();
     const json = JSON.parse(json_string);
     const script = await assembleFile(json, newSlug);
@@ -158,7 +157,7 @@ exports.updateTest = async (req, res, next) => {
   if(req.files.script){
     const json_string = req.files.script[0].buffer.toString();
     const json = JSON.parse(json_string);
-    const script = await assembleFile(json, req.body.slug);
+    const script = await assembleFile(json, req.body.contentSlug);
     if (req.files.script[0].buffer.length > 16000000) {
       req.body.json = null;
       req.flash('error', `${res.locals.layout.flash_json_too_big}`);
@@ -298,7 +297,7 @@ exports.tryRemoveTest = async (req, res) => {
 
 //delete the test
 exports.removeTest = async (req, res) => {
-  const test = await Test.findOne({_id: req.params.id}, {json: 1, name: 1, photo: 1, slug: 1});
+  const test = await Test.findOne({_id: req.params.id}, {json: 1, name: 1, photo: 1, slug: 1, contentSlug: 1});
   let fileNames = [];
   if(test.json){
     const json = JSON.parse(test.json);
@@ -320,8 +319,8 @@ exports.removeTest = async (req, res) => {
         });
       });
     }
-    if(fileNames.length && test.slug){
-      const images_path = `./public/embedded/${test.slug}`;
+    if(fileNames.length && test.contentSlug){
+      const images_path = `./public/embedded/${test.contentSlug}`;
       if (fs.existsSync(images_path)) {
         fs.readdirSync(images_path).forEach((file, index) => {
           const ownsFile = fileNames.includes(file);

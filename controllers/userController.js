@@ -120,14 +120,14 @@ exports.uploadfromlabjs = multer(multerOptions).fields([
 exports.labjs = async (req, res) => {
   if(req.files.script){
     let newSlug = slug(req.body.name);
-    if (newSlug != req.body.slug){
-      const slugRegEx = new RegExp(`^(${newSlug})((-[0-9]*$)?)$`, 'i');
-      const testsWithSlug = await Test.find({ slug: slugRegEx, _id: { $ne: req.params.id } });
-      if(testsWithSlug.length){
-        newSlug = `${newSlug}-${testsWithSlug.length + 1}`;
-      }
-      req.body.slug = newSlug;
-    };
+    const slugRegEx = new RegExp(`^(${newSlug})((-[0-9]*$)?)$`, 'i');
+    const testsWithSlug = await Test.find({ slug: slugRegEx, _id: { $ne: req.params.id } });
+    if(testsWithSlug.length){
+      newSlug = `${newSlug}-${testsWithSlug.length + 1}`;
+    }
+    req.body.slug = newSlug;
+    req.body.contentSlug = newSlug;
+    
     if(req.user){
       req.body.author = req.user._id;
       req.body.project = req.user.project._id;
