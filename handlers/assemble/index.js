@@ -125,6 +125,9 @@ const assembleFile = async (state, foldername,
       }
     );
   }
+  function replaceAll(string, search, replace) {
+    return string.split(search).join(replace);
+  }
 
   const uploadFileLocally = async (item) => {
     const name = item[0].split(`${item[1].source == "embedded" ? "embedded" : "static"}/`)[1];
@@ -140,12 +143,12 @@ const assembleFile = async (state, foldername,
     })
     if(item[1].source === "embedded-global"){
       const stringifiedState = JSON.stringify(updatedState);
-      const updatedStringifiedState = stringifiedState.replace(item[0], writableAddress);
+      const updatedStringifiedState = replaceAll(stringifiedState, item[0], writableAddress);
       const updatedWithImageState = JSON.parse(updatedStringifiedState);
       updatedState = updatedWithImageState;
       if(updatedState.files && updatedState.files.files && updatedState.files.files['index.html'] && updatedState.files.files['index.html'].content) {
         const stringifiedHeader = readDataURI(updatedState.files.files['index.html'].content);
-        const updatedStringifiedHeader = stringifiedHeader.data.replace(item[0], writableAddress);
+        const updatedStringifiedHeader = replaceAll(stringifiedHeader.data, item[0], writableAddress);
         const updatedStringifiedHeaderParsed = makeDataURI(updatedStringifiedHeader);
         updatedState.files.files['index.html'].content = updatedStringifiedHeaderParsed;
       }
