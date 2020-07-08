@@ -25,19 +25,6 @@ const assembleFile = async (state, foldername,
   // Apply modification function to copy of current state
   let updatedState = stateModifier(cloneDeep(state))
 
-  // Apply Open Lab redirect
-  const redirects = {
-    full: function(){
-      window.location = '/testing';
-    }
-  };
-
-  //add plugin to emit post event at the end of the study
-  updatedState.components.root.plugins = [
-    ...state.components.root.plugins,
-    { type: 'lab.plugins.Transmit', url: '/save', callbacks: redirects}
-  ]
-
   // get the parameters for Open Lab
   const main_sequence_number = Object.values(updatedState.components)
     .filter(el => el.id == 'root')
@@ -160,7 +147,6 @@ const assembleFile = async (state, foldername,
   });
 
   await Promise.all(arr.map(item => {
-    // return uploadFile(item)
     return uploadFileLocally(item)
   }))
 
@@ -199,6 +185,18 @@ const assembleFile = async (state, foldername,
         }) )
       : c.plugins
   }) )
+
+  // Apply Open Lab redirect and add plugin to emit post event at the end of the study
+  const redirects = {
+    full: function(){
+      window.location = '/testing';
+    }
+  };
+
+  updatedState.components.root.plugins = [
+    ...state.components.root.plugins,
+    { type: 'lab.plugins.Transmit', url: '/save', callbacks: redirects}
+  ]
 
   // Reassemble state object that now includes the generated script,
   // as well as any additional files required for the deployment target
