@@ -10,5 +10,10 @@ block content
           .headerLink #{l.ask_question_header}
         form(action=`/faq` method = 'POST')
           textarea(name='question' placeholder=l.type_in_your_question required)
+          p #{l.contact_email}
+          input(type='email' name="email" placeholder=l.type_in_your_email required)
+          p
           input(type='submit' value=l.send_question_btn class="button")
+          
+        
     

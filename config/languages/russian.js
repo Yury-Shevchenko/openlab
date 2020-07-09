@@ -687,6 +687,8 @@ module.exports =
         'ask_question_header': 'У вас появились затруднения?',
         'type_in_your_question': 'Задайте ваш вопрос здесь',
         'send_question_btn': 'Отправить',
+        'contact_email': 'Ваш адрес электронной почты',
+        'type_in_your_email': 'Введите ваш адрес электронной почты, чтобы мы могли вам ответить.'
       },
 
       'notifications': {

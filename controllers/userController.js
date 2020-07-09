@@ -494,6 +494,8 @@ exports.sendQuestion= async (req, res) => {
     level: req.user.level || '',
     openLabId: req.user.openLabId || '',
     code: (req.user.code && req.user.code.id) || '',
+    contactEmail: DOMPurify.sanitize(req.body.email),
+    participantHistory: req.user.participantHistory,
   };
   await mail.sendQuestion({
     researcher,

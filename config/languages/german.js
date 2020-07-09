@@ -683,6 +683,8 @@ module.exports = {
         'ask_question_header': 'Haben Sie ein Problem?',
         'type_in_your_question': 'Fragen Sie hier',
         'send_question_btn': 'Senden',
+        'contact_email': 'Ihre Kontakt-E-Mail',
+        'type_in_your_email': 'Geben Sie Ihre E-Mail-Adresse ein, damit wir Ihnen antworten können.',
       },
 
       'notifications': {

@@ -685,6 +685,8 @@ module.exports =
           'ask_question_header': 'Do you have a problem?',
           'type_in_your_question': 'Ask your question here',
           'send_question_btn': 'Send',
+          'contact_email': 'Your contact email',
+          'type_in_your_email': 'Enter your email address, so we can reply to you.'
         },
 
         'notifications': {
