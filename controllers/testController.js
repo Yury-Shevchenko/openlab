@@ -735,7 +735,7 @@ exports.testing = async (req, res) => {
         if(req.query && Object.keys(req.query).length){
           const params = req.query;
           queryString = Object.keys(params).map(key => key + '=' + params[key]).join('&');
-          res.redirect(`/test/${nextTask}/${req.user.id}/?${queryString}`);
+          res.redirect(`/test/${nextTask}/${req.user.id}?${queryString}`);
         } else {
           res.redirect(`/test/${nextTask}/${req.user.id}`);
         }
