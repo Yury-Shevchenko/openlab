@@ -11,7 +11,7 @@ mixin chosenTestCard(test = {})
       .store__details
         .project__actions
           .store__action
-            a.heart__button(target="_blank" href=`/test/${test.slug}/${user._id}/${param_language}`)
+            a.heart__button(target="_blank" href=`/test/${test.slug}/${user._id}?language=${param_language}`)
               .blackbtns(style='fill:black')
                 != h.icon('play-button-black')
           .store__action 

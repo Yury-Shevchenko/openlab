@@ -221,7 +221,7 @@ router.get('/testing/:selector', authController.isLoggedIn, catchErrors(testCont
 //individual session of a particular user with a particular task
 router.get('/test/:slug', testController.generateId, catchErrors(testController.runTest));
 router.get('/test/:slug/:id', catchErrors(testController.runTest));
-router.get('/test/:slug/:id/:lang', catchErrors(testController.runTest));
+// router.get('/test/:slug/:id/:lang', catchErrors(testController.runTest));
 
 //PARAMETERS controller
 router.post('/tasks/:task/:slug/:lang', authController.isLoggedIn, catchErrors(paramController.postParameters)); //change parameters of the task

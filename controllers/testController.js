@@ -760,7 +760,7 @@ exports.runTest = async (req, res) => {
   const test = await Test.findOne({ slug: req.params.slug });
   const feature = {
     slug: req.params.slug,
-    language: req.params.lang || (req.user && req.user.language) || 'english',
+    language: req.query.language || (req.user && req.user.language) || 'english',
     project: (req.user && req.user.participantInProject) || (req.user && req.user.project._id ) || test.project
   };
   // get the parameters from the user/study
