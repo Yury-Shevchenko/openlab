@@ -193,7 +193,7 @@ module.exports = {
     'flash_json_too_big' : `Ihre JSON-Datei ist größer als 16 Mb.
         Sie können Ihren Test immer noch in Open Lab hosten und ausführen, aber leider können wir die ursprüngliche JSON-Datei nicht auf der Plattform speichern.
         Bitte stellen Sie sicher, dass Sie Ihre JSON-Datei sicher in Ihrem lokalen Speicher aufbewahren.`,
-    'agree_toOpenLab' : `Ich habe die <a target="_blank" href="/docs/terms">Servicebedinungen</a> und <a target="_blank" href="/docs/policy">Datenschutzrichtlinie</a> von Open Lab gelesen und stimme ihnen zu.`,
+    'agree_toOpenLab' : `Ich habe die <a target="_blank" href="/docs/dienstbedingungen">Servicebedinungen</a> und <a target="_blank" href="/docs/datenschutz">Datenschutzrichtlinie</a> von Open Lab gelesen und stimme ihnen zu.`,
     'footer_docs': `<a href="/docs/intro">Dokumentation</a>`,
     'footer_contacts': `<a href="/docs/help">Kontakte</a>`,
     'footer_terms': `<a href="/docs/terms">Dienstbedingungen</a>`,
