@@ -197,7 +197,8 @@ module.exports = {
     'footer_docs': `<a href="/docs/intro">Dokumentation</a>`,
     'footer_contacts': `<a href="/docs/help">Kontakte</a>`,
     'footer_terms': `<a href="/docs/terms">Dienstbedingungen</a>`,
-    'footer_policy': `<a href="/docs/policy">Datenschutzpolitik</a>`,
+    'footer_policy': `<a href="/docs/datenschutz">Datenschutzerklärung</a>`,
+    'footer_notice': `<a href="/docs/impressum">Impressum</a>`,
   },
 
   'passport': {
@@ -257,7 +258,7 @@ module.exports = {
     'part_2': 'Einfache und komfortable Autorisierung',
     'part_2_text': 'Einmal registriert, müssen sie für weitere Studien keinen neuen Account anlegen.',
     'part_3': 'Einhaltung des Datenschutzes',
-    'part_3_text': `Schauen Sie sich unsere <a target="_blank" href="/docs/terms">Allgemeinen Geschäftsbedingungen</a> und <a target="_blank" href="/docs/policy">Datenschutzrichtlinie</a> an.`,
+    'part_3_text': `Schauen Sie sich unsere <a target="_blank" href="/docs/dienstbedingungen">Allgemeinen Geschäftsbedingungen</a> und <a target="_blank" href="/docs/datenschutz">Datenschutzrichtlinie</a> an.`,
     },
 
     'projects': {
@@ -663,6 +664,12 @@ module.exports = {
         'ask_question_header': 'Haben Sie eine Frage?',
         'type_in_your_question': 'Fragen Sie hier',
         'send_question_btn': 'Senden',
+        'policy_title': 'Datenschutzerklärung',
+        'policy_link': 'datenschutz',
+        'terms_title': 'Dienstbedingungen',
+        'terms_link': 'dienstbedingungen',
+        'legal_notice_title': 'Impressum',
+        'legal_notice_link': 'impressum',
       },
 
       'listing': {

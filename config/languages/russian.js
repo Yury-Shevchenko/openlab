@@ -198,6 +198,7 @@ module.exports =
       'footer_contacts': `<a href="/docs/help">Контакты</a>`,
       'footer_terms': `<a href="/docs/terms">Условия</a>`,
       'footer_policy': `<a href="/docs/policy">Политика конфиденциальности</a>`,
+      'footer_notice': `<a href="/docs/legalnotice">О компании</a>`,
     },
 
     'passport': {
@@ -668,6 +669,12 @@ module.exports =
         'ask_question_header': 'У вас есть вопрос?',
         'type_in_your_question': 'Задайте его здесь',
         'send_question_btn': 'Отправить',
+        'policy_title': 'Политика конфиденциальности',
+        'policy_link': 'policy',
+        'terms_title': 'Условия',
+        'terms_link': 'terms',
+        'legal_notice_title': 'О компании',
+        'legal_notice_link': 'legalnotice',
       },
 
       'listing': {

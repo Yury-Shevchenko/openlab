@@ -195,10 +195,11 @@ module.exports =
         You still can host and run your task, but unfortunately we cannot store the original JSON file on the platform.
         Please make sure that you keep your JSON file safely in your local storage.`,
       'agree_toOpenLab' : `I agree to the Open Lab <a target="_blank" href="/docs/terms">Terms of Service</a> and <a target="_blank" href="/docs/policy">Privacy Policy</a>`,
-      'footer_docs': `<a thref="/docs/intro">Documentation</a>`,
-      'footer_contacts': `<a thref="/docs/help">Contacts</a>`,
-      'footer_terms': `<a thref="/docs/terms">Terms of Service</a>`,
-      'footer_policy': `<a thref="/docs/policy">Privacy Policy</a>`,
+      'footer_docs': `<a href="/docs/intro">Documentation</a>`,
+      'footer_contacts': `<a href="/docs/help">Contacts</a>`,
+      'footer_terms': `<a href="/docs/terms">Terms of Service</a>`,
+      'footer_policy': `<a href="/docs/policy">Privacy Policy</a>`,
+      'footer_notice': `<a href="/docs/legalnotice">Legal notice</a>`,
     },
 
     'passport': {
@@ -665,6 +666,12 @@ module.exports =
           'ask_question_header': 'Do you have a question?',
           'type_in_your_question': 'Ask it here',
           'send_question_btn': 'Send',
+          'policy_title': 'Privacy policy',
+          'policy_link': 'policy',
+          'terms_title': 'Terms of service',
+          'terms_link': 'terms',
+          'legal_notice_title': 'Legal notice',
+          'legal_notice_link': 'legalnotice',
         },
 
         'listing': {
