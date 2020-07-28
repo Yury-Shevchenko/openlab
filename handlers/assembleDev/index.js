@@ -51,13 +51,11 @@ const assembleFileDev = async (state, foldername,
   )
 
   for (let [key, value] of Object.entries(updatedState.components)){
-    if (value.files && value.files.rows && value.files.rows.length > 0) {
-      value.files.rows.map(o => {
-        o.map(e => {
-          const name = e.poolPath.split(`/`)[1];
-          const poolPath = path.join('..', '..', 'embedded', foldername, name);
-          e.poolPath = poolPath;
-        })
+    if (value.files && value.files && value.files.length > 0) {
+      value.files.map(file => {
+        const name = file.poolPath.split(`/`)[1];
+        const poolPath = path.join('..', '..', 'embedded', foldername, name);
+        file.poolPath = poolPath;
       });
     }
   }
