@@ -14,6 +14,7 @@ const Param = mongoose.model('Param');
 const keys = require('../config/keys');
 const slug = require('slugs');
 const { assembleFile } = require('../handlers/assemble/index');
+const { assembleFileDev } = require('../handlers/assembleDev/index');
 
 const multerOptions = {
   storage: multer.memoryStorage(),
@@ -106,7 +107,13 @@ exports.createTest = async (req, res, next) => {
   if(req.files.script){
     const json_string = req.files.script[0].buffer.toString();
     const json = JSON.parse(json_string);
-    const script = await assembleFile(json, contentSlug);
+    const version = json.version;
+    let script;
+    if(parseInt(version.join('')) > 2011){
+      script = await assembleFileDev(json, req.body.contentSlug);
+    } else {
+      script = await assembleFile(json, req.body.contentSlug);
+    }
     if (req.files.script[0].buffer.length > 16000000) {
       req.body.json = null;
       req.flash('error', `${res.locals.layout.flash_json_too_big}`);
@@ -165,7 +172,13 @@ exports.updateTest = async (req, res, next) => {
   if(req.files.script){
     const json_string = req.files.script[0].buffer.toString();
     const json = JSON.parse(json_string);
-    const script = await assembleFile(json, req.body.contentSlug);
+    const version = json.version;
+    let script;
+    if(parseInt(version.join('')) > 2011){
+      script = await assembleFileDev(json, req.body.contentSlug);
+    } else {
+      script = await assembleFile(json, req.body.contentSlug);
+    }
     if (req.files.script[0].buffer.length > 16000000) {
       req.body.json = null;
       req.flash('error', `${res.locals.layout.flash_json_too_big}`);

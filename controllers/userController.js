@@ -19,6 +19,7 @@ const fs = require('fs');
 const schedule = require('node-schedule');
 const validator = require('validator');
 const { assembleFile } = require('../handlers/assemble/index');
+const { assembleFileDev } = require('../handlers/assembleDev/index');
 const slug = require('slugs');
 
 exports.login = (req, res) => {
@@ -135,7 +136,13 @@ exports.labjs = async (req, res) => {
     const prod = (req.headers.referer == 'https://labjs-beta.netlify.com/' || req.headers.referer == 'https://labjs-beta.netlify.app/' || req.headers.referer == 'http://localhost:3000/') ? 'beta': 'alpha';//check from where the upload comes
     const json_string = req.files.script[0].buffer.toString();
     const json = JSON.parse(json_string);
-    const script = await assembleFile(json, contentSlug);
+    const version = json.version;
+    let script;
+    if(parseInt(version.join('')) > 2011){
+      script = await assembleFileDev(json, req.body.contentSlug);
+    } else {
+      script = await assembleFile(json, req.body.contentSlug);
+    }
     if (req.files.script[0].buffer.length > 16000000) {
       req.body.json = null;
       req.flash('error', `${res.locals.layout.flash_json_too_big}`);
