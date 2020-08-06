@@ -81,13 +81,6 @@ block content
           else
             p= `${l.message_welcome}!`
 
-      if (project.useNotifications)
-        .notificationsPanel
-          button(id="enable_notifications" class="button") Enable notifications
-          button(id="disable_notifications" class="button") Disable notifications
-          #notification_status
-          p
-
       .dashboard
         .dashboardBody
           each test in projectTests

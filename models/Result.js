@@ -129,6 +129,7 @@ resultSchema.statics.getResultsForUserTesting = function(feature) {
     { $match: { 'author' : mongoose.Types.ObjectId(feature.author) } },
     { $project: {
       taskslug: '$$ROOT.taskslug',
+      test: '$$ROOT.test',
     }}
   ]);
 };
@@ -138,7 +139,6 @@ resultSchema.statics.getMyResults = function(feature) {
   return this.aggregate([
     { $match: { 'author' : mongoose.Types.ObjectId(feature.author) } },
     { $match: { 'rawdata' : { $exists: true }} },
-
     { $lookup: {
       from: 'tests', localField: 'test', foreignField: '_id', as: 'originTest'
       }

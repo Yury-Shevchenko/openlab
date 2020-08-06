@@ -9,7 +9,7 @@ const uniqid = require('uniqid');
 const agenda = new Agenda({
   name: 'open-lab-notifications',
   db: {address: process.env.DATABASE, collection: 'Job'},
-});
+}); 
 
 agenda.on('ready', function() {
 

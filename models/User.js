@@ -34,7 +34,7 @@ const userSchema = new Schema({
     },
     name             : String,
     email            : String,
-    openLabId        : String,
+    openLabId        : String,  
     created          : {
         type         : Date,
         default      : Date.now

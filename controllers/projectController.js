@@ -66,6 +66,7 @@ exports.createProject = async (req, res) => {
           allowMultipleParticipation: req.body.allowMultipleParticipation == 'on',
           showCompletionCode: req.body.showCompletionCode == 'on',
           useNotifications: req.body.useNotifications == 'on',
+          redirectUrl: req.body.redirectUrl,
         }
       )).save();
       if (typeof(req.user.project._id) == "undefined"){
@@ -110,6 +111,7 @@ exports.updateProject = async (req, res) => {
     project.showCompletionCode = req.body.showCompletionCode == 'on';
     project.useNotifications = req.body.useNotifications == 'on';
     project.members = membersData;
+    project.redirectUrl = req.body.redirectUrl;
     await project.save();
     req.flash('success', `${res.locals.layout.flash_project_updated}`);
     res.redirect('back');

@@ -554,6 +554,7 @@ exports.testing = async (req, res) => {
       tests: 1,
       parameters: 1,
       tasksInformation: 1,
+      redirectUrl: 1
     });
     const projects = await Project.getCurrentProjects();
     let tests, results, confirmationCode, projectTests;
@@ -629,6 +630,11 @@ exports.testing = async (req, res) => {
       }
 
       //  23.06.20: randomize and sample
+      results = await Result.getResultsForUserTesting({ author: req.user._id, project: project._id });
+      const arrayResultsTests = results.map(function(result) {return String(result.test)});
+      const arrayResults = results.map(function(result) {return result.taskslug;});
+      // console.log('arrayResults', arrayResults);
+
       const randomizeProjectTests = (project.tasksInformation && project.tasksInformation.randomize) || false;
       const sampleProjectTests = (project.tasksInformation && project.tasksInformation.sample) || null;
 
@@ -641,6 +647,11 @@ exports.testing = async (req, res) => {
       }
 
       let projectOriginalTests = project.tests;
+      if(!project.allowMultipleParticipation){
+        projectOriginalTests = projectOriginalTests.filter(test => !arrayResultsTests.includes(String(test)));
+      }
+
+      // console.log('projectOriginalTests', projectOriginalTests);
 
       const unsortedProjectTests = await Test
         .find({
@@ -658,13 +669,34 @@ exports.testing = async (req, res) => {
       }
 
       if(sampleProjectTests && sampleProjectTests > 0){
-        projectTests = projectTests.slice(0, sampleProjectTests);
+        if(project.allowMultipleParticipation){
+          projectTests = projectTests.slice(0, sampleProjectTests);
+        } else {
+          const sampledLeft = sampleProjectTests - results.length;
+          projectTests = projectTests.slice(0, sampledLeft);
+        }
       }
 
-      results = await Result.getResultsForUserTesting({ author: req.user._id, project: project._id });
       const arrayTests = projectTests.map(function(test) {return test.slug;});
-      const arrayResults = results.map(function(result) {return result.taskslug;});
-      const remainingArray = arrayTests.filter(function(test) {return !arrayResults.includes(test)});
+      // console.log('arrayTests', arrayTests);
+
+      let remainingArray = arrayTests.filter(function(test) {return !arrayResults.includes(test)});
+      // console.log('remainingArray', remainingArray);
+
+      // if(randomizeProjectTests && sampleProjectTests && sampleProjectTests > 0){
+      //   if(arrayTests.length === remainingArray.length){
+      //
+      //   }
+      // }
+
+      // if(randomizeProjectTests && sampleProjectTests && sampleProjectTests > 0){
+      //   if(arrayTests.length === remainingArray.length){
+      //     console.log('remainingArray nullify');
+      //     remainingArray = [];
+      //     // projectTests = unsortedProjectTests.filter(test => arrayResults.includes(test.slug))
+      //     console.log('projectTests', projectTests);
+      //   }
+      // }
 
       if(remainingArray.length == 0 && req.user.level < 10){
         const recordedCode = req.user.participantHistory.filter(e => e.project_id.toString() == req.user.participantInProject.toString());
@@ -730,6 +762,15 @@ exports.testing = async (req, res) => {
             project.parameters = userParams;
             await project.save();
           }
+        }
+
+        // redirect to the external website if there is a redirect link in the project
+        if(project.redirectUrl && !project.allowMultipleParticipation){
+          let redirectUrl = `${project.redirectUrl}`;
+          if(confirmationCode && project.showCompletionCode){
+            redirectUrl += `?confirmation-code=${confirmationCode}`;
+          }
+          return res.redirect(redirectUrl);
         }
 
       };

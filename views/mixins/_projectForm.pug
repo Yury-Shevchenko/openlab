@@ -23,6 +23,9 @@ mixin projectForm(project = {})
       label(for='showCompletionCode')
         span.
           #{l.showCompletionCode}
+  
+    label(for='redirectUrl') !{l.enterExternalUrl} 
+    input(type='text' name='redirectUrl' value=project.redirectUrl placeholder=l.enterUrlPlaceholder)
     //- div.inputCheckBox
     //-   input(type= 'checkbox' id= 'useNotifications' name= 'useNotifications' checked = project.useNotifications)
     //-   label(for='useNotifications')
