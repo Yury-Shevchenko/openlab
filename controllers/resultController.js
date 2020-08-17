@@ -189,8 +189,16 @@ exports.downloadSummaryData = async (req, res) => {
 //download csv file for particular test and user
 exports.downloadResultTestUser = async (req, res) => {
   const project = await Project.findOne({ _id: req.user.project._id });
-  confirmOwner(project, req.user);
+  if(project){
+    confirmOwner(project, req.user);
+  }
   const result = await Result.findOne({ _id: req.params.id });
+  const ownsResult = result.author.id == req.user._id;
+  if(!project){
+    if(!ownsResult){
+      throw Error('You must be an author of results in order to do it!');
+    }
+  }
   const taskName = result.taskslug || 'result';
   const authorId = result.author.openLabId || 'undefined';
   const name = taskName + '_' + authorId;
