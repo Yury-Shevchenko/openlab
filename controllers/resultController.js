@@ -98,6 +98,16 @@ exports.downloadprojectdata = async (req, res) => {
     .on('data', obj => {
       //return only the results of participants (level < 10)
       if(obj.author.level < 10 && obj.rawdata && obj.rawdata.length > 0){
+        if(obj.rawdata[0].meta){
+          obj.rawdata[0].meta = JSON.stringify(obj.rawdata[0].meta);
+        }
+        // record confirmation code if it is present in the dataset
+        const confirmationCode = obj.author.participantHistory
+          .filter(project => project.project_id == req.params.id)
+          .map(project => project.individual_code)[0]
+        if(confirmationCode){
+          obj.rawdata[0].confirmationCode = confirmationCode;
+        }
         const preKeys = flatMap(obj.rawdata, function(e){
           return(Object.keys(e));
         });
