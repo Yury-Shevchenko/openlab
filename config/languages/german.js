@@ -196,7 +196,7 @@ module.exports = {
     'agree_toOpenLab' : `Ich habe die <a target="_blank" href="/docs/dienstbedingungen">Servicebedinungen</a> und <a target="_blank" href="/docs/datenschutz">Datenschutzrichtlinie</a> von Open Lab gelesen und stimme ihnen zu.`,
     'footer_docs': `<a href="/docs/intro">Dokumentation</a>`,
     'footer_contacts': `<a href="/docs/help">Kontakte</a>`,
-    'footer_terms': `<a href="/docs/terms">Dienstbedingungen</a>`,
+    'footer_terms': `<a href="/docs/dienstbedingungen">Dienstbedingungen</a>`,
     'footer_policy': `<a href="/docs/datenschutz">Datenschutzerklärung</a>`,
     'footer_notice': `<a href="/docs/impressum">Impressum</a>`,
   },
