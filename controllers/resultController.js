@@ -47,12 +47,23 @@ exports.downloadResultsUser = async (req, res) => {
     author: req.params.id,
     project: req.user.project._id,
     rawdata: { $exists: true },
-  })
+  },{ rawdata: 1, author: 1 });
   if(results && results.length > 0){
     const authoreddata = results.map(u=>{
       u.rawdata.map(e=>{
         return e;
       })
+      if(u.rawdata[0].meta){
+        u.rawdata[0].meta = JSON.stringify(u.rawdata[0].meta);
+      }
+      if(u.author && u.author.participantHistory && u.author.participantHistory.length){
+        const confirmationCode = u.author.participantHistory
+          .filter(project => project.project_id == String(req.user.project._id))
+          .map(project => project.individual_code)[0]
+        if(confirmationCode){
+          u.rawdata[0].confirmationCode = confirmationCode;
+        }
+      }
       return u.rawdata;
     }).reduce((a,b)=>a.concat(b),[]);
     const keys = authoreddata.map(e => Object.keys(e)).reduce( (a,b) => Array.from(new Set(a.concat(b))) );
@@ -93,7 +104,7 @@ exports.downloadprojectdata = async (req, res) => {
   const input = new stream.Readable({ objectMode: true });
   input._read = () => {};
   var cursor = await Result
-    .find({project: req.user.project._id, uploadType: type},{rawdata:1, author:1})
+    .find({project: req.user.project._id, uploadType: type},{ rawdata: 1, author: 1 })
     .cursor()
     .on('data', obj => {
       //return only the results of participants (level < 10)
@@ -102,11 +113,13 @@ exports.downloadprojectdata = async (req, res) => {
           obj.rawdata[0].meta = JSON.stringify(obj.rawdata[0].meta);
         }
         // record confirmation code if it is present in the dataset
-        const confirmationCode = obj.author.participantHistory
-          .filter(project => project.project_id == req.params.id)
-          .map(project => project.individual_code)[0]
-        if(confirmationCode){
-          obj.rawdata[0].confirmationCode = confirmationCode;
+        if(obj.author && obj.author.participantHistory && obj.author.participantHistory.length){
+          const confirmationCode = obj.author.participantHistory
+            .filter(project => project.project_id == req.params.id)
+            .map(project => project.individual_code)[0]
+          if(confirmationCode){
+            obj.rawdata[0].confirmationCode = confirmationCode;
+          }
         }
         const preKeys = flatMap(obj.rawdata, function(e){
           return(Object.keys(e));
@@ -162,20 +175,41 @@ exports.downloadprojectmetadata = async (req, res) => {
   const processor = input.pipe(res);
 };
 
+
 //download summary statistics for all users of the project
 exports.downloadSummaryData = async (req, res) => {
+  const type = 'full';
   let keys = [];
   const name = req.user.project.name;
-  const croppedName = name.split(' ').join('-');
-  res.setHeader('Content-disposition', 'attachment; filename=' + croppedName.replace(/[^\x00-\x7F]/g, "") +'.csv');
+  res.setHeader('Content-disposition', 'attachment; filename=' + name +'.csv');
   const input = new stream.Readable({ objectMode: true });
   input._read = () => {};
   var cursor = await Result
-    .find({project: req.user.project._id},{rawdata:1, author:1})
+    .find({project: req.user.project._id, uploadType: type},{rawdata:1, author:1, taskslug:1, uploadType:1, transfer:1})
     .cursor()
     .on('data', obj => {
-        if(obj.author.level < 10){
-        const preKeys = flatMap(obj.rawdata, function(e){
+      // console.log('obj', obj);
+      //return only the results of participants (level < 10)
+      if(obj.author && obj.author.level < 10){
+        const authoreddata = obj.rawdata
+          .filter(e=>{
+            return e.aggregated
+          })
+          .map(e=>{
+            const l = {};
+            l["timestamp"]= e.timestamp;
+            l["participantId"] = (obj.author && obj.author.openLabId) || "unknown";
+            l["participantCode"] = (obj.author && obj.author.code && obj.author.code.id) || "unknown";
+            l["type"] = obj.uploadType;
+            l["task"]= obj.taskslug;
+            l['project'] = req.user.project.name;
+            l["session"]= obj.transfer;
+            Object.keys(e.aggregated).map(key => {
+              l[key] = e.aggregated[key];
+            })
+            return l;
+          })
+        const preKeys = flatMap(authoreddata, function(e){
           return(Object.keys(e));
         });
         const tempkeys = Array.from(new Set(preKeys));
@@ -183,9 +217,9 @@ exports.downloadSummaryData = async (req, res) => {
         let parsed;
         if (new_items.length > 0){
           keys = keys.concat(new_items);
-          parsed = papaparse.unparse({data: obj.rawdata, fields: keys}) + '\r\n';
+          parsed = papaparse.unparse({data: authoreddata, fields: keys}) + '\r\n';
         } else {
-          const preparsed = papaparse.unparse({data: obj.rawdata, fields: keys}) + '\r\n';
+          const preparsed = papaparse.unparse({data: authoreddata, fields: keys}) + '\r\n';
           parsed = preparsed.replace(/(.*\r\n)/,'');
         };
         input.push(parsed);
@@ -202,11 +236,23 @@ exports.downloadResultTestUser = async (req, res) => {
   if(project){
     confirmOwner(project, req.user);
   }
-  const result = await Result.findOne({ _id: req.params.id });
+  const result = await Result.findOne({ _id: req.params.id },
+    { rawdata: 1, author: 1 });
   const ownsResult = result.author.id == req.user._id;
   if(!project){
     if(!ownsResult){
       throw Error('You must be an author of results in order to do it!');
+    }
+  }
+  if(result.rawdata[0].meta){
+    result.rawdata[0].meta = JSON.stringify(result.rawdata[0].meta);
+  }
+  if(result.author && result.author.participantHistory && result.author.participantHistory.length){
+    const confirmationCode = result.author.participantHistory
+      .filter(project => project.project_id == String(req.user.project._id))
+      .map(project => project.individual_code)[0]
+    if(confirmationCode){
+      result.rawdata[0].confirmationCode = confirmationCode;
     }
   }
   const taskName = result.taskslug || 'result';
@@ -232,9 +278,22 @@ exports.downloadTestResults = async (req, res) => {
   const input = new stream.Readable({ objectMode: true });
   input._read = () => {};
   var cursor = await Result
-    .find({project: req.user.project._id, test: req.params.test, uploadType: type},{rawdata:1})
+    .find({project: req.user.project._id, test: req.params.test, uploadType: type},
+      { rawdata: 1, author: 1 })
     .cursor()
     .on('data', obj => {
+      if(obj.rawdata[0].meta){
+        obj.rawdata[0].meta = JSON.stringify(obj.rawdata[0].meta);
+      }
+      // record confirmation code if it is present in the dataset
+      if(obj.author && obj.author.participantHistory && obj.author.participantHistory.length){
+        const confirmationCode = obj.author.participantHistory
+          .filter(project => project.project_id == String(req.user.project._id))
+          .map(project => project.individual_code)[0]
+        if(confirmationCode){
+          obj.rawdata[0].confirmationCode = confirmationCode;
+        }
+      }
       const preKeys = flatMap(obj.rawdata, function(e){
         return(Object.keys(e));
       });
@@ -263,9 +322,21 @@ exports.downloadMyResults = async (req, res) => {
   const input = new stream.Readable({ objectMode: true });
   input._read = () => {};
   var cursor = await Result
-    .find({ author: req.user._id, uploadType: type},{ rawdata:1 })
+    .find({ author: req.user._id, uploadType: type},{ rawdata: 1, author: 1, project: 1 })
     .cursor()
     .on('data', obj => {
+      if(obj.rawdata[0].meta){
+        obj.rawdata[0].meta = JSON.stringify(obj.rawdata[0].meta);
+      }
+      // record confirmation code if it is present in the dataset
+      if(obj.author && obj.author.participantHistory && obj.author.participantHistory.length){
+        const confirmationCode = obj.author.participantHistory
+          .filter(project => project.project_id == String(obj.project._id))
+          .map(project => project.individual_code)[0]
+        if(confirmationCode){
+          obj.rawdata[0].confirmationCode = confirmationCode;
+        }
+      }
       const preKeys = flatMap(obj.rawdata, function(e){
         return(Object.keys(e));
       });
