@@ -654,7 +654,7 @@ module.exports =
           'data_invitations_1': `The “Invitations” page contains links that allow you to invite more participants to your experiment. You can test this links by opening them in the new window in incognito mode (or after logging out). During a login with a participant code, a user will be prompted to enter a code. This code can also be sent to a participant or already known, e.g. student ID or other personal number.`,
           'data_invitations_2': `Registration with an email address requests a participant to create an account with an email address and password. Later, the email and password will be used for authorization. This provides a higher level of security than a participant code.`,
           'data_invitations_3': `If your study is publicly accessible, it can also be discovered by participants after registration by all available methods (code, email or social networks such as Facebook, Google or Github). Your study will appear in the list of studies in which a user can participate.`,
-          'help_title' : 'Help',
+          'help_title' : 'Contacts',
           'help_1': `Please, join the <a target='blank' href='https://join.slack.com/t/open-lab-online/shared_invite/enQtNDU3MzgzMzY4NDcxLWZhYzU0MGU3MDFkNTNlZmI2MjQ4YzdlNzE3ZmYwMThmM2I1YTg5YjNiYjg3MzEzOGI5YzhkYzI0OTQ2Yjg1Y2Q'>Slack chat</a> to ask questions and get help. `,
           'forum': 'Forum',
           // 'offer_title': 'Outsource programming',
@@ -675,6 +675,7 @@ module.exports =
           'terms_link': 'terms',
           'legal_notice_title': 'Legal notice',
           'legal_notice_link': 'legalnotice',
+          'contacts_email': `E-Mail Address: <a href = "mailto: contact@open-lab.online">contact@open-lab.online</a>`,
         },
 
         'listing': {
@@ -733,7 +734,7 @@ module.exports =
           'delete_notifications': 'Delete all notifications',
           'registering_busy_message': 'Registering notification ...',
           'deprecation_message': `
-            The notification functionality in Open Lab is deprecated and will not be used in the near future.
+            The notifications in the Open Lab are deprecated and are no longer supported.
             If you want to send notifications to your participants via mobile phone (e.g. for experience sampling studies),
             please have a look at our other project <a target='blank' href='https://samply.js.org/'>Samply</a>.
             Samply can be integrated with your study created in Open Lab.

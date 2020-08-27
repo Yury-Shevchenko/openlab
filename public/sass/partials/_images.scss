@@ -46,6 +46,21 @@
   }
 }
 
+.imageContactsContainer {
+  display: grid;
+  grid-template-columns: 2fr 4fr;
+  grid-column-gap: 30px;
+  // margin: 20px;
+  @media (max-width: 725px) {
+    grid-template-columns: 1fr;
+    grid-row-gap: 30px;
+    img {
+      width: 80%;
+      margin: 0 auto;
+    }
+  }
+}
+
 .headerImageText {
   margin: 0;
   color: #007dcc;

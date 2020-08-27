@@ -652,7 +652,7 @@ module.exports = {
         'data_invitations_1': `Auf der Seite "Einladungen" finden Sie Links, mit denen Sie mehr Teilnehmer zu Ihrem Experiment einladen können. Sie können diese Links testen, indem Sie sie im neuen Fenster im Inkognito-Modus (oder nach dem Abmelden) öffnen. Während der Anmeldung mit einem Teilnehmercode wird ein Benutzer aufgefordert, einen Code einzugeben. Dieser Code kann auch an den Teilnehmer gesendet oder bereits bekannt sein, z.B. Studentenausweis oder andere persönliche Daten.`,
         'data_invitations_2': `Die Registrierung mit einer E-Mail-Adresse fordert einen Teilnehmer auf, ein Profil mit einer E-Mail-Adresse und einem Passwort zu erstellen. Später werden die E-Mail und das Passwort für die Autorisierung verwendet. Dies bietet höhere Sicherheit als ein Teilnehmercode.`,
         'data_invitations_3': `Wenn Ihre Studie öffentlich zugänglich ist, kann es auch von den Teilnehmern nach der Registrierung mit allen verfügbaren Methoden (Code, E-Mail oder sozialen Netzwerken wie Facebook, Google oder Github) entdeckt werden. Ihre Studie erscheint in der Liste der Studien, an denen der Benutzer teilnehmen kann.`,
-        'help_title' : 'Hilfe',
+        'help_title' : 'Kontakte',
         'help_1': `Bitte nehmen Sie am <a target='blank' href='https://join.slack.com/t/open-lab-online/shared_invite/enQtNDU3MzgzMzY4NDcxLWZhYzU0MGU3MDFkNTNlZmI2MjQ4YzdlNzE3ZmYwMThmM2I1YTg5YjNiYjg3MzEzOGI5YzhkYzI0OTQ2Yjg1Y2Q'>Slack chat</a> teil, um Fragen zu stellen und Hilfe zu erhalten.`,
         'forum': 'Forum',
         // 'offer_title': 'Programmierung outsourcen',
@@ -673,6 +673,7 @@ module.exports = {
         'terms_link': 'dienstbedingungen',
         'legal_notice_title': 'Impressum',
         'legal_notice_link': 'impressum',
+        'contacts_email': `E-Mail Addresse: <a href = "mailto: contact@open-lab.online">contact@open-lab.online</a>`,
       },
 
       'listing': {
@@ -732,7 +733,7 @@ module.exports = {
         'delete_notifications': 'Alle Benachrichtigungen löschen',
         'registering_busy_message': 'Registrierung der Benachrichtigung ...',
         'deprecation_message': `
-          Die Benachrichtigungsfunktionalität in Open Lab ist veraltet und wird in naher Zukunft nicht mehr verwendet werden.
+          Die Benachrichtigungen im Open Lab sind veraltet und werden nicht mehr unterstützt.
           Wenn Sie Benachrichtigungen an Ihre Teilnehmer per Handy versenden möchten (z.B. für Experience Sampling Studien),
           schauen Sie sich bitte unser anderes Projekt an <a target='blank' href='https://samply.js.org/'>Samply</a>.
           Samply kann in Ihre im Open Lab erstellte Studie integriert werden.

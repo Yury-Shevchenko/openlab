@@ -25,12 +25,12 @@ block content
           li.nav__item: a.nav__link(href=`/docs/upload`, class=(currentPath.startsWith(`/docs/upload`) ? 'nav__link--active' : '')) #{l.upload_title}
           li.nav__item: a.nav__link(href=`/docs/project`, class=(currentPath.startsWith(`/docs/project`) ? 'nav__link--active' : '')) #{l.project_title}
           li.nav__item: a.nav__link(href=`/docs/data`, class=(currentPath.startsWith(`/docs/data`) ? 'nav__link--active' : '')) #{l.data_title}
-          li.nav__item: a.nav__link(href=`/docs/help`, class=(currentPath.startsWith(`/docs/help`) ? 'nav__link--active' : '')) #{l.help_title}
           li.nav__item: a.nav__link(href=`/docs/faq`, class=(currentPath.startsWith(`/docs/faq`) ? 'nav__link--active' : '')) #{l.faq_title}
           li.nav__item: a.nav__link(href=`/docs/${l.policy_link}`, class=(currentPath.startsWith(`/docs/${l.policy_link}`) ? 'nav__link--active' : '')) #{l.policy_title}
           li.nav__item: a.nav__link(href=`/docs/${l.terms_link}`, class=(currentPath.startsWith(`/docs/${l.terms_link}`) ? 'nav__link--active' : '')) #{l.terms_title}
           li.nav__item: a.nav__link(href=`/docs/${l.legal_notice_link}`, class=(currentPath.startsWith(`/docs/${l.legal_notice_link}`) ? 'nav__link--active' : '')) #{l.legal_notice_title}
-
+          li.nav__item: a.nav__link(href=`/docs/help`, class=(currentPath.startsWith(`/docs/help`) ? 'nav__link--active' : '')) #{l.help_title}
+  
     .card 
       .card-message
         +#{page}()

@@ -1,26 +1,35 @@
 mixin help()
 
-  h5
-    .headerLink #{l.forum}
-  p.card-message
-    | !{l.help_1}
+  
+  .imageContactsContainer   
+    <img style="margin: 0 auto; align-self: baseline;" src="/images/artwork/Ol-aboutus.png"/>
+    .div
+      h5
+        .headerLink !{l.help_title} 
+      p.card-message(style="text-align: justify") !{l.contacts_email}  
+      h5
+        .headerLink #{l.forum}
+      p.card-message
+        | !{l.help_1}
+            
     
+  
   if(language == 'ru')
-    
+      
     h5
       .headerLink #{l.offer_title}
     p.card-message
       | #{l.offer}
-    
+      
     form(action=`/request` method = 'POST')
-    
+      
       label(for ='taskDescription') #{l.task_description}
       textarea(name='taskDescription' required)
-    
+      
       label(for ='example') #{l.example}
       textarea(name='example')
-    
+      
       label(for ='time') #{l.deadline}
       textarea(name='time')
-    
+      
       input(type='submit' value=l.send_request_btn class="button")
