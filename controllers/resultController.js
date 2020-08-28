@@ -426,10 +426,18 @@ exports.saveIncrementalResults = async (req, res) => {
   const openLabId = (req.user && req.user.openLabId) || anonymParticipantId || "undefined";
   const projectId = (req.user && req.user.participantInProject) || (req.user && req.user.project._id) || test.project || "undefined";
 
-  // todo why do we need project and parameters?
   const project = await Project.findOne({ _id: projectId },{
-    name: 1, osf: 1, parameters: 1,
+    osf: 1, showCompletionCode: 1,
   });
+
+  let completionCodeOnline;
+  if(project && project.showCompletionCode){
+    if(req.user && req.user.participantHistory && req.user.participantHistory.length){
+      completionCodeOnline = req.user.participantHistory
+        .filter(project => project.project_id == String(projectId))
+        .map(project => project.individual_code)[0]
+    }
+  }
 
   if(req.body.data && req.body.data.length !== 0){
     req.body.data.map(row => {
@@ -439,6 +447,9 @@ exports.saveIncrementalResults = async (req, res) => {
       row['project'] = projectId;
       row['status'] = (req.user && req.user.level > 10) ? 'researcher' : 'participant';
       row['code'] = (req.user && req.user.code && req.user.code.id) || openLabId;
+      if(project && project.showCompletionCode){
+        row['confirmationCodeOngoing'] = completionCodeOnline;
+      }
     })
   };
 

@@ -629,11 +629,10 @@ exports.testing = async (req, res) => {
         }
       }
 
-      //  23.06.20: randomize and sample
+      //randomize and sample
       results = await Result.getResultsForUserTesting({ author: req.user._id, project: project._id });
       const arrayResultsTests = results.map(function(result) {return String(result.test)});
       const arrayResults = results.map(function(result) {return result.taskslug;});
-      // console.log('arrayResults', arrayResults);
 
       const randomizeProjectTests = (project.tasksInformation && project.tasksInformation.randomize) || false;
       const sampleProjectTests = (project.tasksInformation && project.tasksInformation.sample) || null;
@@ -651,14 +650,12 @@ exports.testing = async (req, res) => {
         projectOriginalTests = projectOriginalTests.filter(test => !arrayResultsTests.includes(String(test)));
       }
 
-      // console.log('projectOriginalTests', projectOriginalTests);
-
       const unsortedProjectTests = await Test
         .find({
           _id: { $in: projectOriginalTests},
           author: { $exists: true }
         })
-        .select({slug:1, name:1, photo: 1})
+        .select({ slug:1, name:1, photo: 1 })
 
       if(randomizeProjectTests){
         projectTests = shuffle(unsortedProjectTests);
@@ -677,26 +674,31 @@ exports.testing = async (req, res) => {
         }
       }
 
-      const arrayTests = projectTests.map(function(test) {return test.slug;});
-      // console.log('arrayTests', arrayTests);
+      const arrayTests = projectTests.map(function(test) { return test.slug; });
+      let remainingArray = arrayTests.filter(function(test) { return !arrayResults.includes(test) });
 
-      let remainingArray = arrayTests.filter(function(test) {return !arrayResults.includes(test)});
-      // console.log('remainingArray', remainingArray);
-
-      // if(randomizeProjectTests && sampleProjectTests && sampleProjectTests > 0){
-      //   if(arrayTests.length === remainingArray.length){
-      //
-      //   }
-      // }
-
-      // if(randomizeProjectTests && sampleProjectTests && sampleProjectTests > 0){
-      //   if(arrayTests.length === remainingArray.length){
-      //     console.log('remainingArray nullify');
-      //     remainingArray = [];
-      //     // projectTests = unsortedProjectTests.filter(test => arrayResults.includes(test.slug))
-      //     console.log('projectTests', projectTests);
-      //   }
-      // }
+      // generate completion confirmation code
+      if (project.showCompletionCode) {
+        const doesCodeExist = req.user.participantHistory.filter(e => e.project_id.toString() == req.user.participantInProject.toString());
+        if(doesCodeExist.length === 0) {
+          const completionCode = uniqid();
+          await User.findOneAndUpdate({
+            _id: req.user._id
+          }, {
+            $addToSet: {
+              participant_projects: project._id,
+              participantHistory:
+                {
+                  project_id: project._id,
+                  project_name: project.name,
+                  individual_code: completionCode,
+                }
+              },
+          }, {
+            new: true
+          }).exec();
+        }
+      }
 
       if(remainingArray.length == 0 && req.user.level < 10){
         const recordedCode = req.user.participantHistory.filter(e => e.project_id.toString() == req.user.participantInProject.toString());
@@ -718,7 +720,7 @@ exports.testing = async (req, res) => {
             new: true
           }).exec();
         } else {
-          confirmationCode = req.user.participantHistory.filter(e => e.project_id.toString() == req.user.participantInProject.toString())[0].individual_code;
+          confirmationCode = recordedCode[0].individual_code;
         };
 
         // if all tests are done, then we can update project parameters

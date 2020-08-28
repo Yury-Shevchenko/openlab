@@ -9,8 +9,8 @@ mixin userCard(person = {}, i)
       else
         td= person.participant_code
       if (project.showCompletionCode)
-        if (person.confirmationCodes && person.participantInProject && person.confirmationCodes.filter(e => e.project_id.toString() == person.participantInProject.toString()) && person.confirmationCodes.filter(e => e.project_id.toString() == person.participantInProject.toString()).length > 0)
-          td= `${person.confirmationCodes.filter(e => e.project_id.toString() == person.participantInProject.toString())[0].individual_code}`
+        if (person.confirmationCodes && project._id && person.confirmationCodes.filter(e => e.project_id.toString() == project._id.toString()) && person.confirmationCodes.filter(e => e.project_id.toString() == project._id.toString()).length > 0)
+          td= `${person.confirmationCodes.filter(e => e.project_id.toString() == project._id.toString())[0].individual_code}`
         else
           td= ``
       td= h.moment.utc(person.created).locale(language).local().format('MM-DD-YY, H:mm')
