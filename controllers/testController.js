@@ -679,7 +679,7 @@ exports.testing = async (req, res) => {
 
       // generate completion confirmation code
       if (project.showCompletionCode) {
-        const doesCodeExist = req.user.participantHistory.filter(e => e.project_id.toString() == req.user.participantInProject.toString());
+        const doesCodeExist = req.user.participantHistory.filter(e => e.project_id.toString() == project._id.toString());
         if(doesCodeExist.length === 0) {
           const completionCode = uniqid();
           await User.findOneAndUpdate({
@@ -700,8 +700,8 @@ exports.testing = async (req, res) => {
         }
       }
 
-      if(remainingArray.length == 0 && req.user.level < 10){
-        const recordedCode = req.user.participantHistory.filter(e => e.project_id.toString() == req.user.participantInProject.toString());
+      if(remainingArray.length == 0){
+        const recordedCode = req.user.participantHistory.filter(e => e.project_id.toString() == project._id.toString());
         if (recordedCode.length == 0){
           confirmationCode = uniqid();
           await User.findOneAndUpdate({
