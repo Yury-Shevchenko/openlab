@@ -16,6 +16,12 @@ const slug = require('slugs');
 const { assembleFile } = require('../handlers/assemble/index');
 const { assembleFileDev } = require('../handlers/assembleDev/index');
 
+function getRandomIntInclusive(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
+}
+
 const multerOptions = {
   storage: multer.memoryStorage(),
   fileFilter(req, file, next) {
@@ -681,7 +687,7 @@ exports.testing = async (req, res) => {
       if (project.showCompletionCode) {
         const doesCodeExist = req.user.participantHistory.filter(e => e.project_id.toString() == project._id.toString());
         if(doesCodeExist.length === 0) {
-          const completionCode = uniqid();
+          const completionCode = getRandomIntInclusive(100000, 999999);
           await User.findOneAndUpdate({
             _id: req.user._id
           }, {
@@ -703,7 +709,7 @@ exports.testing = async (req, res) => {
       if(remainingArray.length == 0){
         const recordedCode = req.user.participantHistory.filter(e => e.project_id.toString() == project._id.toString());
         if (recordedCode.length == 0){
-          confirmationCode = uniqid();
+          confirmationCode = getRandomIntInclusive(100000, 999999);
           await User.findOneAndUpdate({
             _id: req.user._id
           }, {

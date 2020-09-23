@@ -71,7 +71,7 @@ block content
           if(project.showCompletionCode)
             .confirmationCode(style="display: grid; grid-template-columns: 2fr 1fr;")
               h5(style="color: #3b4051;") #{l.your_code}
-              p #{confirmationCode}
+              h2 #{confirmationCode}
       else
         if(project.welcomeMessage)
           p= `${project.welcomeMessage}`
