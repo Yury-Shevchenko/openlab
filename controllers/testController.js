@@ -315,8 +315,10 @@ exports.tryRemoveTest = async (req, res) => {
     req.flash('error', `You must own a test in order to delete it!`);
     res.redirect('back');
   } else {
-    const resultsCount = await Result.where({ test: req.params.id }).countDocuments();
-    const parametersCount = await Param.where({ test: req.params.id }).countDocuments();
+    const countResultsPromise = Result.where({ test: req.params.id }).countDocuments();
+    const countParamsPromise = Param.where({ test: req.params.id }).countDocuments();
+    const [resultsCount, parametersCount] = await Promise.all([ countResultsPromise, countParamsPromise ]);
+    res.render('deleteForm', { test, resultsCount, parametersCount });
   }
 };
 
