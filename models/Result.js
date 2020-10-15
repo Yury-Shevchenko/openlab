@@ -124,7 +124,7 @@ resultSchema.statics.getFullResults = function(feature) {
 //get results of particular user for the testing page
 resultSchema.statics.getResultsForUserTesting = function(feature) {
   return this.aggregate([
-    { $match: { 'uploadType' : 'full'} },
+    // { $match: { 'uploadType' : 'full'} },
     { $match: { 'project' : mongoose.Types.ObjectId(feature.project) } },
     { $match: { 'author' : mongoose.Types.ObjectId(feature.author) } },
     { $project: {
