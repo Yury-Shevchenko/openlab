@@ -63,7 +63,7 @@ exports.adminPage = (req, res) => {
 };
 
 exports.addTest = (req, res) => {
-  res.render('editTest');
+  res.render('editTest', { query: req.query });
 };
 
 exports.upload = multer(multerOptions).fields([
@@ -120,7 +120,7 @@ exports.createTest = async (req, res, next) => {
     } else {
       script = await assembleFile(json, req.body.contentSlug);
     }
-    if (req.files.script[0].buffer.length > 16000000) {
+    if (req.body.upload === 'big' || req.files.script[0].buffer.length > 16000000) {
       req.body.json = null;
       req.flash('error', `${res.locals.layout.flash_json_too_big}`);
     } else {
@@ -185,7 +185,7 @@ exports.updateTest = async (req, res, next) => {
     } else {
       script = await assembleFile(json, req.body.contentSlug);
     }
-    if (req.files.script[0].buffer.length > 16000000) {
+    if (req.body.upload === 'big' || req.files.script[0].buffer.length > 16000000) {
       req.body.json = null;
       req.flash('error', `${res.locals.layout.flash_json_too_big}`);
     } else {
@@ -280,12 +280,12 @@ exports.getAllTests = async (req, res) => {
 exports.editTest = async (req, res) => {
   const test = await Test.findOne({ _id: req.params.id });
   confirmOwner(test, req.user);
-  res.render('editTest', {test: test});
+  res.render('editTest', { test: test, query: req.query });
 };
 
 //to confirm the owner
 const confirmOwner = (test, user) => {
-  if(!test.author.equals(user._id) || user.level <= 10){
+  if(!(test.author && test.author.equals(user._id)) || user.level <= 10){
     if(user.level < 100){
       throw Error('You must own a test in order to edit it!');
     }

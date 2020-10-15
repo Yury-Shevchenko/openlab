@@ -1,8 +1,7 @@
 mixin testForm(test = {})
 
-  //- form(action=`https://open-lab.online/tests/labjs` method = 'POST' class='card' enctype="multipart/form-data")
-  //- form(action=`/tests/labjs` method = 'POST' enctype="multipart/form-data")
   form(action=`/add/${test._id || ''}` method = 'POST' enctype="multipart/form-data" id="testform")
+    input(type='radio' name='upload' value='big' checked=(query && query.upload=='big') readonly hidden)
     input(type='text' name='slug' value=test.slug readonly hidden)
     input(type='text' name='contentSlug' value=test.contentSlug readonly hidden)
     label(for='name' style="font-weight:600") #{l.edit_name}
@@ -63,7 +62,6 @@ mixin testForm(test = {})
         br
         small #{l.edit_public_description}
 
-      //- input(type='radio', name='open', value='false', style="visibility: true;" checked=test.open==false onclick=`checkSubscription()`)#wnr2
       input(type='radio', name='open', value='false', style="visibility: true;" checked=test.open==false || (Object.keys(test).length === 0))#wnr2
 
       label(for='wnr2')
@@ -78,5 +76,5 @@ mixin testForm(test = {})
     p
     input(type='submit' id="btnAddTest" value=l.edit_save class="button")
 
-  //-pre= h.dump(test)
-  //- pre= h.dump(user)
+
+  
