@@ -99,7 +99,6 @@ exports.resize = async (req, res, next) => {
 exports.createTest = async (req, res, next) => {
   req.body.author = req.user._id; //when the test is created the current id is put in the author
   req.body.project = req.user.project._id;
-
   let newSlug = slug(req.body.name);
   const slugRegEx = new RegExp(`^(${newSlug})((-[0-9]*$)?)$`, 'i');//regular expression
   const testsWithSlug = await Test.find({ slug: slugRegEx, _id: { $ne: req.params.id } });
@@ -318,7 +317,6 @@ exports.tryRemoveTest = async (req, res) => {
   } else {
     const resultsCount = await Result.where({ test: req.params.id }).countDocuments();
     const parametersCount = await Param.where({ test: req.params.id }).countDocuments();
-    res.render('deleteForm', {test, resultsCount, parametersCount });
   }
 };
 
