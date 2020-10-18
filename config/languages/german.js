@@ -296,8 +296,12 @@ module.exports = {
       'completionMessage': 'Nachricht an die Teilnehmer nach Abschluss der Aufgaben',
       'askNotifications': 'Fragen an die Benutzer, ob sie Benachrichtigungen zulassen dürfen (wir testen derzeit Benachrichtigungen, Teilnehmer sollten Chrome auf einem Desktop-Computer verwenden).',
       'allowMultipleParticipation': 'Erlauben den Teilnehmern eine mehrfache Teilnahme am gleichen Test.',
-      'enterExternalUrl': `Geben Sie unten eine externe URL ein, wenn Sie die Teilnehmer automatisch auf die URL umleiten wollen, wenn alle Aufgaben erledigt sind.
-          Wenn Sie die obige Option gewählt haben, um einen Beendigungscode zu generieren, sehen die Teilnehmer den Beendigungscode nicht, aber er wird automatisch in Ihre URL als Query-Parameter <code>confirmation-code</code> aufgenommen.`,
+      'enterExternalUrl': `
+        Geben Sie unten eine externe URL ein, wenn Sie die Teilnehmer automatisch auf die URL umleiten wollen, wenn alle Aufgaben erledigt sind.
+        Wenn Sie die obige Option gewählt haben, um einen Beendigungscode zu generieren, sehen die Teilnehmer den Beendigungscode nicht, aber er wird automatisch in Ihre URL als Query-Parameter <code>confirmation-code</code> aufgenommen.
+        Sie können auch den Platzhalter %PARTICIPANT_CODE% in der URL-Abfrage verwenden - er wird durch einen Teilnehmercode ersetzt
+        (lesen Sie mehr über die Integration mit Sona Systems und anderen externen Teilnehmerdiensten <a target='_blank' href="/docs/project#integration">hier</a>).
+      `,
       'enterUrlPlaceholder': 'Geben Sie die URL ein',
     },
 

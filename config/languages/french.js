@@ -298,8 +298,12 @@ module.exports =
         'completionMessage': 'Message to participants after completion of tasks',
         'askNotifications': 'Ask users to allow notifications (we are currently testing notifications, participants should use Chrome on a desktop computer).',
         'allowMultipleParticipation': 'Allow participants multiple participation in the same test.',
-        'enterExternalUrl': `Enter an external URL below if you want to automatically redirect participants to the URL when all tasks are complete.
-          If you selected the above option to generate a completion code, participants do not see the completion code, but it is automatically included in your URL as a query parameter <code>confirmation-code</code>.`,
+        'enterExternalUrl': `
+          Enter an external URL below if you want to automatically redirect participants to the URL when all tasks are complete.
+          If you selected the above option to generate a completion code, participants do not see the completion code, but it is automatically included in your URL as a query parameter <code>confirmation-code</code>.
+          You can also use the placeholder %PARTICIPANT_CODE% in the URL query - it will be replaced by a participant code
+          (read more about integration with Sona Systems and other external participant services <a target='_blank' href="/docs/project#integration">here</a>).
+          `,
         'enterUrlPlaceholder': 'Enter the URL',
       },
 
