@@ -165,34 +165,54 @@ passport.use('local-code', new LocalStrategy({
         const user_lang = (req && req.res && req.res.locals && req.res.locals.locale_language) || 'english';
         if (err) return done(err);
         if (user) {
-          if (!user.validCode(code)) return done(null, false, req.flash('error', `${language[user_lang]['passport'].wrong_credentials}` ));
-          if (user.participantInProject != req.body.participantInProject){
-            user.participantInProject = req.body.participantInProject;
-            user.save(function(err) {
-              if (err) throw err;
-              return done(null, user, req.flash('success', `${language[user_lang]['passport'].welcome_back}` )); // user found, return that user
-            });
-          } else {
-            return done(null, user, req.flash('success', `${language[user_lang]['passport'].welcome_back}` )); // user found, return that user
-          };
-        } else {
-          var newUser = new User();
-          newUser.openLabId = makeOpenLabId();
-          newUser.level    = 1;
-          newUser.language = user_lang;
-          newUser.code.id = code;
-          newUser.code.password = newUser.generateHash(code);
-          //add a unique code for the user
-          if(req.body.participantInProject){
-            newUser.participantInProject = req.body.participantInProject;
-          };
-          newUser.save(function(err) {
-            if (err) throw err;
-            return done(null, newUser, req.flash('success', `${language[user_lang]['passport'].registered_user}` ));
-          });
+          if (user.participantInProject == req.body.participantInProject){
+            return done(null, user, req.flash('success', `${language[user_lang]['passport'].welcome_back}` )); // user and project found, return that user
+          }
         }
+        var newUser = new User();
+        newUser.openLabId = makeOpenLabId();
+        newUser.level    = 1;
+        newUser.language = user_lang;
+        newUser.code.id = code;
+        newUser.code.password = newUser.generateHash(code);
+        //add a unique code for the user
+        if(req.body.participantInProject){
+          newUser.participantInProject = req.body.participantInProject;
+        };
+        newUser.save(function(err) {
+          if (err) throw err;
+          return done(null, newUser, req.flash('success', `${language[user_lang]['passport'].registered_user}` ));
+        });
     });
 }));
+
+// if (user) {
+//   if (!user.validCode(code)) return done(null, false, req.flash('error', `${language[user_lang]['passport'].wrong_credentials}` ));
+//   if (user.participantInProject != req.body.participantInProject){
+//     user.participantInProject = req.body.participantInProject;
+//     user.save(function(err) {
+//       if (err) throw err;
+//       return done(null, user, req.flash('success', `${language[user_lang]['passport'].welcome_back}` )); // user found, return that user
+//     });
+//   } else {
+//     return done(null, user, req.flash('success', `${language[user_lang]['passport'].welcome_back}` )); // user found, return that user
+//   };
+// } else {
+//   var newUser = new User();
+//   newUser.openLabId = makeOpenLabId();
+//   newUser.level    = 1;
+//   newUser.language = user_lang;
+//   newUser.code.id = code;
+//   newUser.code.password = newUser.generateHash(code);
+//   //add a unique code for the user
+//   if(req.body.participantInProject){
+//     newUser.participantInProject = req.body.participantInProject;
+//   };
+//   newUser.save(function(err) {
+//     if (err) throw err;
+//     return done(null, newUser, req.flash('success', `${language[user_lang]['passport'].registered_user}` ));
+//   });
+// }
 
 //Facebook strategy with facebook id
 passport.use(new FacebookStrategy({

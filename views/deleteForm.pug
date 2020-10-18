@@ -11,10 +11,6 @@ block content
           li.nav__item: a.nav__link(href="/tests/add", class=(currentPath.startsWith('/tests/add') ? 'nav__link--active' : '')) #{layout.addTask}
     p
     if test
-      //- a(href=`/tests/${test._id}/remove`) Remove test
-      //- pre= h.dump(resultsCount)
-      //- pre= h.dump(parametersCount)
-      //-pre= h.dump(test)
       h2 #{l.deleteTask}
 
       form(action=`/tests/${test._id}/remove` method = 'POST' class='card' id="testform")

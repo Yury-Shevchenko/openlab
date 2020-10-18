@@ -576,10 +576,11 @@ module.exports =
           'signing_code': 'Signing up with a participant code ',
           'signing_empty_invite': 'Direct invite',
           'direct_invite_strategy': `
-            With this link, participants will see your study description and welcome message before starting the task.
-            The Open Lab user interface will be hidden.
-            Each participant will be assigned a random code.
-            Use this type of invitation if you post the link to the study online.`,
+            With this link, participants will see your study description and welcome message before they begin the task, but the Open Lab interface and participant code will be hidden.
+            If you use exactly this link, each participant will receive a random participant code. Use this type of invitation when you publish the link to the study online.
+            You can customize this link by appending a participant code to the end of the link.
+            This way you can integrate this link with external services like Sona Systems (read more about integration with Sona Systems <a target='_blank' href="/docs/project#integration">here</a>).
+            `,
           'signing_temp_code': 'Invitation with a random participant code',
           'signing_email': 'Signing up with an email ',
           'message_create_project': `To invite new participants to your study, activate or create a study <a href="/projects">here</a>.`,
@@ -590,11 +591,26 @@ module.exports =
           'button_invite': 'Invite',
           'email' : 'Email',
           'code' : 'Code',
-          'temp_code_strategy': `A random code will be created and displayed for every participant, who enters the study.
-            Use this link if you publish the study online.
-            Read <a target='_blank' href="/docs/project">more</a> about other ways to customize your invitation link, for example by assigning different groups of participants.`,
+          'temp_code_strategy': `
+            In contrast to the Direct Invitation link, this link displays the Open Lab interface and the participant code to a participant at the beginning of the study.
+            The query <code>?generate=true</code> creates a random participant code for each participant.
+            If you want to customize a link for each participant, remove the query and attach a participant code to the end of the link.
+            You can combine fixed and random codes by inserting a text before the query <code>?generate=true</code>.
+            See <a target='_blank' href="/docs/project">here</a> more examples of how to customize your invitation link, such as the multiple site entry technique.
+          `,
           'code_strategy': 'Participants will be prompted to enter their participant code. Use this way of authentication if your participants already know their codes.',
-          'email_strategy': 'Participants will be prompted to sign up or login with an email and a password. Use this authentication strategy if your participants already have an account on Open Lab or are ready to create a new one.',
+          'email_strategy': `
+            Participants are asked to register or log in with an e-mail and password.
+            Use this authentication strategy if your participants already have an account with Open Lab or are ready to create a new account.
+            This link allows participants to create permanent accounts that are protected by a password.
+            This strategy is recommended if you want participants to be able to participate in a longitudinal study or log in to their account with different devices.
+          `,
+          'signing_social': `Signing up with an external account`,
+          'social_networks_strategy': `
+            Participants can use their accounts in social networks like Facebook, Google or GitHub. After they have registered, they have to select your study from the list of publicly available studies.
+            The Open Lab platform does not share information about participants with third parties (such as Facebook or Google), but only uses the participants' social profile to identify them and log into their Open Lab account.
+            This strategy allows participants to participate in a longitudinal study or log into their account using various devices.
+          `,
           'copy_link': 'Copy link',
           'link_copied': 'Copied the link: ',
         },
@@ -676,6 +692,28 @@ module.exports =
           'legal_notice_title': 'Legal notice',
           'legal_notice_link': 'legalnotice',
           'contacts_email': `E-Mail Address: <a href = "mailto: contact@open-lab.online">contact@open-lab.online</a>`,
+          'data_integration_title': `Integration with Sona Systems and other external participant recruitment services`,
+          'data_integration_1': `
+            First we have to redirect the participants from Sona Systems to the Open Lab.
+            On the Sona Systems study information page, enter the link of your study to Open Lab as the study URL.
+            Use one of the invitation strategies described <a target='blank' href='../invitations'>here</a> and include the placeholder %SURVEY_CODE% in the link.
+            For example, in the case of a direct invitation (the participant code is not displayed), a link would look like <code>https://open-lab.online/invite/name-of-your-study/%SURVEY_CODE%</code>
+            In the case of an invitation with the code (the participant code is displayed), a link would be <code>https://open-lab.online/code/name-of-your-study/%SURVEY_CODE%</code>
+            You can find the exact link for your study <a target='blank' href='../invitations'>here</a>.
+            Sona participants will have their Sona ID as a participant code in Open Lab - in the background the placeholder %SURVEY_CODE% will be replaced by the Sona ID for each participant.
+          `,
+          'data_integration_2': `
+            Second, we need to send the Open Lab participants back to Sona Systems when the study is completed. This will allow us to automatically confirm their completion of the study.
+            Go to the page with <a target='blank' href='../projects'>your studies</a> and click the pencil icon to edit your study.
+            You will need to enter the Sona Systems completion URL in the redirect URL field.
+            This URL is usually displayed as the completion URL (client side) on the page with your study in Sona.
+            Copy this URL and paste it in Open Lab.
+            Replace XXXX in the query <code>survey_code=XXXX</code> with the placeholder %PARTICIPANT_CODE%, so that the url would look like this, for example,
+            <span style="font-size: 16px">
+            <code>https://uni.sona-systems.com/webstudy_credit.aspx?experiment_id=0&credit_token=0&survey_code=%PARTICIPANT_CODE%</code>
+            </span>
+            In the background, the placeholder %PARTICIPANT_CODE% will be replaced by the participant code of each participant, which in this case is the Sona ID.
+          `,
         },
 
         'listing': {

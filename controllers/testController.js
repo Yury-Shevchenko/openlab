@@ -661,7 +661,7 @@ exports.testing = async (req, res) => {
           _id: { $in: projectOriginalTests},
           author: { $exists: true }
         })
-        .select({ slug:1, name:1, photo: 1 })
+        .select({ slug: 1, name: 1 })
 
       if(randomizeProjectTests){
         projectTests = shuffle(unsortedProjectTests);
@@ -679,7 +679,6 @@ exports.testing = async (req, res) => {
           projectTests = projectTests.slice(0, sampledLeft);
         }
       }
-
       const arrayTests = projectTests.map(function(test) { return test.slug; });
       let remainingArray = arrayTests.filter(function(test) { return !arrayResults.includes(test) });
 
@@ -775,8 +774,15 @@ exports.testing = async (req, res) => {
         // redirect to the external website if there is a redirect link in the project
         if(project.redirectUrl && !project.allowMultipleParticipation){
           let redirectUrl = `${project.redirectUrl}`;
+          // extract code from participant profile
+          const code = req.user && req.user.code && req.user.code.id;
+          if(redirectUrl.includes('%PARTICIPANT_CODE%')){
+            redirectUrl = redirectUrl.split('%PARTICIPANT_CODE%').join(code);
+          }
           if(confirmationCode && project.showCompletionCode){
-            redirectUrl += `?confirmation-code=${confirmationCode}`;
+            const isQueryPresent = redirectUrl.includes('?');
+            const symbol = isQueryPresent ? '&' : '?';
+            redirectUrl += `${symbol}confirmation-code=${confirmationCode}`;
           }
           return res.redirect(redirectUrl);
         }
@@ -788,8 +794,8 @@ exports.testing = async (req, res) => {
       const arrayTests = projectTests.map(function(test) {return test.slug});
       const arrayResults = results.map(function(result) {return result.taskslug});
       const doneArray = arrayTests.filter(function(test) {return arrayResults.includes(test)});
-      const remainingArray = arrayTests.filter(function(test) {return !arrayResults.includes(test)});
-      const nextTask = remainingArray[0] || "allDone";
+      const remainingTasksArray = arrayTests.filter(function(test) {return !arrayResults.includes(test)});
+      const nextTask = remainingTasksArray[0] || "allDone";
       if(nextTask === 'allDone'){
         res.render('testing', {project, projects, results, study, confirmationCode, projectTests});
       } else {

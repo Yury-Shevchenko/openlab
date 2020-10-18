@@ -27,7 +27,7 @@ block content
             td
               input(type="text" value=`https://open-lab.online/invite/${project.name.replace(/\s+/g, '%20')}/` id="direct" readonly)
               button(class="copyButton" id="directButton") #{l.copy_link}
-              p #{l.direct_invite_strategy}
+              p !{l.direct_invite_strategy}
           tr
             td #{l.signing_temp_code}
             td
@@ -46,6 +46,12 @@ block content
               input(type="text" value=`https://open-lab.online/sign/${project.name.replace(/\s+/g, '%20')}/` id="email" readonly)
               button(class="copyButton" id="emailButton") #{l.copy_link}
               p #{l.email_strategy}
+          tr
+            td #{l.signing_social}
+            td
+              input(type="text" value=`https://open-lab.online/participant/register` id="social" readonly)
+              button(class="copyButton" id="socialButton") #{l.copy_link}
+              p #{l.social_networks_strategy}
         
         script(nonce=`${noncevalue}`).
           document.addEventListener('DOMContentLoaded', function (){
@@ -56,7 +62,6 @@ block content
                 const copyText = document.getElementById(textId);
                 copyText.select();
                 document.execCommand("copy");
-                //- alert(copyText.value);
                 document.getElementById(e.currentTarget.id).style.background = "#f3e9e9";
                 
               })

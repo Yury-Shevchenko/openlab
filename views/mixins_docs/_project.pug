@@ -35,6 +35,13 @@ mixin project()
     | #{l.data_invitations_2}
   p.card-message
     | #{l.data_invitations_3}
+    
+  h5(id="integration") 
+    .headerLink !{l.data_integration_title} 
+  p.card-message 
+    | !{l.data_integration_1}
+  p.card-message
+    | !{l.data_integration_2}
 
   h5 
     .headerLink !{l.project_demo_title}
