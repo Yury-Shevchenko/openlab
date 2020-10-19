@@ -130,6 +130,7 @@ resultSchema.statics.getResultsForUserTesting = function(feature) {
     { $project: {
       taskslug: '$$ROOT.taskslug',
       test: '$$ROOT.test',
+      uploadType: '$$ROOT.uploadType',
     }}
   ]);
 };
