@@ -637,6 +637,8 @@ exports.testing = async (req, res) => {
 
       //randomize and sample
       results = await Result.getResultsForUserTesting({ author: req.user._id, project: project._id });
+      const uniqueResults = [...new Set(results.map(result => String(result.test)))];
+
       const arrayResultsTests = results.map(function(result) {return String(result.test)});
       const arrayResults = results.map(function(result) {return result.taskslug;});
 
@@ -652,6 +654,7 @@ exports.testing = async (req, res) => {
       }
 
       let projectOriginalTests = project.tests;
+
       if(!project.allowMultipleParticipation){
         projectOriginalTests = projectOriginalTests.filter(test => !arrayResultsTests.includes(String(test)));
       }
@@ -673,9 +676,12 @@ exports.testing = async (req, res) => {
 
       if(sampleProjectTests && sampleProjectTests > 0){
         if(project.allowMultipleParticipation){
+          projectTests = projectTests.sort( (a, b) => {
+            return uniqueResults.indexOf(b.id) - uniqueResults.indexOf(a.id);
+          });
           projectTests = projectTests.slice(0, sampleProjectTests);
         } else {
-          const sampledLeft = sampleProjectTests - results.length;
+          const sampledLeft = sampleProjectTests - uniqueResults.length;
           projectTests = projectTests.slice(0, sampledLeft);
         }
       }
