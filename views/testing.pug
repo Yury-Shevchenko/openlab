@@ -40,12 +40,6 @@ block content
             input.button( type="submit" value=l.message_enter )
   
   if(project)
-    - const arrayTests = projectTests.map(function(test) {return test.slug;});
-    - const arrayResults = results.map(function(result) {return result.taskslug;});
-    - const doneArray = arrayTests.filter(function(test) {return arrayResults.includes(test)});
-    - const remainingArray = arrayTests.filter(function(test) {return !arrayResults.includes(test)});
-    - const nextTask = remainingArray[0] || "allDone";
-
     .single
       if(user.level < 10)
         if user.participant_id
@@ -84,17 +78,17 @@ block content
       .dashboard
         .dashboardBody
           each test in projectTests
+            if(doneArray.includes(test.slug) && !project.allowMultipleParticipation)
+              p #{test.name}
+              p #{test.description}
+              p #{l.table_done}
+        .dashboardBody
+          each test in projectTests
             if(test.slug == nextTask || project.allowMultipleParticipation)
               p
                 strong #{test.name}
               p
                 strong #{test.description}
-            else if doneArray.includes(test.slug)
-              p #{test.name}
-              p #{test.description}
-            if(test.slug == nextTask || project.allowMultipleParticipation)
               a(class='button', href=`/test/${test.slug}/${user._id}`) #{l.table_not_done}
-            else if doneArray.includes(test.slug)
-              p #{l.table_done}
-
-    script(src="/javascripts/services/notifications.js" nonce=`${noncevalue}`)
+    
+        

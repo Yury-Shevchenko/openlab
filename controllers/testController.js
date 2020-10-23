@@ -11,6 +11,7 @@ const Test = mongoose.model('Test');
 const User = mongoose.model('User');
 const Result = mongoose.model('Result');
 const Param = mongoose.model('Param');
+const Log = mongoose.model('Log');
 const keys = require('../config/keys');
 const slug = require('slugs');
 const { assembleFile } = require('../handlers/assemble/index');
@@ -544,6 +545,14 @@ exports.getProgramTests = async (req, res) => {
   }
 };
 
+function shuffle(a) {
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 // show tests
 exports.testing = async (req, res) => {
   if(!req.user) {
@@ -564,6 +573,9 @@ exports.testing = async (req, res) => {
     });
     const projects = await Project.getCurrentProjects();
     let tests, results, confirmationCode, projectTests;
+    let remainingArray = [], doneArray = [];
+    let originalProjectTests = [];
+    let populatedProjectTests = [];
 
     if(project){
       // update user parameters if there are project parameters
@@ -635,45 +647,55 @@ exports.testing = async (req, res) => {
         }
       }
 
-      //randomize and sample
-      results = await Result.getResultsForUserTesting({ author: req.user._id, project: project._id });
+      // Randomize and sample
+
+      // 1. Find completed tasks
+      results = await Log.find({ author: req.user._id, project: project._id }, { test : 1 });
+
+      // 2. Remove duplicated
       const uniqueResults = [...new Set(results.map(result => String(result.test)))];
 
-      const arrayResultsTests = results.map(function(result) {return String(result.test)});
-      const arrayResults = results.map(function(result) {return result.taskslug;});
-
+      // 3. Save into the variable whether the tests should be randomized and the sample size
       const randomizeProjectTests = (project.tasksInformation && project.tasksInformation.randomize) || false;
       const sampleProjectTests = (project.tasksInformation && project.tasksInformation.sample) || null;
 
-      function shuffle(a) {
-        for (let i = a.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [a[i], a[j]] = [a[j], a[i]];
-        }
-        return a;
-      }
-
-      let projectOriginalTests = project.tests;
-
-      if(!project.allowMultipleParticipation){
-        projectOriginalTests = projectOriginalTests.filter(test => !arrayResultsTests.includes(String(test)));
-      }
-
-      const unsortedProjectTests = await Test
+      // 4. Populate project tests with information
+      originalProjectTests = await Test
         .find({
-          _id: { $in: projectOriginalTests},
+          _id: { $in: project.tests},
           author: { $exists: true }
         })
         .select({ slug: 1, name: 1 })
 
-      if(randomizeProjectTests){
-        projectTests = shuffle(unsortedProjectTests);
+      // 5. Calculate the array of slugs for done tasks
+      doneArray = originalProjectTests.map(test => {
+        if(uniqueResults.includes(String(test.id))){
+          return test.slug;
+        }
+      }).filter(test => test)
+
+      // 6. Calculate the array of slugs for remaining tasks
+      // if multiple participation is not allowed, remove completed tasks
+      if(!project.allowMultipleParticipation){
+        populatedProjectTests = originalProjectTests.map(test => {
+          if(!uniqueResults.includes(String(test.id))){
+            return test;
+          }
+        }).filter(test => typeof(test) !== 'undefined')
       } else {
-        projectTests = unsortedProjectTests.sort( (a, b) => {
-          return projectOriginalTests.indexOf(a.id) - projectOriginalTests.indexOf(b.id);
+        populatedProjectTests = originalProjectTests;
+      }
+
+      // shuffle in case of randomization
+      if(randomizeProjectTests){
+        projectTests = shuffle(populatedProjectTests);
+      } else {
+        projectTests = populatedProjectTests.sort( (a, b) => {
+          return project.tests.indexOf(a.id) - project.tests.indexOf(b.id);
         });
       }
 
+      // sample
       if(sampleProjectTests && sampleProjectTests > 0){
         if(project.allowMultipleParticipation){
           projectTests = projectTests.sort( (a, b) => {
@@ -682,11 +704,19 @@ exports.testing = async (req, res) => {
           projectTests = projectTests.slice(0, sampleProjectTests);
         } else {
           const sampledLeft = sampleProjectTests - uniqueResults.length;
-          projectTests = projectTests.slice(0, sampledLeft);
+          if(sampledLeft <= 0) {
+            projectTests = [];
+          } else {
+            projectTests = projectTests.slice(0, sampledLeft);
+          }
         }
       }
-      const arrayTests = projectTests.map(function(test) { return test.slug; });
-      let remainingArray = arrayTests.filter(function(test) { return !arrayResults.includes(test) });
+
+      remainingArray = projectTests.map(test => {
+        if(!uniqueResults.includes(String(test.id))){
+          return test.slug;
+        }
+      })
 
       // generate completion confirmation code
       if (project.showCompletionCode) {
@@ -796,14 +826,10 @@ exports.testing = async (req, res) => {
       };
     };
 
+    const nextTask = remainingArray[0] || "allDone";
     if(req.params.selector === 'start' && projectTests && projectTests.length){
-      const arrayTests = projectTests.map(function(test) {return test.slug});
-      const arrayResults = results.map(function(result) {return result.taskslug});
-      const doneArray = arrayTests.filter(function(test) {return arrayResults.includes(test)});
-      const remainingTasksArray = arrayTests.filter(function(test) {return !arrayResults.includes(test)});
-      const nextTask = remainingTasksArray[0] || "allDone";
       if(nextTask === 'allDone'){
-        res.render('testing', {project, projects, results, study, confirmationCode, projectTests});
+        res.render('testing', {project, projects, study, confirmationCode, projectTests: originalProjectTests, nextTask, doneArray});
       } else {
         let queryString;
         if(req.query && Object.keys(req.query).length){
@@ -815,7 +841,7 @@ exports.testing = async (req, res) => {
         }
       }
     } else {
-      res.render('testing', {project, projects, results, study, confirmationCode, projectTests});
+      res.render('testing', {project, projects, study, confirmationCode, projectTests: originalProjectTests, nextTask, doneArray});
     }
   }
 };

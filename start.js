@@ -18,7 +18,7 @@ mongoose.connect(process.env.DATABASE, {
   useNewUrlParser: true,
   useFindAndModify: false,
   useUnifiedTopology: true,
-  useCreateIndex: true 
+  useCreateIndex: true
 });
 mongoose.Promise = global.Promise; // Tell Mongoose to use ES6 promises
 mongoose.connection.on('error', (err) => {
@@ -32,6 +32,7 @@ require('./models/Result');
 require('./models/Param');
 require('./models/Project');
 require('./models/Job');
+require('./models/Log');
 
 // Start the app
 const app = require('./app');

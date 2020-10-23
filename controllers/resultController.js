@@ -8,6 +8,7 @@ const User = mongoose.model('User');
 const Test = mongoose.model('Test');
 const Param = mongoose.model('Param');
 const Project = mongoose.model('Project');
+const Log = mongoose.model('Log');
 const fetch = require('node-fetch');
 
 //show the results of one user on a separate page
@@ -415,6 +416,7 @@ exports.changeStatusOfDataRequest = async (req, res) => {
 
 //save results during the task
 exports.saveIncrementalResults = async (req, res) => {
+
   let anonymParticipantId;
   if (!req.user){ anonymParticipantId = req.body.url.split('/')[5] };
 
@@ -425,6 +427,17 @@ exports.saveIncrementalResults = async (req, res) => {
 
   const openLabId = (req.user && req.user.openLabId) || anonymParticipantId || "undefined";
   const projectId = (req.user && req.user.participantInProject) || (req.user && req.user.project._id) || test.project || "undefined";
+
+  // create a log of completed task
+  if(req.body.metadata.payload == 'full'){
+    const log = new Log({
+      type: 'TaskCompleted',
+      author: (req.user && req.user._id) || test.author,
+      project: projectId,
+      test: test._id,
+    });
+    await log.save();
+  }
 
   const project = await Project.findOne({ _id: projectId },{
     osf: 1, showCompletionCode: 1,

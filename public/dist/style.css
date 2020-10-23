@@ -980,13 +980,14 @@ label {
   -ms-grid-columns: (1fr)[3];
       grid-template-columns: repeat(3, 1fr);
   grid-gap: 10px;
-  padding-bottom: 15px;
-  border-bottom: 2px solid #faeecb; }
-  .dashboardBody:hover, .dashboardBody--active {
-    border-bottom: 2px solid #FFC40E; }
-    .dashboardBody:hover svg, .dashboardBody--active svg {
-      -ms-transform: scale(1.2);
-          transform: scale(1.2); }
+  padding-top: 15px;
+  padding-bottom: 15px; }
+  .dashboardBody .button {
+    display: -ms-grid;
+    display: grid;
+    -ms-flex-align: center;
+        align-items: center;
+    text-align: center; }
 
 /*
 Generic Styling, for Desktops/Laptops
