@@ -216,7 +216,7 @@ exports.listPublicProjects = async(req, res) => {
     .findAllPublic()
     .skip(skip)
     .limit(limit);
-  const allProjectsPromise = Project.findAllPublic();
+  const allProjectsPromise = Project.getCurrentProjects();
   const countPromise = Project.where({currentlyActive: true, creator: { $exists: true }}).countDocuments();
   const [projects, count, allProjects ] = await Promise.all([ projectsPromise, countPromise, allProjectsPromise ]);
   const pages = Math.ceil(count / limit);
