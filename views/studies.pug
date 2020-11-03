@@ -21,7 +21,7 @@ block content
             .custom-select-header
               select(name="participantInProject")
                 option(value='' style="" selected=(typeof(user.participantInProject) === "undefined")) – #{layout.choose_project} –
-                each project in projects
+                each project in allProjects
                   option(value=project._id, selected=((project.name === study) || (!study && user.participantInProject.toString() === project._id.toString())))= project.name
             p 
             input.button(type="submit" value= layout.change_project_confirm)  

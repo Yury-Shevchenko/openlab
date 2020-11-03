@@ -216,15 +216,16 @@ exports.listPublicProjects = async(req, res) => {
     .findAllPublic()
     .skip(skip)
     .limit(limit);
+  const allProjectsPromise = Project.findAllPublic();
   const countPromise = Project.where({currentlyActive: true, creator: { $exists: true }}).countDocuments();
-  const [projects, count] = await Promise.all([ projectsPromise, countPromise ]);
+  const [projects, count, allProjects ] = await Promise.all([ projectsPromise, countPromise, allProjectsPromise ]);
   const pages = Math.ceil(count / limit);
   if(!projects.length && skip){
     req.flash('info', `${res.locals.layout.flash_page_not_exist_1} ${page}. ${res.locals.layout.flash_page_not_exist_2} ${pages}`);
     res.redirect(`/studies/page/${pages}`);
     return;
   }
-  res.render('studies', {projects, page, pages, count, study});
+  res.render('studies', {projects, page, pages, count, study, allProjects});
 };
 
 exports.showProjectDescription = async(req, res) => {
