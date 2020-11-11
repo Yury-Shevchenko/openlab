@@ -233,7 +233,7 @@ exports.getMyTests = async (req, res) => {
   const [tests, count] = await Promise.all([ testsPromise, countPromise ]);
   const pages = Math.ceil(count / limit);
   if(!tests.length && skip){
-    req.flash('info', `${res.locals.layout.flash_page_not_exist_1} ${page}. ${res.locals.layout.flash_page_not_exist_2} ${pages}`);
+    req.flash('info', `${res.locals.layout.flash_page_not_exist_1} ${page}, ${res.locals.layout.flash_page_not_exist_2} ${pages}`);
     res.redirect(`/tests/my/page/${pages}`);
     return;
   }
@@ -269,7 +269,7 @@ exports.getAllTests = async (req, res) => {
   const [tests, count, tags] = await Promise.all([ testsPromise, countPromise, tagsPromise ]);
   const pages = Math.ceil(count / limit);
   if(!tests.length && skip){
-    req.flash('info', `${res.locals.layout.flash_page_not_exist_1} ${page}. ${res.locals.layout.flash_page_not_exist_2} ${pages}`);
+    req.flash('info', `${res.locals.layout.flash_page_not_exist_1} ${page}, ${res.locals.layout.flash_page_not_exist_2} ${pages}`);
     res.redirect(`/tests/all/${tag ? tag + '/' : ''}page/${pages}`);
     return;
   }
@@ -915,7 +915,7 @@ exports.listPublicTests = async(req, res) => {
   const [tests, count] = await Promise.all([ testsPromise, countPromise ]);
   const pages = Math.ceil(count / limit);
   if(!tests.length && skip){
-    req.flash('info', `${res.locals.layout.flash_page_not_exist_1} ${page}. ${res.locals.layout.flash_page_not_exist_2} ${pages}`);
+    req.flash('info', `${res.locals.layout.flash_page_not_exist_1} ${page}, ${res.locals.layout.flash_page_not_exist_2} ${pages}`);
     res.redirect(`/listing/page/${pages}`);
     return;
   }

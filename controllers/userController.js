@@ -225,7 +225,7 @@ exports.getData = async (req, res) => {
   const [users, count, project] = await Promise.all([ usersPromise, countPromise, activeProjectPromise ]);
   const pages = Math.ceil(count / limit);
   if(!users.length && skip){
-    req.flash('info', `${res.locals.layout.flash_page_not_exist_1} ${page}. ${res.locals.layout.flash_page_not_exist_2} ${pages}`);
+    req.flash('info', `${res.locals.layout.flash_page_not_exist_1} ${page}, ${res.locals.layout.flash_page_not_exist_2} ${pages}`);
     res.redirect(`/users/page/${pages}`);
     return;
   }

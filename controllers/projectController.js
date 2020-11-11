@@ -221,7 +221,7 @@ exports.listPublicProjects = async(req, res) => {
   const [projects, count, allProjects ] = await Promise.all([ projectsPromise, countPromise, allProjectsPromise ]);
   const pages = Math.ceil(count / limit);
   if(!projects.length && skip){
-    req.flash('info', `${res.locals.layout.flash_page_not_exist_1} ${page}. ${res.locals.layout.flash_page_not_exist_2} ${pages}`);
+    req.flash('info', `${res.locals.layout.flash_page_not_exist_1} ${page}, ${res.locals.layout.flash_page_not_exist_2} ${pages}`);
     res.redirect(`/studies/page/${pages}`);
     return;
   }
