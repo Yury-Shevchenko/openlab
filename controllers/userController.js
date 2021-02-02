@@ -121,6 +121,7 @@ exports.uploadfromlabjs = multer(multerOptions).fields([
 exports.labjs = async (req, res) => {
   if(req.files.script){
     let newSlug = slug(req.body.name);
+    console.log('line 124 newSlug', newSlug);
 
     if(newSlug === 'unnamed-study') {
       const randomUnnamedSlug = `study-${uniqid()}`;
@@ -136,7 +137,7 @@ exports.labjs = async (req, res) => {
       const contentSlug = `${newSlug}-${uniqid()}`;
       req.body.contentSlug = contentSlug;
     }
-    
+
     if(req.user){
       req.body.author = req.user._id;
       req.body.project = req.user.project._id;
