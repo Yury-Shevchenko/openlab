@@ -170,12 +170,17 @@ exports.updateTest = async (req, res, next) => {
 
   let newSlug = slug(req.body.name);
   if (newSlug != req.body.slug){
-    const slugRegEx = new RegExp(`^(${newSlug})((-[0-9]*$)?)$`, 'i');//regular expression
-    const testsWithSlug = await Test.find({ slug: slugRegEx, _id: { $ne: req.params.id } });
-    if(testsWithSlug.length){
-      newSlug = `${newSlug}-${testsWithSlug.length + 1}`;
+    if(newSlug === 'unnamed-study') {
+      const randomUnnamedSlug = `study-${uniqid()}`;
+      req.body.slug = randomUnnamedSlug;
+    } else {
+      const slugRegEx = new RegExp(`^(${newSlug})((-[0-9]*$)?)$`, 'i');//regular expression
+      const testsWithSlug = await Test.find({ slug: slugRegEx, _id: { $ne: req.params.id } });
+      if(testsWithSlug.length){
+        newSlug = `${newSlug}-${testsWithSlug.length + 1}`;
+      }
+      req.body.slug = newSlug;
     }
-    req.body.slug = newSlug;
   };
   if(!req.body.contentSlug) {
     const contentSlug = `${newSlug}-${uniqid()}`;
