@@ -121,14 +121,22 @@ exports.uploadfromlabjs = multer(multerOptions).fields([
 exports.labjs = async (req, res) => {
   if(req.files.script){
     let newSlug = slug(req.body.name);
-    const slugRegEx = new RegExp(`^(${newSlug})((-[0-9]*$)?)$`, 'i');
-    const testsWithSlug = await Test.find({ slug: slugRegEx, _id: { $ne: req.params.id } });
-    if(testsWithSlug.length){
-      newSlug = `${newSlug}-${testsWithSlug.length + 1}`;
+
+    if(newSlug === 'unnamed-study') {
+      const randomUnnamedSlug = `study-${uniqid()}`;
+      req.body.slug = randomUnnamedSlug;
+      req.body.contentSlug = randomUnnamedSlug;
+    } else {
+      const slugRegEx = new RegExp(`^(${newSlug})((-[0-9]*$)?)$`, 'i');//regular expression
+      const testsWithSlug = await Test.find({ slug: slugRegEx, _id: { $ne: req.params.id } });
+      if(testsWithSlug.length){
+        newSlug = `${newSlug}-${testsWithSlug.length + 1}`;
+      }
+      req.body.slug = newSlug;
+      const contentSlug = `${newSlug}-${uniqid()}`;
+      req.body.contentSlug = contentSlug;
     }
-    req.body.slug = newSlug;
-    const contentSlug = `${newSlug}-${uniqid()}`;
-    req.body.contentSlug = contentSlug;
+    
     if(req.user){
       req.body.author = req.user._id;
       req.body.project = req.user.project._id;
