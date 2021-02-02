@@ -101,14 +101,21 @@ exports.createTest = async (req, res, next) => {
   req.body.author = req.user._id; //when the test is created the current id is put in the author
   req.body.project = req.user.project._id;
   let newSlug = slug(req.body.name);
-  const slugRegEx = new RegExp(`^(${newSlug})((-[0-9]*$)?)$`, 'i');//regular expression
-  const testsWithSlug = await Test.find({ slug: slugRegEx, _id: { $ne: req.params.id } });
-  if(testsWithSlug.length){
-    newSlug = `${newSlug}-${testsWithSlug.length + 1}`;
+
+  if(newSlug === 'unnamed-study') {
+    const randomUnnamedSlug = `study-${uniqid()}`;
+    req.body.slug = randomUnnamedSlug;
+    req.body.contentSlug = randomUnnamedSlug;
+  } else {
+    const slugRegEx = new RegExp(`^(${newSlug})((-[0-9]*$)?)$`, 'i');//regular expression
+    const testsWithSlug = await Test.find({ slug: slugRegEx, _id: { $ne: req.params.id } });
+    if(testsWithSlug.length){
+      newSlug = `${newSlug}-${testsWithSlug.length + 1}`;
+    }
+    req.body.slug = newSlug;
+    const contentSlug = `${newSlug}-${uniqid()}`;
+    req.body.contentSlug = contentSlug;
   }
-  req.body.slug = newSlug;
-  const contentSlug = `${newSlug}-${uniqid()}`;
-  req.body.contentSlug = contentSlug;
 
   if(req.files.script){
     const json_string = req.files.script[0].buffer.toString();
@@ -148,7 +155,7 @@ exports.updateTest = async (req, res, next) => {
     const usertests = req.user.project.tests;
     const id = req.params.id.toString();
     if(usertests.indexOf(id) > -1){
-      throw Error('You must remove test from your active program before editing it!');
+      throw Error('You must remove test from your active project before editing it!');
     };
   }
   if(req.user){
