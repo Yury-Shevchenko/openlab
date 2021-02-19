@@ -6,7 +6,7 @@ const paramSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  project:{
+  project: {
     type: mongoose.Schema.ObjectId,
     ref: 'Project',
     required: 'You must supply a project!'
@@ -43,7 +43,6 @@ paramSchema.statics.getParameters = function(feature) {
 paramSchema.index({
   slug: 1,
   language: 1,
-  author: 1,
 });
 
 module.exports = mongoose.model('Param', paramSchema);

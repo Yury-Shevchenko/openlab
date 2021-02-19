@@ -210,7 +210,6 @@ router.get('/api/search', catchErrors(testController.searchTests));
 
 //battery of tests - see chosen tests, their results, original and modified parameters
 router.get('/tasks', authController.isAdminLoggedIn, catchErrors(testController.getProgramTests));
-//router.get('/tasks/:task/ :slug', authController.isAdminLoggedIn, catchErrors(testController.getAddedTests));
 router.get('/tasks/:slug', authController.isAdminLoggedIn, catchErrors(testController.getProgramTests));
 router.get('/tasks/:slug/:selector', authController.isAdminLoggedIn, catchErrors(testController.getProgramTests));
 router.get('/tasks/:slug/:selector/:lang', authController.isAdminLoggedIn, catchErrors(testController.getProgramTests));

@@ -536,7 +536,12 @@ exports.getProgramTests = async (req, res) => {
       }
       if (selector === 'modified') {
         const params = await Param.findOne({project: req.user.project._id, test: test._id, language: param_language});
-        allParams = await Param.find({project: req.user.project._id},{slug:1, language:1, created: 1});
+        allParams = await Param.find(
+          { $or: [
+            {project: req.user.project._id},
+            {test: test._id}
+          ] },
+          {slug:1, language:1, created: 1});
         if(params){
           modified = params.parameters || 'empty';
         } else {
