@@ -44,7 +44,8 @@ exports.aboutPage = async (req, res) => {
 };
 
 exports.researcherPage = async (req, res) => {
-  res.render('researcher', {action: req.params.action});
+  const currency = (res.locals && res.locals.language && res.locals.language == 'en') ? 'usd' : 'eur';
+  res.render('researcher', {action: req.params.action, currency: currency});
 };
 
 exports.participantPage = async (req, res) => {
