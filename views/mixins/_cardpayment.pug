@@ -1,8 +1,8 @@
-mixin cardpayment(plan, period)
+mixin cardpayment(plan, period, currency)
 
   h5 #{l.billingInfo}
   
-  form#payment-form(action=`/subscription/cardpayment?plan=${plan}&period=${period}`, method='post')
+  form#payment-form(action=`/subscription/cardpayment?plan=${plan}&period=${period}&currency=${currency}`, method='post')
     .form-row
       label(for='card-element' style="font-size: 1.6rem;")
         | #{l.creditDebitCard}
@@ -17,40 +17,76 @@ mixin cardpayment(plan, period)
             if plan == 'professional' 
               if period == 'month'
                 td #{layout.monthly} #{layout.professionalPlan} 
-                td €10/#{layout.month}
+                if currency == 'usd'
+                  td $13/#{layout.month}
+                else  
+                  td €10/#{layout.month}
               if period == 'quarter'
                 td #{layout.quarterly} #{layout.professionalPlan} 
-                td €8/#{layout.month}
+                if currency == 'usd'
+                  td $10/#{layout.month}
+                else
+                  td €8/#{layout.month}
               if period == 'year'
                 td #{layout.annual} #{layout.professionalPlan} 
-                td €6/#{layout.month}
+                if currency == 'usd'
+                  td $7.5/#{layout.month}
+                else
+                  td €6/#{layout.month}
               
             if plan == 'laboratory'
               if period == 'month'
                 td #{layout.monthly} #{layout.laboratoryPlan} 
-                td €25/#{layout.month}
+                if currency == 'usd'
+                  td $30/#{layout.month}
+                else
+                  td €25/#{layout.month}
               if period == 'quarter'
                 td #{layout.quarterly} #{layout.laboratoryPlan} 
-                td €20/#{layout.month}
+                if currency == 'usd'
+                  td $25/#{layout.month}
+                else
+                  td €20/#{layout.month}
               if period == 'year'
                 td #{layout.annual} #{layout.laboratoryPlan} 
-                td €15/#{layout.month}
+                if currency == 'usd'
+                  td $19/#{layout.month}
+                else
+                  td €15/#{layout.month}
       p
       span(style="font-size: 1.6rem;") #{layout.billedAsOnePayment}
         if plan == 'professional' 
           if period == 'month'
-            | €10
+            if currency == 'usd'
+              | $13
+            else 
+              | €10
           if period == 'quarter'
-            | €24
+            if currency == 'usd'
+              | $30
+            else
+              | €24
           if period == 'year'
-            | €72
+            if currency == 'usd'
+              | $90
+            else
+              | €72
         if plan == 'laboratory' 
           if period == 'month'
-            | €25
+            if currency == 'usd'
+              | $30
+            else
+              | €25
           if period == 'quarter'
-            | €60
+            if currency == 'usd'
+              | $75
+            else
+              | €60
           if period == 'year'
-            | €180    
+            if currency == 'usd'
+              | $230
+            else
+              | €180    
       p
     input.button(type="submit" value=l.completeSubscription) 
   

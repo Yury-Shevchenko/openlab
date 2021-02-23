@@ -331,45 +331,84 @@ exports.inviteParticipants = async (req, res) => {
 
 //payment functions
 exports.subscribe = async (req, res) => {
-  res.render('subscribe', {stripePublishableKey: keys.stripePublishableKey, plan: req.params.plan, period: req.params.period});
+  const currency = (res.locals && res.locals.language && res.locals.language == 'en') ? 'usd' : 'eur';
+  res.render('subscribe', {
+    stripePublishableKey: keys.stripePublishableKey,
+    plan: req.params.plan,
+    period: req.params.period,
+    currency: currency,
+  });
 }
 
 exports.cardpayment = async (req, res) => {
   let chosenplan;
   const selectedPlan = req.query.plan;
   const selectedPeriod = req.query.period;
-  if(selectedPlan == 'professional'){
-    if(selectedPeriod == "month"){
-      chosenplan = process.env.PROFESSIONAL_PLAN_MONTH;
-    } else if(selectedPeriod == "quarter"){
-      chosenplan = process.env.PROFESSIONAL_PLAN_QUARTER;
-    } else if(selectedPeriod == "year"){
-      chosenplan = process.env.PROFESSIONAL_PLAN_YEAR;
+  const currency = req.query.currency;
+
+  // if the currency is usd, use dollar prices
+  if(currency === 'usd'){
+    if(selectedPlan == 'professional'){
+      if(selectedPeriod == "month"){
+        chosenplan = process.env.PROFESSIONAL_PLAN_MONTH_USD;
+      } else if(selectedPeriod == "quarter"){
+        chosenplan = process.env.PROFESSIONAL_PLAN_QUARTER_USD;
+      } else if(selectedPeriod == "year"){
+        chosenplan = process.env.PROFESSIONAL_PLAN_YEAR_USD;
+      } else {
+        req.flash('error', `${res.locals.layout.flash_subscriptionError}`);
+        res.redirect('/subscribe');
+      }
+    } else if (selectedPlan == 'laboratory'){
+      if(selectedPeriod == "month"){
+        chosenplan = process.env.LABORATORY_PLAN_MONTH_USD;
+      } else if(selectedPeriod == "quarter"){
+        chosenplan = process.env.LABORATORY_PLAN_QUARTER_USD;
+      } else if(selectedPeriod == "year"){
+        chosenplan = process.env.LABORATORY_PLAN_YEAR_USD;
+      } else {
+        req.flash('error', `${res.locals.layout.flash_subscriptionError}`);
+        res.redirect('/subscribe');
+      }
     } else {
       req.flash('error', `${res.locals.layout.flash_subscriptionError}`);
-      res.redirect('/subscribe');
-    }
-  } else if (selectedPlan == 'laboratory'){
-    if(selectedPeriod == "month"){
-      chosenplan = process.env.LABORATORY_PLAN_MONTH;
-    } else if(selectedPeriod == "quarter"){
-      chosenplan = process.env.LABORATORY_PLAN_QUARTER;
-    } else if(selectedPeriod == "year"){
-      chosenplan = process.env.LABORATORY_PLAN_YEAR;
-    } else {
-      req.flash('error', `${res.locals.layout.flash_subscriptionError}`);
-      res.redirect('/subscribe');
-    }
+      res.redirect('/subscribe');;
+    };
   } else {
-    req.flash('error', `${res.locals.layout.flash_subscriptionError}`);
-    res.redirect('/subscribe');;
-  };
+    if(selectedPlan == 'professional'){
+      if(selectedPeriod == "month"){
+        chosenplan = process.env.PROFESSIONAL_PLAN_MONTH;
+      } else if(selectedPeriod == "quarter"){
+        chosenplan = process.env.PROFESSIONAL_PLAN_QUARTER;
+      } else if(selectedPeriod == "year"){
+        chosenplan = process.env.PROFESSIONAL_PLAN_YEAR;
+      } else {
+        req.flash('error', `${res.locals.layout.flash_subscriptionError}`);
+        res.redirect('/subscribe');
+      }
+    } else if (selectedPlan == 'laboratory'){
+      if(selectedPeriod == "month"){
+        chosenplan = process.env.LABORATORY_PLAN_MONTH;
+      } else if(selectedPeriod == "quarter"){
+        chosenplan = process.env.LABORATORY_PLAN_QUARTER;
+      } else if(selectedPeriod == "year"){
+        chosenplan = process.env.LABORATORY_PLAN_YEAR;
+      } else {
+        req.flash('error', `${res.locals.layout.flash_subscriptionError}`);
+        res.redirect('/subscribe');
+      }
+    } else {
+      req.flash('error', `${res.locals.layout.flash_subscriptionError}`);
+      res.redirect('/subscribe');;
+    };
+  }
+
   stripe.customers.create({
     email: req.user.email || req.body.stripeEmail,
-    source: req.body.stripeToken
+    source: req.body.stripeToken,
   }).then(customer => stripe.subscriptions.create({
     customer: customer.id,
-    items: [{plan: chosenplan}]
+    items: [{plan: chosenplan}],
   })).then(result => {
     User.findById(req.user._id, (err, user) => {
       user.set({
