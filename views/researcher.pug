@@ -5,6 +5,7 @@ include mixins/_loginResearcher
 include mixins/_pricingResearcher
 include mixins/_howitworksResearcher
 include mixins/_forgot
+include mixins/_customServer
 
 block content
   .inner
@@ -33,6 +34,8 @@ block content
         
       if action == "howitworks"
         +howitworksResearcher()
-      
+
+      if action == "custom"
+        +customServer()      
       
       //- pre= h.dump(action)
