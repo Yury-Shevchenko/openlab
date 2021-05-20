@@ -34,11 +34,9 @@ const assembleFileDev = async (state, foldername,
     .filter(el => el.id == main_sequence_number)
     .filter(e => e.parameters)
     .map(e => e.parameters)
-    .map(r => r.rows)
     .reduce((flat, next) => flat.concat(next), [])
     .reduce((flat, next) => flat.concat(next), [])
     .filter(p => typeof(p) != "undefined" && p.name != '')
-
 
   // Filter files that are not embedded in components
   const filesInUse = embeddedFiles(updatedState.components)
