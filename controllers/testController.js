@@ -119,12 +119,13 @@ exports.createTest = async (req, res, next) => {
   }
 
   if(req.files.script){
+    const useExternalCDN = req.body.cdn === 'on';
     const json_string = req.files.script[0].buffer.toString();
     const json = JSON.parse(json_string);
     const version = json.version;
     let script;
     if(parseInt(version.join('')) > 2011){
-      script = await assembleFileDev(json, req.body.contentSlug);
+      script = await assembleFileDev(json, req.body.contentSlug, useExternalCDN);
     } else {
       script = await assembleFile(json, req.body.contentSlug);
     }
@@ -188,13 +189,14 @@ exports.updateTest = async (req, res, next) => {
     req.body.contentSlug = contentSlug;
   }
 
-  if(req.files.script){
+  if(req.files.script) {
+    const useExternalCDN = req.body.cdn === 'on';
     const json_string = req.files.script[0].buffer.toString();
     const json = JSON.parse(json_string);
     const version = json.version;
     let script;
     if(parseInt(version.join('')) > 2011){
-      script = await assembleFileDev(json, req.body.contentSlug);
+      script = await assembleFileDev(json, req.body.contentSlug, useExternalCDN);
     } else {
       script = await assembleFile(json, req.body.contentSlug);
     }

@@ -23,6 +23,7 @@ module.exports = {
     'privatePublic' : 'Private und Öffentliche',
     'unlimited' : 'Unbegrenzt',
     'month': 'Monat',
+    'cdn': 'Content Delivery Network für Bilder',
     'from': 'Ab',
     'ifBilledAnnualy': 'bei jährlicher Abrechnung',
     'select' : 'Auswählen',
@@ -469,7 +470,9 @@ module.exports = {
       'delete': 'Löschen',
       'version': 'Aufgabenversion',
       'authorInformation': 'Informationen über den Autor',
-      'feeling_lucky' : `Ich möchte dieser Studie ein zufälliges Bild zuordnen.`
+      'feeling_lucky' : `Ich möchte dieser Studie ein zufälliges Bild zuordnen.`,
+      'cdn_message': `Wenn Ihr Experiment oder Ihre Umfrage Bilder verwendet, erhalten Sie mit dem <a target="_blank" href="/subscribe">Upgrade</a> Ihres Tarifs Zugriff auf die Option, Bilder in das <a target="_blank" href="/docs/upload#cdn">Content Delivery Network</a>, hochzuladen, was die Download-Geschwindigkeiten weltweit verbessert.`,
+      'use_cdn': `Hochladen der Aufgabenbilder (d. h. der Bilder aus der Datei lab.js) in das <a target="_blank" href="/docs/upload#cdn">Content Delivery Network</a>`,
     },
 
     'results': {
@@ -650,6 +653,14 @@ module.exports = {
         'upload_myTasks_1': 'Hierbei handelt es sich um ein separates Dashboard für die von Ihnen hinzugefügten Aufgaben. Dieses ist zu Anfang leer, wird aber mit Ihren Aufgaben gefüllt. Nachdem Sie Ihre erste Aufgabe hinzugefügt haben, können Sie die Aufgabe ausführen, bearbeiten, die Json-Datei herunterladen oder die Aufgabe löschen.',
         'upload_newTask_title': `<a target='blank' href='../tests/add'>Neue Aufgabe</a>`,
         'upload_newTask_1': 'Das Hinzufügen einer neuen Aufgabe ist einfach. Geben Sie den Namen und die Beschreibung der Aufgabe ein, wählen Sie die Json-Datei aus und fügen Sie, wenn Sie möchten, ein Titelbild hinzu. Tags sind nicht notwendig, können aber anderen Forschern helfen, Ihre Aufgabe zu finden. Wählen Sie am Ende aus, wie die Aufgabe angezeigt werden soll. Öffentliche Aufgaben stehen anderen Forschern zur Verfügung, so dass sie diese sehen, ausführen und die json-Datei herunterladen können. Wenn Sie Ihre Aufgabe noch nicht teilen möchten, stellen Sie sie privat, so dass nur Sie und Ihre Teilnehmer diese sehen können. Nach dem Speichern erscheint Ihre Aufgabe auf der Seite "Meine Aufgaben".',
+        'upload_cdn_title': `Content Delivery Network`,
+        'upload_cdn_1': `
+          Standardmäßig werden alle in der lab.js-Datei enthaltenen Bilder auf demselben Server wie das Experiment-Skript und die Daten gespeichert, einem Server in Frankfurt, Deutschland.
+          Wenn das Experiment jedoch sehr viele Bilder enthält und die Teilnehmer über die ganze Welt verteilt sind, kann sich die Download-Zeit erhöhen.
+          Um die Download-Geschwindigkeit zu verbessern, verwenden wir <a target="_blank" href='https://cloudinary.com/'>Cloudinary</a> Content Delivery Network (CDN), das geografisch verteilt ist.
+          Das CDN kümmert sich um die Verarbeitung und Speicherung der Bilder und optimiert deren Auslieferung an jeden Ort der Welt.
+          Da die Nutzung von Cloudinary CDN für uns mit Kosten verbunden ist, ist diese Option nur für Benutzer mit Professional- oder Lab-Abonnement verfügbar.
+        `,
         'project_title': 'Management der Studie',
         'project_projects_title': `<a target='blank' href='../projects'>Studien</a> `,
         'project_projects_1': 'Das Open Lab ist nach Studien organisiert. Eine Studie enthält eine Reihe von Aufgaben und aggregiert die Daten der Teilnehmer. Nach der Registrierung als Forscher schlägt die erste Seite, die Sie sehen, vor, eine neue Studie zu erstellen. Geben Sie diesen einfach einen Namen und klicken Sie auf "Enter". Wenn Sie einen anderen Forscher im Open Lab bereits kennen, mit dem Sie die Studie teilen möchten, können Sie dessen E-Mail-Adresse eingeben (oder leer lassen und es später bearbeiten).',
@@ -694,7 +705,7 @@ module.exports = {
         'terms_link': 'dienstbedingungen',
         'legal_notice_title': 'Impressum',
         'legal_notice_link': 'impressum',
-        'contacts_email': `E-Mail Addresse: <a href = "mailto: contact@open-lab.online">contact@open-lab.online</a>`,
+        'contacts_email': `E-Mail Addresse: <a href = "mailto: info@open-lab.online">info@open-lab.online</a>`,
         'data_integration_title': `Integration mit Sona Systems und anderen externen Teilnehmerrekrutierungsdiensten`,
         'data_integration_1': `
           Zuerst müssen wir die Teilnehmer von Sona Systems zum Open Lab umleiten.

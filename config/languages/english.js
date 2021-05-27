@@ -22,6 +22,7 @@ module.exports =
       'laboratoryPlan': 'Laboratory Plan',
       'privatePublic': 'Private and Public',
       'unlimited': 'Unlimited',
+      'cdn': 'Content delivery network for images',
       'month': 'month',
       'from': 'From',
       'ifBilledAnnualy': 'if billed annually',
@@ -472,6 +473,8 @@ module.exports =
           'version': 'Task version',
           'authorInformation': 'Author information',
           'feeling_lucky': `I'm feeling lucky; I’ll choose a random picture.`,
+          'cdn_message': `If your experiment or survey uses images, <a target="_blank" href="/subscribe">upgrading</a> your plan gives you access to the option to upload images to the <a target="_blank" href="/docs/upload#cdn">Content Delivery Network</a>, which improves download speeds worldwide.`,
+          'use_cdn': `Upload the task images (i.e., the images from the lab.js file) to the <a target="_blank" href="/docs/upload#cdn">Content Delivery Network</a>`,
         },
 
         'results': {
@@ -651,6 +654,14 @@ module.exports =
           'upload_myTasks_1': 'There is a separate dashboard for the tasks that you have added. This is initially empty and will gradually be filled up by your tasks. After you have added your first task, you can run it, edit it, download its json file, or delete it using the shortcut buttons on the task card.',
           'upload_newTask_title': `<a target='blank' href='../tests/add'>New task</a>`,
           'upload_newTask_1': 'Adding a new task is straightforward. Enter the task’s name and description, select the json file, and add a cover photo, if you wish. Tags are not necessary but can help other researchers to find your task. Finally, choose how the task should be displayed. Public tasks are available for other researchers to see; they can run them and download the json file. If you do not yet want to share your task, mark it as private so that only you and your participants can see it. After saving it, your task will appear on the "My tasks" page.',
+          'upload_cdn_title': `Content Delivery Network`,
+          'upload_cdn_1': `
+            By default, all images contained in the lab.js file are stored on the same server as the experiment script and data, a server located in Frankfurt, Germany.
+            However, if the experiment contains a lot of images and the participants are spread all over the world, the download time may increase.
+            To improve the download speed, we use <a target="_blank" href='https://cloudinary.com/'>Cloudinary</a> Content Delivery Network (CDN), which is geographically distributed.
+            The CDN takes care of processing and storing the images and optimizes their delivery to any location in the world.
+            Since the use of Cloudinary CDN entails costs for us, this option is only available for users with Professional or Lab subscription.
+          `,
           'project_title': 'Manage your study',
           'project_projects_title': `<a target='blank' href='../projects'>Studies</a> `,
           'project_projects_1': 'The Open Lab is organized by study. A study contains a number of tasks and aggregates participants’ data. After registering as a researcher, the first page that you will see suggests the creation of a new study. Just give that study a name and click on "Enter". If you already know someone in Open Lab with whom you want to share the study, you can enter their email address (or leave it blank and do it later).',
@@ -695,7 +706,7 @@ module.exports =
           'terms_link': 'terms',
           'legal_notice_title': 'Legal notice',
           'legal_notice_link': 'legalnotice',
-          'contacts_email': `Email Address: <a href = "mailto: contact@open-lab.online">contact@open-lab.online</a>`,
+          'contacts_email': `Email Address: <a href = "mailto: info@open-lab.online">info@open-lab.online</a>`,
           'data_integration_title': `Integration with Sona Systems and other external participant recruitment services`,
           'data_integration_1': `
             First, we have to redirect participants from Sona Systems to the Open Lab.

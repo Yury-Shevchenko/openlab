@@ -53,6 +53,8 @@ block content
             p.plan_emails-label #{layout.pricingProjects}
             p.plan_emails #{process.env.PROF_PLAN_INVITATIONS_LIMIT}
             p.plan_emails-label #{layout.mailInvitations}
+            p.plan_emails #{layout.unlimited}
+            p.plan_emails-label #{layout.cdn}
             if user.subscription_status == 'active'
               p
               form#subscription-cancel-form(action='/subscription/cancel', method='post')
@@ -74,6 +76,8 @@ block content
             p.plan_emails-label #{layout.pricingProjects}
             p.plan_emails #{layout.unlimited}
             p.plan_emails-label #{layout.mailInvitations}
+            p.plan_emails #{layout.unlimited}
+            p.plan_emails-label #{layout.cdn}
             .plan_price
               if currency == 'usd'
                 p.plan_monthly #{layout.from} $19.00/#{layout.month} #{layout.ifBilledAnnualy}
@@ -108,6 +112,8 @@ block content
             p.plan_emails-label #{layout.pricingProjects}
             p.plan_emails #{process.env.PROF_PLAN_INVITATIONS_LIMIT}
             p.plan_emails-label #{layout.mailInvitations}
+            p.plan_emails #{layout.unlimited}
+            p.plan_emails-label #{layout.cdn}
             .plan_price
               if currency == 'usd'
                 p.plan_monthly #{layout.from} $7.5/#{layout.month} #{layout.ifBilledAnnualy}
@@ -123,6 +129,8 @@ block content
             p.plan_emails-label #{layout.pricingProjects}
             p.plan_emails #{layout.unlimited}
             p.plan_emails-label #{layout.mailInvitations}
+            p.plan_emails #{layout.unlimited}
+            p.plan_emails-label #{layout.cdn}
             if user.subscription_status == 'active'
               p
               form#subscription-cancel-form(action='/subscription/cancel', method='post')
@@ -162,6 +170,8 @@ block content
             p.plan_emails-label #{layout.pricingProjects}
             p.plan_emails #{process.env.PROF_PLAN_INVITATIONS_LIMIT}
             p.plan_emails-label #{layout.mailInvitations}
+            p.plan_emails #{layout.unlimited}
+            p.plan_emails-label #{layout.cdn}
             .plan_price
               if currency == 'usd'
                 p.plan_monthly #{layout.from} $7.5/#{layout.month} #{layout.ifBilledAnnualy}
@@ -178,6 +188,8 @@ block content
             p.plan_emails-label #{layout.pricingProjects}
             p.plan_emails #{layout.unlimited}
             p.plan_emails-label #{layout.mailInvitations}
+            p.plan_emails #{layout.unlimited}
+            p.plan_emails-label #{layout.cdn}
             .plan_price
               if currency == 'usd'
                 p.plan_monthly #{layout.from} $19.00/#{layout.month} #{layout.ifBilledAnnualy}

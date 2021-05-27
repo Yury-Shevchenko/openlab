@@ -18,7 +18,7 @@ const path = require('path');
 // should be derived from the study state
 // to the greatest possible extent (i.e. via plugins).
 
-const assembleFileDev = async (state, foldername,
+const assembleFileDev = async (state, foldername, useExternalCDN=false,
   stateModifier=state => state,
   { additionalFiles={}, headerOptions={} }={}
 ) => {
@@ -52,7 +52,12 @@ const assembleFileDev = async (state, foldername,
     if (value.files && value.files && value.files.length > 0) {
       value.files.map(file => {
         const name = file.poolPath.split(`/`)[1];
-        const poolPath = path.join('..', '..', 'embedded', foldername, name);
+        let poolPath;
+        if(useExternalCDN){
+          poolPath = path.join('embedded', name);
+        } else {
+          poolPath = path.join('..', '..', 'embedded', foldername, name);
+        }
         file.poolPath = poolPath;
       });
     }
@@ -81,13 +86,11 @@ const assembleFileDev = async (state, foldername,
         // for embedded files replace the address in poolPath
         if(result && item[1].source === "embedded"){
           for (let [key, value] of Object.entries(updatedState.components)){
-            if (value.files && value.files.rows && value.files.rows.length > 0) {
-              value.files.rows.map(o => {
-                o.map(e => {
-                  if (e.poolPath == item[0]){
-                    e.poolPath = result.secure_url;
-                  }
-                })
+            if (value.files && value.files.length > 0) {
+              value.files.map(e => {
+                if (e.poolPath == item[0]){
+                  e.poolPath = result.secure_url;
+                }
               });
             }
           }
@@ -108,6 +111,7 @@ const assembleFileDev = async (state, foldername,
       }
     );
   }
+
   function replaceAll(string, search, replace) {
     return string.split(search).join(replace);
   }
@@ -142,9 +146,16 @@ const assembleFileDev = async (state, foldername,
     return (i && i[1] && (i[1].source == "embedded" || i[1].source == "embedded-global"))
   });
 
-  await Promise.all(arr.map(item => {
-    return uploadFileLocally(item)
-  }))
+  // select the upload type
+  if ( useExternalCDN ) {
+    await Promise.all(arr.map(item => {
+      return uploadFile(item)
+    }))
+  } else {
+    await Promise.all(arr.map(item => {
+      return uploadFileLocally(item)
+    }))
+  }
 
   // Collect plugin data
   const { pluginFiles, pluginHeaders, pluginPaths } = embedPlugins(updatedState)

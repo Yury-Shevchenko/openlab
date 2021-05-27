@@ -15,6 +15,17 @@ mixin testForm(test = {})
     input(type="file" name='script' id='script' accept=".json")
     if test.scriptUpdated
       label(style="color: hsl(0,0%,45%)")= `${l.edit_uploaded}: ${h.moment.utc(test.scriptUpdated).local().locale(language).format('dddd, MMMM Do YYYY')}`
+    
+    div.cdn-choice
+      if (user.subscription && (Date.now() < user.subscription_expires * 1000))
+        div.inputCheckBox
+          input(type = 'checkbox' id = 'cdn' name = 'cdn' checked = false)
+          label(for='cdn')
+            p.
+               !{l.use_cdn}
+      else 
+        p(for="cdn-message") !{l.cdn_message}
+      
     label(for='photo') #{l.edit_photo}
     input(type='file' name='photo' id='photo' accept="image/gif, image/png, image/jpeg")
     if test.photo
@@ -50,8 +61,8 @@ mixin testForm(test = {})
       each choice in choices
         .tag.tag__choice
           input(type = 'checkbox' id=choice value=choice name='tags' checked=(tags.includes(choice)))
-          label(for=choice) #{choice}
-
+          label(for=choice) #{choice}    
+          
     div.span4#test_privacy
       input(type='radio', name='open', value='true', style="visibility: true;" checked=(test.open==true))#wnr1
 

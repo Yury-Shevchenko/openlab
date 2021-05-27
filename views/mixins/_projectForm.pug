@@ -13,6 +13,7 @@ mixin projectForm(project = {})
     label(for='completionMessage') #{l.completionMessage}
     textarea(type='text' name='completionMessage')= project.completionMessage
     p
+    
     div.inputCheckBox
       input(type= 'checkbox' id= 'allowMultipleParticipation' name= 'allowMultipleParticipation' checked = project.allowMultipleParticipation)
       label(for='allowMultipleParticipation')
@@ -26,11 +27,6 @@ mixin projectForm(project = {})
   
     label(for='redirectUrl') !{l.enterExternalUrl} 
     input(type='text' name='redirectUrl' value=project.redirectUrl placeholder=l.enterUrlPlaceholder)
-    //- div.inputCheckBox
-    //-   input(type= 'checkbox' id= 'useNotifications' name= 'useNotifications' checked = project.useNotifications)
-    //-   label(for='useNotifications')
-    //-     span.
-    //-       !{l.askNotifications}
 
     .div(id="membersList")
       label(for="members") #{l.invite_members}
@@ -58,6 +54,4 @@ mixin projectForm(project = {})
     button(type="button" value="Add a field" id="addFieldButton") #{l.add_field}
     p
 
-
     input(type='submit' value=l.submit class="button")
-    //- pre= h.dump(project)
