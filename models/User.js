@@ -34,13 +34,19 @@ const userSchema = new Schema({
     },
     name             : String,
     email            : String,
-    openLabId        : String,  
+    openLabId        : String,
     created          : {
         type         : Date,
         default      : Date.now
     },
     resetPasswordToken: String,
     resetPasswordExpires: Date,
+    confirmEmailToken: String,
+    confirmEmailExpires: Date,
+    emailIsConfirmed: {
+        type          : Boolean,
+        default       : false
+    },
     level            : Number, //The normal user is 1, the admin is 11, the Superadmin is 101
     language         : {
         type         : String,

@@ -38,6 +38,17 @@
   grid-template-columns: 1fr;
 }
 
-.user{
+.user {
 
+}
+
+.emailBox {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-gap: 20px;
+  align-items: baseline;
+  justify-content: left;
+  .button {
+    text-align: center;
+  }
 }

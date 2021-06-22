@@ -200,6 +200,11 @@ module.exports =
       'footer_terms': `<a href="/docs/terms">Условия</a>`,
       'footer_policy': `<a href="/docs/policy">Политика конфиденциальности</a>`,
       'footer_notice': `<a href="/docs/legalnotice">О компании</a>`,
+      'flash_sent_confirm_email_ink': `
+        Мы отправили письмо со ссылкой подтверждения на ваш адрес электронной почты.
+      `,
+      'flash_confirm_email_invalid': 'Ссылка на подтверждение электронной почты недействительна или истекла',
+      'flash_email_confirmed': 'Ваш адрес электронной почты был подтвержден!',
     },
 
     'passport': {
@@ -227,6 +232,9 @@ module.exports =
       'freeSandbox': 'Бесплатный план',
       'institute': 'Название университета или исследовательского института',
       'choose_project': 'Выберите исследование',
+      'emailIsConfirmed': 'Электронная почта подтверждена',
+      'emailIsNotConfirmed': 'Электронная почта не подтверждена',
+      'sendLink': 'Отправить ссылку для подтверждения',
     },
 
     'index' : {

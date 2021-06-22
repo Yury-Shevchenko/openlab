@@ -122,3 +122,40 @@ exports.update = async (req, res) => {
   req.flash('success', `${res.locals.layout.flash_password_is_reset}`);
   res.redirect('/');
 };
+
+exports.sendEmailConfirmationLink = async (req, res) => {
+  const user = await User.findOne({ email: req.body.email });
+  if(!user){
+    req.flash('error', `${res.locals.layout.flash_no_account_with_email_exist}`);
+    return res.redirect('back');
+  }
+  user.confirmEmailToken = crypto.randomBytes(20).toString('hex');
+  user.confirmEmailExpires = Date.now() + 3600000;
+  await user.save();
+  mail.send({
+    participant: user,
+    subject: 'Email confirmation',
+    resetURL: `https://${req.headers.host}/account/confirm/${user.confirmEmailToken}`,
+    filename: 'email-confirmation-' + user.language
+  });
+  req.flash('success', `${res.locals.layout.flash_sent_confirm_email_ink}`);
+  res.redirect('/account');
+}
+
+exports.confirmEmail = async (req, res) => {
+  const user = await User.findOne({
+    confirmEmailToken: req.params.token,
+    confirmEmailExpires: { $gt: Date.now() } // greater than
+  });
+  if(!user){
+    req.flash('error', `${res.locals.layout.flash_confirm_email_invalid}`);
+    res.redirect('/account');
+  } else {
+    user.emailIsConfirmed = true;
+    user.confirmEmailToken = undefined;
+    user.confirmEmailExpires = undefined;
+    await user.save();
+    req.flash('success', `${res.locals.layout.flash_email_confirmed}`);
+    res.redirect('/account');
+  }
+};

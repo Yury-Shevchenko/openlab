@@ -15,8 +15,8 @@ block content
     h2 #{l.title}
     
     .card
-      form.form(action="/account" method="POST")
-
+      .form
+      
         label(for="time") #{l.registered}
         h2= h.moment(user.created).locale(language).format("MMM Do YY")
         
@@ -41,48 +41,59 @@ block content
               h2 #{l.freeSandbox}
           p
 
-        label(for="email") #{l.email}
-        h2= `${user.email||user.facebook.email||user.github.email||user.google.email}`
-        //- input(type="email" name="email" value=user.email||user.facebook.email||user.github.email||user.google.email)
-
-        label(for="name") #{l.name}
-        input(type="text" name="name" value=user.name||user.facebook.name||user.github.name||user.google.name)
-
+        if(user.email||user.facebook.email||user.github.email||user.google.email)
+          label(for="email") #{l.email}
+          .emailBox
+            h2= `${user.email||user.facebook.email||user.github.email||user.google.email}`
+            if(user.emailIsConfirmed)
+              p ✅ #{l.emailIsConfirmed} 
+            else 
+              div
+                form(action="/account/confirm" method="POST" id="email")
+                  p ⚠️ #{l.emailIsNotConfirmed} 
+                  input(type="text" name="email" value= user.email hidden)
+                  input.button(value=l.sendLink type="submit" form="email")
         
-        if user.level > 10
-          p
-          label(for="institute") #{l.institute}
-          input(type="text" name="institute" value=user.institute)
+        form(action="/account" method="POST" id="account")
+        
+          label(for="name") #{l.name}
+          input(type="text" name="name" value=user.name||user.facebook.name||user.github.name||user.google.name)
 
-        else
-          p
-          if user.participantInProject
-            label(for="participantInProject") #{layout.project}
-            .custom-select-header
-              select(name="participantInProject")
-                option(value='' style="" selected=(typeof(user.participantInProject) === "undefined")) – #{layout.choose_project} –
-                each project in projects
-                  option(value=project._id, selected=(user.participantInProject.toString() === project._id.toString()))= project.name
+          
+          if user.level > 10
+            p
+            label(for="institute") #{l.institute}
+            input(type="text" name="institute" value=user.institute)
+
           else
             p
-            label(for="participantInProject") #{l.choose_project}
-            .custom-select-header
-              select(name="participantInProject")
-                option(value='' style="" selected=(typeof(user.participantInProject) === "undefined")) – #{layout.choose_project} –
-                each project in projects
-                  option(value=project._id)= project.name
+            if user.participantInProject
+              label(for="participantInProject") #{layout.project}
+              .custom-select-header
+                select(name="participantInProject")
+                  option(value='' style="" selected=(typeof(user.participantInProject) === "undefined")) – #{layout.choose_project} –
+                  each project in projects
+                    option(value=project._id, selected=(user.participantInProject.toString() === project._id.toString()))= project.name
+            else
+              p
+              label(for="participantInProject") #{l.choose_project}
+              .custom-select-header
+                select(name="participantInProject")
+                  option(value='' style="" selected=(typeof(user.participantInProject) === "undefined")) – #{layout.choose_project} –
+                  each project in projects
+                    option(value=project._id)= project.name
 
-        //-general for all users information
-        p
-        label(for="language") #{l.language}
-        .custom-select
-          select(name="language")
-            - var options = [{value: 'english', label: 'English'}, {value: 'german', label: 'Deutsch'}, {value: 'russian', label: 'Русский'}]
-            each option in options
-              option(value=option.value, selected=(user.language === option.value))= option.label
+          //-general for all users information
+          p
+          label(for="language") #{l.language}
+          .custom-select
+            select(name="language")
+              - var options = [{value: 'english', label: 'English'}, {value: 'german', label: 'Deutsch'}, {value: 'russian', label: 'Русский'}]
+              each option in options
+                option(value=option.value, selected=(user.language === option.value))= option.label
 
-        p(style='white-space:pre;')
-        input.button( type="submit" value= l.submit )
+          p(style='white-space:pre;')
+          input.button( type="submit" value= l.submit form="account")
 
       //- pre=h.dump(user)
       //- pre=h.dump(projects)

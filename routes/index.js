@@ -96,6 +96,10 @@ router.get('/auth/github/callback',
             failureRedirect : '/login'
   }));
 
+// email confirmation
+router.post('/account/confirm', catchErrors(authController.sendEmailConfirmationLink));
+router.get('/account/confirm/:token', catchErrors(authController.confirmEmail));
+
 //account
 router.get('/account', authController.isLoggedIn, catchErrors(userController.account));
 router.post('/account', catchErrors(userController.updateAccount));

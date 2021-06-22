@@ -200,6 +200,11 @@ module.exports = {
     'footer_terms': `<a href="/docs/dienstbedingungen">Dienstbedingungen</a>`,
     'footer_policy': `<a href="/docs/datenschutz">Datenschutzerklärung</a>`,
     'footer_notice': `<a href="/docs/impressum">Impressum</a>`,
+    'flash_sent_confirm_email_ink': `
+       Wir haben eine E-Mail mit einem Bestätigungslink an Ihre E-Mail-Adresse gesendet.
+    `,
+    'flash_confirm_email_invalid': 'Der E-Mail-Bestätigungslink ist ungültig oder ist abgelaufen',
+    'flash_email_confirmed': 'Ihre E-Mail Adresse wurde bestätigt!',
   },
 
   'passport': {
@@ -227,6 +232,9 @@ module.exports = {
     'freeSandbox': 'Free Sandbox',
     'institute': 'Institut',
     'choose_project': 'Wählen Sie eine Studie, an der Sie teilnehmen möchten',
+    'emailIsConfirmed': 'Email ist bestätigt',
+    'emailIsNotConfirmed': 'EMail ist nicht bestätigt',
+    'sendLink': 'Bestätigungslink senden',
   },
 
   'index' : {

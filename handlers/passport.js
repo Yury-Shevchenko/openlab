@@ -9,6 +9,8 @@ const GitHubStrategy = require('passport-github').Strategy;
 const configAuth = require('../config/auth');
 const language = require('../config/lang');
 const validator = require('validator');
+const crypto = require('crypto');
+const mail = require('./mail');
 
 const makeOpenLabId = () => {
   const time = Math.floor(Date.now() / 1000 + Math.random() * 1000) | 0;
@@ -103,6 +105,17 @@ passport.use('local-signup-researcher', new LocalStrategy({
           newUser.email    = normEmail;
           newUser.language = user_lang;
           newUser.local.password = newUser.generateHash(password);
+
+          // send a confirmation email
+          newUser.confirmEmailToken = crypto.randomBytes(20).toString('hex');
+          newUser.confirmEmailExpires = Date.now() + 3600000;
+          mail.send({
+            participant: newUser,
+            subject: 'Email confirmation',
+            resetURL: `https://${req.headers.host}/account/confirm/${newUser.confirmEmailToken}`,
+            filename: 'email-confirmation-' + newUser.language
+          });
+
           newUser.save(function(err) {
             if (err) throw err;
             return done(null, newUser);
@@ -144,6 +157,17 @@ passport.use('local-labjs-researcher', new LocalStrategy({
             newUser.email    = normEmail;
             newUser.local.password = newUser.generateHash(password);
             newUser.language = user_lang;
+
+            // send a confirmation email
+            newUser.confirmEmailToken = crypto.randomBytes(20).toString('hex');
+            newUser.confirmEmailExpires = Date.now() + 3600000;
+            mail.send({
+              participant: newUser,
+              subject: 'Email confirmation',
+              resetURL: `https://${req.headers.host}/account/confirm/${newUser.confirmEmailToken}`,
+              filename: 'email-confirmation-' + newUser.language
+            });
+            
             newUser.save(function(err) {
               if (err) throw err;
               return done(null, newUser, req.flash('signupMessage', `${language[user_lang]['passport'].registered_user}` ));
@@ -185,34 +209,6 @@ passport.use('local-code', new LocalStrategy({
         });
     });
 }));
-
-// if (user) {
-//   if (!user.validCode(code)) return done(null, false, req.flash('error', `${language[user_lang]['passport'].wrong_credentials}` ));
-//   if (user.participantInProject != req.body.participantInProject){
-//     user.participantInProject = req.body.participantInProject;
-//     user.save(function(err) {
-//       if (err) throw err;
-//       return done(null, user, req.flash('success', `${language[user_lang]['passport'].welcome_back}` )); // user found, return that user
-//     });
-//   } else {
-//     return done(null, user, req.flash('success', `${language[user_lang]['passport'].welcome_back}` )); // user found, return that user
-//   };
-// } else {
-//   var newUser = new User();
-//   newUser.openLabId = makeOpenLabId();
-//   newUser.level    = 1;
-//   newUser.language = user_lang;
-//   newUser.code.id = code;
-//   newUser.code.password = newUser.generateHash(code);
-//   //add a unique code for the user
-//   if(req.body.participantInProject){
-//     newUser.participantInProject = req.body.participantInProject;
-//   };
-//   newUser.save(function(err) {
-//     if (err) throw err;
-//     return done(null, newUser, req.flash('success', `${language[user_lang]['passport'].registered_user}` ));
-//   });
-// }
 
 //Facebook strategy with facebook id
 passport.use(new FacebookStrategy({
