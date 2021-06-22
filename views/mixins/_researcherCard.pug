@@ -4,6 +4,10 @@ mixin researcherCard(person = {}, i)
       tr
         td #{i + 1}
         td= person.email||(person.facebook && person.facebook.email)||(person.github && person.github.email)||(person.google && person.google.email)||'No email'
+        if person.emailIsConfirmed
+          td ✅
+        else 
+          td
         td= person.participant_id
         td= person.name
         td= person.institute

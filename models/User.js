@@ -263,6 +263,7 @@ userSchema.statics.getResearchers = function() {
         subscription_period: '$$ROOT.subscription_period',
         subscription_plan: '$$ROOT.subscription_plan',
         subscription_status: '$$ROOT.subscription_status',
+        emailIsConfirmed: '$$ROOT.emailIsConfirmed',
       }
     },
     { $sort : {identity: 1}} // from highest to lowest
