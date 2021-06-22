@@ -847,21 +847,22 @@ exports.testing = async (req, res) => {
     };
 
     const nextTask = remainingArray[0] || "allDone";
+
+
+    let queryString = '';
+    if(req.query && Object.keys(req.query).length){
+      const params = req.query;
+      queryString = `?${Object.keys(params).map(key => key + '=' + params[key]).join('&')}`;
+    }
+
     if(req.params.selector === 'start' && projectTests && projectTests.length){
       if(nextTask === 'allDone'){
-        res.render('testing', {project, projects, study, confirmationCode, projectTests: originalProjectTests, nextTask, doneArray});
+        res.render('testing', {project, projects, study, confirmationCode, projectTests: originalProjectTests, nextTask, doneArray, queryString});
       } else {
-        let queryString;
-        if(req.query && Object.keys(req.query).length){
-          const params = req.query;
-          queryString = Object.keys(params).map(key => key + '=' + params[key]).join('&');
-          res.redirect(`/test/${nextTask}/${req.user.id}?${queryString}`);
-        } else {
-          res.redirect(`/test/${nextTask}/${req.user.id}`);
-        }
+        res.redirect(`/test/${nextTask}/${req.user.id}${queryString}`);
       }
     } else {
-      res.render('testing', {project, projects, study, confirmationCode, projectTests: originalProjectTests, nextTask, doneArray});
+      res.render('testing', {project, projects, study, confirmationCode, projectTests: originalProjectTests, nextTask, doneArray, queryString});
     }
   }
 };

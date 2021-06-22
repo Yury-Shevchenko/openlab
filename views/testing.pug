@@ -89,6 +89,6 @@ block content
                 strong !{test.name}
               p
                 strong !{test.description}
-              a(class='button', href=`/test/${test.slug}/${user._id}`) #{l.table_not_done}
+              a(class='button', href=`/test/${test.slug}/${user._id}${queryString ? queryString : ''}`) #{l.table_not_done}
     
         
