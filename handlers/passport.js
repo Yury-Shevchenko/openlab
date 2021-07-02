@@ -118,7 +118,7 @@ passport.use('local-signup-researcher', new LocalStrategy({
 
           newUser.save(function(err) {
             if (err) throw err;
-            return done(null, newUser);
+            return done(null, newUser, req.flash('success', `${language[user_lang]['passport'].signed_up}`) );
           });
         }
   })})}
@@ -167,10 +167,10 @@ passport.use('local-labjs-researcher', new LocalStrategy({
               resetURL: `https://${req.headers.host}/account/confirm/${newUser.confirmEmailToken}`,
               filename: 'email-confirmation-' + newUser.language
             });
-            
+
             newUser.save(function(err) {
               if (err) throw err;
-              return done(null, newUser, req.flash('signupMessage', `${language[user_lang]['passport'].registered_user}` ));
+              return done(null, newUser, req.flash('success', `${language[user_lang]['passport'].signed_up}` ));
               });
           };
           if (user && !user.validPassword(password)) return done(null, false, req.flash('loginMessage', `${language[user_lang]['passport'].wrong_password}`));

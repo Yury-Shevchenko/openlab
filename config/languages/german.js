@@ -215,7 +215,8 @@ module.exports = {
     'registered_user'    : 'Sie sind als neuer Benutzer registriert!',
     'logged_in'          : 'Sie sind eingeloggt!',
     'wrong_credentials'  : 'Ups! Falsche Zugangsdaten.',
-    'welcome_back'       : 'Willkommen zurück!'
+    'welcome_back'       : 'Willkommen zurück!',
+    'signed_up': 'Sie sind angemeldet. Wir haben eine E-Mail mit einem Bestätigungslink an Ihre E-Mail-Adresse gesendet. Um den Anmeldevorgang abzuschließen, klicken Sie bitte auf den Bestätigungslink.',
   },
 
   'account' : {
