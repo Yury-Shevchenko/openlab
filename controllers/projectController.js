@@ -235,7 +235,7 @@ exports.listPublicProjects = async(req, res) => {
     res.redirect(`/studies/page/${pages}`);
     return;
   }
-  res.render('studies', {projects, page, pages, count, study, allProjects});
+  res.render('studies', { projects, page, pages, count, study, allProjects });
 };
 
 exports.showProjectDescription = async(req, res) => {

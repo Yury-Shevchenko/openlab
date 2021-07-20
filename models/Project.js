@@ -101,12 +101,13 @@ projectSchema.statics.findAllPublic = function() {
     },
     { $project: {
       name: '$$ROOT.name',
+      insensitive: { '$toLower': '$$ROOT.slug' },
       description: '$$ROOT.description',
       created: '$$ROOT.created',
       author_name: '$author.name',
       author_institute: '$author.institute',
     }},
-    { $sort: { created: 1 } }
+    { $sort: { insensitive: 1 } }
   ]);
 };
 
