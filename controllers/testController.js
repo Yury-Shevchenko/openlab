@@ -428,8 +428,7 @@ exports.constructor = async (req, res) => {
           }
         ]
       })
-      .select({ slug: 1, name: 1, description: 1 })
-      .sort({ slug: 1 });
+      .select({ slug: 1, name: 1, description: 1 });
     [tags, tests, unsortedProjectTests] = await Promise.all([ tagsPromise, testsPromise, projectTestsPromise ]);
     // order project tests
     projectTests = unsortedProjectTests.sort( (a, b) => {
