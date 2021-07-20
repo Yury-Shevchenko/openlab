@@ -428,10 +428,10 @@ exports.constructor = async (req, res) => {
           }
         ]
       })
-      .select({ author:1, slug:1, name:1, description: 1 })
+      .select({ slug: 1, name: 1, description: 1 })
       .sort({ slug: 1 });
     [tags, tests, unsortedProjectTests] = await Promise.all([ tagsPromise, testsPromise, projectTestsPromise ]);
-    //order projectTests
+    // order project tests
     projectTests = unsortedProjectTests.sort( (a, b) => {
       return project.tests.indexOf(a.id) - project.tests.indexOf(b.id);
     });
@@ -922,7 +922,7 @@ exports.runTest = async (req, res) => {
 
 exports.listPublicTests = async(req, res) => {
   const page = req.params.page || 1;
-  const limit = 18;
+  const limit = 60;
   const skip = (page * limit) - limit;
   const testsPromise = Test
     .find({
@@ -931,6 +931,7 @@ exports.listPublicTests = async(req, res) => {
     },{
       name: 1, slug: 1, description: 1, author: 1, photo: 1, open: 1,
     })
+    .sort({ slug: 1 })
     .skip(skip)
     .limit(limit);
   const countPromise = Test.where({open: true, author: { $exists: true }}).countDocuments();
