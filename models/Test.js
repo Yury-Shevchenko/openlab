@@ -119,6 +119,7 @@ testSchema.statics.showAllTests = function(userID, tagQuery) {
     ]}},
     { $project: {
       name: '$$ROOT.name',
+      insensitive: { '$toLower': '$$ROOT.name' },
       fullName: '$$ROOT.fullName',
       slug: '$$ROOT.slug',
       open: '$$ROOT.open',
@@ -128,7 +129,7 @@ testSchema.statics.showAllTests = function(userID, tagQuery) {
       production: '$$ROOT.production',
       json: { $cond: { if: '$$ROOT.json', then: true, else: false } },
     }},
-    { $sort: { slug: 1 } }
+    { $sort: { insensitive: 1 } }
   ]);
 };
 
@@ -137,6 +138,7 @@ testSchema.statics.showMyTests = function(userID) {
     { $match: { author: userID }},
     { $project: {
       name: '$$ROOT.name',
+      insensitive: { '$toLower': '$$ROOT.name' },
       fullName: '$$ROOT.fullName',
       slug: '$$ROOT.slug',
       open: '$$ROOT.open',
@@ -146,7 +148,7 @@ testSchema.statics.showMyTests = function(userID) {
       production: '$$ROOT.production',
       json: { $cond: { if: '$$ROOT.json', then: true, else: false } },
     }},
-    { $sort: { slug: 1 } }
+    { $sort: { insensitive: 1 } }
   ]);
 };
 
