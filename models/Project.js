@@ -101,7 +101,7 @@ projectSchema.statics.findAllPublic = function() {
     },
     { $project: {
       name: '$$ROOT.name',
-      insensitive: { '$toLower': '$$ROOT.slug' },
+      insensitive: { '$toLower': '$$ROOT.name' },
       description: '$$ROOT.description',
       created: '$$ROOT.created',
       author_name: '$author.name',
