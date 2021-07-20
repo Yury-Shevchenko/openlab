@@ -242,6 +242,7 @@ exports.showProjectDescription = async(req, res) => {
   const project = await Project
     .findOne({
       _id: req.params.study,
+      currentlyActive: true,
     },{
       name: 1,
       description: 1,
@@ -265,7 +266,7 @@ exports.showProjectDescription = async(req, res) => {
       .find({
         _id: { $in: project.tests},
         author: { $exists: true },
-        // open: true
+        open: true
       })
       .select({ author: 1, slug: 1, name: 1, description: 1, photo: 1 })
   }

@@ -753,7 +753,7 @@ module.exports = {
       },
 
       'studies': {
-        'no_tests_in_study': 'Es gibt keine Tests in dieser Studie.',
+        'no_tests_in_study': 'Es gibt keine öffentlich verfügbaren Tests in dieser Studie.',
         'created': 'Erstellt',
       },
 

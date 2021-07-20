@@ -753,7 +753,7 @@ module.exports =
       },
 
       'studies': {
-        'no_tests_in_study': 'There are no tasks in this study.',
+        'no_tests_in_study': 'There are no publicly available tasks in this study.',
         'created': 'Created',
       },
 

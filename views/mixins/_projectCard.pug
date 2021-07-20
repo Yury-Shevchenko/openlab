@@ -14,6 +14,10 @@ mixin projectCard(project = {})
       .store__details
         .project__actions
           if user.project && user.project._id
+            if project.currentlyActive
+                .store__action
+                  a(target='blank' href=`/studies/${project._id}`)
+                    != h.icon('website')
             if ((user._id.toString() == project.creator.toString()) || (project.members.includes(user._id.toString())))
               .store__action
                 a(href=`/projects/${project._id}/edit`)
