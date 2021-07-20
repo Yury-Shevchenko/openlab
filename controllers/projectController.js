@@ -269,6 +269,9 @@ exports.showProjectDescription = async(req, res) => {
         open: true
       })
       .select({ author: 1, slug: 1, name: 1, description: 1, photo: 1 })
+  } else {
+    res.redirect('back');
+    return;
   }
   res.render('study', { project, tests, author });
 };
