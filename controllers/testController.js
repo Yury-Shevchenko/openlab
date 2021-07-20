@@ -410,25 +410,9 @@ exports.constructor = async (req, res) => {
         _id: { $in: project.tests },
         author: { $exists: true }
       })
-      .select({ slug:1, name:1 })
+      .select({ slug:1, name:1 });
     testsPromise = Test
-      .find({
-        $or:[
-          {
-            tags: tagQuery,
-            _id: { $nin: project.tests},
-            open: true,
-            author: authorQuery
-          },
-          {
-            tags: tagQuery,
-            _id: { $nin: project.tests},
-            open: false,
-            author: req.user._id
-          }
-        ]
-      })
-      .select({ slug: 1, name: 1, description: 1 });
+        .showTestsInConstructor(authorQuery, req.user._id, tagQuery, project.tests);
     [tags, tests, unsortedProjectTests] = await Promise.all([ tagsPromise, testsPromise, projectTestsPromise ]);
     // order project tests
     projectTests = unsortedProjectTests.sort( (a, b) => {

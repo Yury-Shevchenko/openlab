@@ -69,6 +69,7 @@ testSchema.statics.getTests = function(tests) {
   ]);
 };
 
+// to list all tasks on the public page
 testSchema.statics.findAllPublic = function() {
   return this.aggregate([
     { $match: { open: true, author: { $exists: true } } },
@@ -85,6 +86,30 @@ testSchema.statics.findAllPublic = function() {
     { $sort: { insensitive: 1 } }
   ]);
 };
+
+// to list tasks inside the constructor
+testSchema.statics.showTestsInConstructor = function(authorQuery, userID, tagQuery, tests) {
+  return this.aggregate([
+    { $match: { $or: [
+      { tags: tagQuery,
+        _id: { $nin: tests},
+        open: true,
+        author: authorQuery },
+      { tags: tagQuery,
+        _id: { $nin: tests},
+        open: false,
+        author: userID },
+    ]}},
+    { $project: {
+      name: '$$ROOT.name',
+      insensitive: { '$toLower': '$$ROOT.name' },
+      slug: '$$ROOT.slug',
+      description: '$$ROOT.description',
+    }},
+    { $sort: { insensitive: 1 } }
+  ]);
+};
+
 
 testSchema.statics.showAllTests = function(userID, tagQuery) {
   return this.aggregate([
