@@ -33,7 +33,7 @@ exports.loginResearcher = (req, res) => {
 exports.sign = async (req, res) => {
   let projectId;
   if(req.params.project){
-    const project = await Project.findOne({ name: req.params.project });
+    const project = await Project.findOne({ name: req.params.project, isRunning: true });
     if (project) projectId = project._id
   }
   res.render('sign', {title: 'Sign in', message: req.flash('signupMessage'), project: projectId, code: req.params.code})
@@ -43,7 +43,7 @@ exports.code = async (req, res) => {
   let joined_project, projects, temporary_code;
   if(req.params.project){
     // the specific project was requested
-    joined_project = await Project.findOne({ name: req.params.project });
+    joined_project = await Project.findOne({ name: req.params.project, isRunning: true });
     // user is logged in
     if(req.user && req.user.level && req.user.level < 10){
       // the project exists
@@ -579,7 +579,7 @@ exports.invite = async (req, res) => {
   let joined_project, temporary_code;
   if(req.params.project){
     // the specific project was requested
-    joined_project = await Project.findOne({ name: req.params.project });
+    joined_project = await Project.findOne({ name: req.params.project, isRunning: true });
     // user is logged in
     if(req.user && req.user.level & req.user.level < 10){
       // the project exists

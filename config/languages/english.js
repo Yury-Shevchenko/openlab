@@ -117,6 +117,8 @@ module.exports =
       'flash_project_deleted': 'The study has been deleted!',
       'flash_program_open': 'This study is open to the public.',
       'flash_program_closed': 'This study is made invisible to uninvited participants.',
+      'flash_program_run': 'This study is running and accepting new participants',
+      'flash_program_archive': 'This study is not running and is not accepting new participants',
       'flash_give_name': 'Give this study a name.',
       'flash_logged_out': 'You are now logged out!',
       'flash_must_be_logged': 'You must be logged in to do that!',
@@ -315,6 +317,8 @@ module.exports =
         (read more about integration with Sona Systems and other external participant services <a target='_blank' href="/docs/project#integration">here</a>).
         `,
       'enterUrlPlaceholder': 'Enter the URL',
+      'projectPublic': 'Public',
+      'projectRunning': 'Data collection',
       },
 
       'constructor': {
@@ -749,7 +753,7 @@ module.exports =
       },
 
       'studies': {
-        'no_tests_in_study': 'There are no publicly available tasks in this study.',
+        'no_tests_in_study': 'There are no tasks in this study.',
         'created': 'Created',
       },
 

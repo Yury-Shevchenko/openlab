@@ -6,21 +6,22 @@ block content
   .inner
 
     h2= project.name
-    if(!user)
-      a(href=`/code/${project.name}/?generate=true`)
-        .button(style="width: fit-content;")=`${layout.participate}` 
+    if(project.isRunning)
+      if(!user)
+        a(href=`/code/${project.name}/?generate=true`)
+          .button(style="width: fit-content;")=`${layout.participate}` 
     p
     .card 
       if(author && (author.name || author.institute))   
         .reviews
           .review
             .review__header
+              p= author.institute
               .review__author
                 p= author.name
-              p= author.institute
               p= `${l.created} ${h.moment(project.created).locale(language).fromNow()}`
-            .review__header
-              p= project.description
+        
+        p !{project.description}
         
       p
       if(tests && tests.length > 0)

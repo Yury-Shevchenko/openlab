@@ -146,21 +146,21 @@ testSchema.index({
   slug: 'text',
 });
 
-//pre-save validation to make sure that the test slug is unique
+// pre-save validation to make sure that the test slug is unique
 testSchema.pre('save', async function(next){
   if (!this.isModified('name') || this.slug){
     next();//skip it
     return;//stop this function
   };
   this.slug = slug(this.name);
-  //find other stores with the same slug
+  //find other tests with the same slug
   const slugRegEx = new RegExp(`^(${this.slug})((-[0-9]*$)?)$`, 'i');//regular expression
   const testsWithSlug = await this.constructor.find({ slug: slugRegEx });
   if(testsWithSlug.length){
     this.slug = `${this.slug}-${testsWithSlug.length + 1}`;
   }
   next();
-  //TODO make more resilient so slugs are unique
+  // TODO make more resilient so slugs are unique
 });
 
 //define static function

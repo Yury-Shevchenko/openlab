@@ -116,6 +116,8 @@ module.exports = {
     'flash_project_deleted': 'Die Studie wird gelöscht!',
     'flash_program_open': 'Die Studie ist öffentlich zugänglich.',
     'flash_program_closed': 'Die Studie wird für nicht eingeladene Teilnehmer unsichtbar gemacht.',
+    'flash_program_run': 'Diese Studie läuft und nimmt neue Teilnehmer an.',
+    'flash_program_archive': 'Diese Studie läuft nicht und nimmt keine neuen Teilnehmer an.',
     'flash_give_name' : 'Geben Sie der Studie einen Namen',
     'flash_logged_out' : 'Sie sind jetzt abgemeldet!',
     'flash_must_be_logged': 'Sie müssen eingeloggt sein, um das zu tun!',
@@ -313,6 +315,8 @@ module.exports = {
         (lesen Sie mehr über die Integration mit Sona Systems und anderen externen Teilnehmerdiensten <a target='_blank' href="/docs/project#integration">hier</a>).
       `,
       'enterUrlPlaceholder': 'Geben Sie die URL ein',
+      'projectPublic': 'Öffentlich',
+      'projectRunning': 'Datenerfassung',
     },
 
     'constructor': {
@@ -749,7 +753,7 @@ module.exports = {
       },
 
       'studies': {
-        'no_tests_in_study': 'Es gibt keine öffentlich verfügbaren Tests in dieser Studie.',
+        'no_tests_in_study': 'Es gibt keine Tests in dieser Studie.',
         'created': 'Erstellt',
       },
 

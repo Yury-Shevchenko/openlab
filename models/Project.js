@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
+const slug = require('slugs');
 
 const projectSchema = new mongoose.Schema({
   created: {
@@ -13,6 +14,9 @@ const projectSchema = new mongoose.Schema({
   },
   members: [ {type : mongoose.Schema.ObjectId, ref: 'User' } ],
   name: {
+    type: String
+  },
+  slug: {
     type: String
   },
   description: {
@@ -39,7 +43,11 @@ const projectSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  currentlyActive  : Boolean,
+  currentlyActive: Boolean, // isPublic
+  isRunning: {
+    type: Boolean,
+    default: true
+  },
   tests            : [{ type : mongoose.Schema.ObjectId, ref: 'Test' }],
   invitations      : [{ email: String, token: String }],
   notifications    : [
@@ -129,12 +137,24 @@ projectSchema.index({
 });
 
 //pre-save validation to make sure that the project with the same name does not already exist
-projectSchema.pre('save', function(next){
+projectSchema.pre('save', async function(next){
+
+  // create slug
+  if(this.name !== '' && (!this.slug || this.isModified('name'))){
+    this.slug = slug(this.name);
+    const slugRegEx = new RegExp(`^(${this.slug})((-[0-9]*$)?)$`, 'i');//regular expression
+    const studiesWithSlug = await this.constructor.find({ slug: slugRegEx });
+    if(studiesWithSlug.length){
+      this.slug = `${this.slug}-${studiesWithSlug.length + 1}`;
+    }
+  }
+
   if (!this.isModified('name') || this.name === ''){
-    next();//skip it
+    next();// skip it
   };
+
   var self = this;
-  mongoose.models["Project"].findOne({name: self.name}, function(err, project){
+  mongoose.models["Project"].findOne({ name: self.name }, function(err, project){
     if(err){
       next(err);
     } else if(project){

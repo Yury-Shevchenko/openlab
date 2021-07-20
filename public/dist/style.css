@@ -2179,6 +2179,9 @@ i.yes:after {
   width: 58px;
   fill: white; }
 
+.toggle_name {
+  font-size: 1.3rem; }
+
 .project__hero {
   position: relative;
   padding: 20px 5px 20px 5px;

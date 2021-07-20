@@ -114,8 +114,10 @@ module.exports =
       'flash_cannot_delete':  'Проект не может быть удален. Проверьте написание названия проекта для подтверждения его удаления.',
       'flash_project_cannot_delete_because_results': 'Проект не может быть удален, так как в нем еще есть сохраненные результаты. Пожалуйста, сначала удалите результаты, чтобы убрать проект.',
       'flash_project_deleted': 'Проект удален!',
-      'flash_program_open': 'Программа открыта для участников',
-      'flash_program_closed': 'Программа скрыта от участников',
+      'flash_program_open': 'Это исследование находится в публичном доступе.',
+      'flash_program_closed': 'Это исследование доступно только по специальной ссылке.',
+      'flash_program_run': 'Это исследование сейчас активировано и доступно для новых участников.',
+      'flash_program_archive': 'Это исследование закрыто и не принимает новых участников.',
       'flash_give_name' : 'Дайте имя проекту',
       'flash_logged_out' : 'Вы вышли из вашего аккаунта!',
       'flash_must_be_logged': 'Вы должны войти в ваш аккаунт, чтобы открыть данную страницу.',
@@ -313,6 +315,8 @@ module.exports =
           (подробнее об интеграции с Sona Systems и другими сервисами <a target='_blank' href="/docs/project#integration">здесь</a>).
         `,
         'enterUrlPlaceholder': 'Введите URL',
+        'projectPublic': 'Публичный',
+        'projectRunning': 'Сбор данных',
       },
 
       'constructor': {
@@ -753,7 +757,7 @@ module.exports =
       },
 
       'studies': {
-        'no_tests_in_study': 'В этом проекте нет тестов, открытых для всех.',
+        'no_tests_in_study': 'В этом проекте нет тестов.',
         'created': 'Создан',
       },
 

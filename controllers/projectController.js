@@ -8,7 +8,7 @@ const Project = mongoose.model('Project');
 //show the user's projects
 exports.getUserProjects = async (req, res) => {
   const projects = await Project.find({creator: req.user._id}, {
-    name: 1, description: 1, members: 1, tests: 1, currentlyActive: 1, creator: 1
+    name: 1, description: 1, members: 1, tests: 1, currentlyActive: 1, creator: 1, slug: 1, isRunning: 1,
   });
   const limitSandbox = process.env.FREE_PLAN_PARTICIPANTS_LIMIT;
   const limitProf = process.env.PROF_PLAN_PARTICIPANTS_LIMIT;
@@ -197,10 +197,20 @@ exports.changeStatusProject = async (req, res) => {
   const limitProf = process.env.PROF_PLAN_PARTICIPANTS_LIMIT;
   const participantsNumber = project.participants.length;
   if ( project.currentlyActive || participantsNumber < limitSandbox || (participantsNumber < limitProf && req.user.subscription && Date.now() < req.user.subscription_expires * 1000) || (req.user.subscription && Date.now() < req.user.subscription_expires * 1000 && req.user.subscription_plan == 'laboratory')){
-    project.currentlyActive = !project.currentlyActive;
-    await project.save();
-    req.flash('success', `${req.params.action == 'on'? res.locals.layout.flash_program_open : res.locals.layout.flash_program_closed}`);
-    res.redirect('back');
+    if(req.params.action == 'on' || req.params.action == 'off'){
+      project.currentlyActive = !project.currentlyActive;
+      await project.save();
+      req.flash('success', `${req.params.action == 'on'? res.locals.layout.flash_program_open : res.locals.layout.flash_program_closed}`);
+      res.redirect('back');
+    }
+
+    if(req.params.action == 'run' || req.params.action == 'archive'){
+      project.isRunning = !project.isRunning;
+      await project.save();
+      req.flash('success', `${req.params.action == 'run'? res.locals.layout.flash_program_archive : res.locals.layout.flash_program_run}`);
+      res.redirect('back');
+    }
+
   } else {
     req.flash('error', `${res.locals.layout.flash_limit_of_participants_reached_1} ${project.name} ${res.locals.layout.flash_limit_of_participants_reached_2}`);
     res.redirect('back');
@@ -210,7 +220,7 @@ exports.changeStatusProject = async (req, res) => {
 exports.listPublicProjects = async(req, res) => {
   const study = req.query.study;
   const page = req.params.page || 1;
-  const limit = 20;
+  const limit = 100;
   const skip = (page * limit) - limit;
   const projectsPromise = Project
     .findAllPublic()
@@ -231,16 +241,22 @@ exports.listPublicProjects = async(req, res) => {
 exports.showProjectDescription = async(req, res) => {
   const project = await Project
     .findOne({
-      name: req.params.study,
-      currentlyActive: true,
+      _id: req.params.study,
     },{
-      name: 1, description: 1, currentlyActive: 1, tests: 1, creator: 1, created: 1,
+      name: 1,
+      description: 1,
+      currentlyActive: 1,
+      isRunning: 1,
+      tests: 1,
+      creator: 1,
+      created: 1,
     }
   );
   let author;
   if(project){
-    author = await User.findOne({_id: project.creator},{
-      name: 1, institute: 1
+    author = await User.findOne({ _id: project.creator },{
+      name: 1,
+      institute: 1
     });
   }
   let tests;
@@ -249,11 +265,11 @@ exports.showProjectDescription = async(req, res) => {
       .find({
         _id: { $in: project.tests},
         author: { $exists: true },
-        open: true
+        // open: true
       })
-      .select({author: 1, slug: 1, name: 1, description: 1, photo: 1})
+      .select({ author: 1, slug: 1, name: 1, description: 1, photo: 1 })
   }
-  res.render('study', {project, tests, author});
+  res.render('study', { project, tests, author });
 };
 
 exports.manageNotifications = async(req, res) => {
