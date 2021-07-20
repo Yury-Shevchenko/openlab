@@ -237,7 +237,7 @@ exports.transfer = (req, res) => {
 //show the tests created by the user
 exports.getMyTests = async (req, res) => {
   const page = req.params.page || 1;
-  const limit = 18;
+  const limit = 60;
   const skip = (page * limit) - limit;
   const testsPromise = Test
     .showMyTests(req.user._id)
@@ -258,7 +258,7 @@ exports.getMyTests = async (req, res) => {
 //show all tests
 exports.getAllTests = async (req, res) => {
   const page = req.params.page || 1;
-  const limit = 36;
+  const limit = 60;
   const skip = (page * limit) - limit;
   const tag = req.params.tag;
   const tagQuery = tag || { $exists: true };
@@ -410,7 +410,7 @@ exports.constructor = async (req, res) => {
         _id: { $in: project.tests },
         author: { $exists: true }
       })
-      .select({slug:1, name:1})
+      .select({ slug:1, name:1 })
     testsPromise = Test
       .find({
         $or:[
@@ -428,7 +428,8 @@ exports.constructor = async (req, res) => {
           }
         ]
       })
-      .select({author:1, slug:1, name:1, description: 1});
+      .select({ author:1, slug:1, name:1, description: 1 })
+      .sort({ slug: 1 });
     [tags, tests, unsortedProjectTests] = await Promise.all([ tagsPromise, testsPromise, projectTestsPromise ]);
     //order projectTests
     projectTests = unsortedProjectTests.sort( (a, b) => {

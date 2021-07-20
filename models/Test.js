@@ -86,7 +86,7 @@ testSchema.statics.showAllTests = function(userID, tagQuery) {
       production: '$$ROOT.production',
       json: { $cond: { if: '$$ROOT.json', then: true, else: false } },
     }},
-    { $sort: { position: 1 } }
+    { $sort: { slug: 1 } }
   ]);
 };
 
@@ -104,7 +104,7 @@ testSchema.statics.showMyTests = function(userID) {
       production: '$$ROOT.production',
       json: { $cond: { if: '$$ROOT.json', then: true, else: false } },
     }},
-    { $sort: { position: 1 } }
+    { $sort: { slug: 1 } }
   ]);
 };
 
