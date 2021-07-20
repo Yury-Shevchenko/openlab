@@ -69,6 +69,23 @@ testSchema.statics.getTests = function(tests) {
   ]);
 };
 
+testSchema.statics.findAllPublic = function() {
+  return this.aggregate([
+    { $match: { open: true, author: { $exists: true } } },
+    { $lookup: {
+        from: 'users', localField: 'creator', foreignField: '_id', as: 'author'}
+    },
+    { $project: {
+      name: '$$ROOT.name',
+      insensitive: { '$toLower': '$$ROOT.name' },
+      slug: '$$ROOT.slug',
+      description: '$$ROOT.description',
+      photo: '$$ROOT.photo',
+    }},
+    { $sort: { insensitive: 1 } }
+  ]);
+};
+
 testSchema.statics.showAllTests = function(userID, tagQuery) {
   return this.aggregate([
     { $match: { $or: [

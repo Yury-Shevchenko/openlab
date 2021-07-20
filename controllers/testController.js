@@ -924,16 +924,10 @@ exports.listPublicTests = async(req, res) => {
   const limit = 60;
   const skip = (page * limit) - limit;
   const testsPromise = Test
-    .find({
-      open: true,
-      author: { $exists: true }
-    },{
-      name: 1, slug: 1, description: 1, author: 1, photo: 1, open: 1,
-    })
-    .sort({ slug: 1 })
+    .findAllPublic()
     .skip(skip)
     .limit(limit);
-  const countPromise = Test.where({open: true, author: { $exists: true }}).countDocuments();
+  const countPromise = Test.where({ open: true, author: { $exists: true }}).countDocuments();
   const [tests, count] = await Promise.all([ testsPromise, countPromise ]);
   const pages = Math.ceil(count / limit);
   if(!tests.length && skip){
