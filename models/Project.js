@@ -113,17 +113,12 @@ projectSchema.statics.findAllPublic = function() {
 
 projectSchema.statics.debugProjects = function() {
   return this.aggregate([
-    // { $match: { currentlyActive: true } },
-    { $lookup: {
-        from: 'users', localField: '_id', foreignField: 'participantInProject', as: 'participant'}
-    },
     { $project: {
       name: '$$ROOT.name',
       description: '$$ROOT.description',
       created: '$$ROOT.created',
       author_name: '$author.name',
       author_institute: '$author.institute',
-      participants: '$participant',
       members: '$$ROOT.members',
       tests: '$$ROOT.tests',
       currentlyActive: '$$ROOT.currentlyActive',
