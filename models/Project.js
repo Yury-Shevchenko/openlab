@@ -136,7 +136,7 @@ projectSchema.index({
 projectSchema.pre('save', async function(next){
 
   // create slug
-  if(this.name !== '' && (!this.slug || this.isModified('name'))){
+  if(this.name !== '' && typeof(this.name) !== 'undefined' && (!this.slug || this.isModified('name'))){
     this.slug = slug(this.name);
     const slugRegEx = new RegExp(`^(${this.slug})((-[0-9]*$)?)$`, 'i');//regular expression
     const studiesWithSlug = await this.constructor.find({ slug: slugRegEx });
