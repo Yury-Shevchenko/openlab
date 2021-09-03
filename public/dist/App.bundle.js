@@ -971,22 +971,22 @@ var _bling = __webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//take submit event
+// take submit event
 function ajaxTest(e) {
   var _this = this;
 
-  e.preventDefault(); //stop submitting the form
-  //console.log("Hearted");
+  e.preventDefault(); // stop submitting the form
+  // console.log("Hearted");
   _axios2.default.post(this.action).then(function (res) {
-    //console.log(res);
+    // console.log(res);
     var isAdded = _this.add.classList.toggle('heart__button--hearted');
-    //console.log(isAdded);
-    //$('.heart-count').textContent = res.data.tests.length;
+    // console.log(isAdded);
+    // $('.heart-count').textContent = res.data.tests.length;
     if (isAdded) {
       _this.add.classList.add('heart__button--float');
       _this.add.classList.remove('heart__button--float');
-      //setTimeout(() => this.add.classList.remove('heart__button--float'), 500);
-    };
+      // setTimeout(() => this.add.classList.remove('heart__button--float'), 500);
+    }
   }).then(function (out) {
     if (e.srcElement) {
       window.location.href = e.srcElement.baseURI;
@@ -994,7 +994,7 @@ function ajaxTest(e) {
       window.location.href = e.target.baseURI;
     }
   }).catch(console.error);
-};
+}
 
 exports.default = ajaxTest;
 
@@ -1009,16 +1009,16 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 function autocomplete(input, latinput, lnginput) {
-  //console.log(input, latinput, lnginput);
+  // console.log(input, latinput, lnginput);
   if (!input) return;
   var dropdown = new google.maps.places.Autocomplete(input);
   dropdown.addListener('place_changed', function () {
     var place = dropdown.getPlace();
-    //console.log(place);
+    // console.log(place);
     latinput.value = place.geometry.location.lat();
     lnginput.value = place.geometry.location.lng();
   });
-  //do not submit the form on hitting the enter
+  // do not submit the form on hitting the enter
   input.on('keydown', function (e) {
     if (e.keyCode === 13) e.preventDefault();
   });
@@ -1061,11 +1061,11 @@ function typeAhead(search) {
 
   searchInput.on('input', function () {
     if (!this.value) {
-      //if there is no value to search
+      // if there is no value to search
       searchResults.style.display = 'none';
       return;
     }
-    //show the search results
+    // show the search results
     searchResults.style.display = 'block';
     searchResults.innerHTML = '';
 
@@ -1074,15 +1074,15 @@ function typeAhead(search) {
         searchResults.innerHTML = _dompurify2.default.sanitize(searchResultsHTML(res.data));
         return;
       }
-      //searchResults.innerHTML = dompurify.sanitize(`<div class="search__result"> No results for <strong>${this.value}</strong> found</div>`);
+      // searchResults.innerHTML = dompurify.sanitize(`<div class="search__result"> No results for <strong>${this.value}</strong> found</div>`);
       searchResults.innerHTML = _dompurify2.default.sanitize('<div class="search__result"> ... </div>');
     }).catch(function (err) {
       console.error(err);
     });
   });
-  //handle keyboard inputs
+  // handle keyboard inputs
   searchInput.on('keyup', function (e) {
-    //skip on other keys
+    // skip on other keys
     if (![38, 40, 13].includes(e.keyCode)) {
       return;
     }
@@ -1095,7 +1095,7 @@ function typeAhead(search) {
     } else if (e.keyCode === 40) {
       next = items[0];
     } else if (e.keyCode === 38 && current) {
-      next = current.previousElementSibling || items[items.length - 1]; //get the last element
+      next = current.previousElementSibling || items[items.length - 1]; // get the last element
     } else if (e.keyCode === 38) {
       next = items[items.length - 1];
     } else if (e.keyCode === 13 && current.href) {
@@ -1107,7 +1107,7 @@ function typeAhead(search) {
     }
     next.classList.add(activeClass);
   });
-};
+}
 
 exports.default = typeAhead;
 

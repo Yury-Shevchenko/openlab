@@ -1,45 +1,49 @@
 const mongoose = require('mongoose');
+
 mongoose.Promise = global.Promise;
 
 const paramSchema = new mongoose.Schema({
   created: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   project: {
     type: mongoose.Schema.ObjectId,
     ref: 'Project',
-    required: 'You must supply a project!'
+    required: 'You must supply a project!',
   },
   test: {
     type: mongoose.Schema.ObjectId,
     ref: 'Test',
-    required: 'You must supply a test!'
+    required: 'You must supply a test!',
   },
   slug: String,
   language: {
     type: String,
-    default: "german"
+    default: 'german',
   },
-  parameters: mongoose.Schema.Types.Mixed
+  parameters: mongoose.Schema.Types.Mixed,
 });
 
-//method to get researchers
-paramSchema.statics.getParameters = function(feature) {
+// method to get researchers
+paramSchema.statics.getParameters = function (feature) {
   return this.aggregate([
-    { $match: {
-      slug : feature.slug,
-      language: feature.language,
-      project: mongoose.Types.ObjectId(feature.project)
-    } },
-    { $project: {
-        parameters: '$$ROOT.parameters'
-      }
-    }
+    {
+      $match: {
+        slug: feature.slug,
+        language: feature.language,
+        project: mongoose.Types.ObjectId(feature.project),
+      },
+    },
+    {
+      $project: {
+        parameters: '$$ROOT.parameters',
+      },
+    },
   ]);
 };
 
-//define indexes for the faster search
+// define indexes for the faster search
 paramSchema.index({
   slug: 1,
   language: 1,

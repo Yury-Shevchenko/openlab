@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const Test = mongoose.model('Test');
-const Param = mongoose.model('Param');
 const User = mongoose.model('User');
 const Result = mongoose.model('Result');
 const Project = mongoose.model('Project');

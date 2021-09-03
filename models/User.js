@@ -1,155 +1,165 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt-nodejs');
-const Schema = mongoose.Schema;
+
+const { Schema } = mongoose;
 mongoose.Promise = global.Promise;
-const md5 = require('md5');
-const validator = require('validator');
 
-const userSchema = new Schema({
-
-    local            : {
-        password     : String
+const userSchema = new Schema(
+  {
+    local: {
+      password: String,
     },
-    code             : {
-        id           : String,
-        password     : String
+    code: {
+      id: String,
+      password: String,
     },
-    facebook         : {
-        id           : String,
-        token        : String,
-        name         : String,
-        email        : String
+    facebook: {
+      id: String,
+      token: String,
+      name: String,
+      email: String,
     },
-    github          : {
-        id           : String,
-        token        : String,
-        name         : String,
-        email        : String
+    github: {
+      id: String,
+      token: String,
+      name: String,
+      email: String,
     },
-    google           : {
-        id           : String,
-        token        : String,
-        name         : String,
-        email        : String
+    google: {
+      id: String,
+      token: String,
+      name: String,
+      email: String,
     },
-    name             : String,
-    email            : String,
-    openLabId        : String,
-    created          : {
-        type         : Date,
-        default      : Date.now
+    name: String,
+    email: String,
+    openLabId: String,
+    created: {
+      type: Date,
+      default: Date.now,
     },
     resetPasswordToken: String,
     resetPasswordExpires: Date,
     confirmEmailToken: String,
     confirmEmailExpires: Date,
     emailIsConfirmed: {
-        type          : Boolean,
-        default       : false
+      type: Boolean,
+      default: false,
     },
-    level            : Number, //The normal user is 1, the admin is 11, the Superadmin is 101
-    language         : {
-        type         : String,
-        default      : "english"
+    level: Number, // The normal user is 1, the admin is 11, the Superadmin is 101
+    language: {
+      type: String,
+      default: 'english',
     },
     participantInProject: {
-        type         : mongoose.Schema.ObjectId,
-        ref          : 'Project'
+      type: mongoose.Schema.ObjectId,
+      ref: 'Project',
     },
-    participant_projects: [
-      {type : mongoose.Schema.ObjectId, ref : 'Project'}
-    ],
+    participant_projects: [{ type: mongoose.Schema.ObjectId, ref: 'Project' }],
     project: {
-      _id : {type : mongoose.Schema.ObjectId, ref : 'Project'},
-      name : String
+      _id: { type: mongoose.Schema.ObjectId, ref: 'Project' },
+      name: String,
     },
-    subscription          : Boolean,
-    subscription_id       : String,
-    subscription_status   : String,
-    subscription_expires  : Number,
-    subscription_plan     : String,
-    subscription_period   : String,
-    institute             : String,
-    participantHistory    : [
-        {
-          project_id      : {type : mongoose.Schema.ObjectId, ref : 'Project'},
-          project_name    : String,
-          individual_code : String,
-        }
+    subscription: Boolean,
+    subscription_id: String,
+    subscription_status: String,
+    subscription_expires: Number,
+    subscription_plan: String,
+    subscription_period: String,
+    institute: String,
+    participantHistory: [
+      {
+        project_id: { type: mongoose.Schema.ObjectId, ref: 'Project' },
+        project_name: String,
+        individual_code: String,
+      },
     ],
-    notifications         : [
-        {
-          endpoint        : String,
-          keys            : {
-            auth          : String,
-            p256dh        : String,
-          },
-          date            : { type: Date, default: Date.now },
-        }
+    notifications: [
+      {
+        endpoint: String,
+        keys: {
+          auth: String,
+          p256dh: String,
+        },
+        date: { type: Date, default: Date.now },
+      },
     ],
-    parameters            : [{
-          project_id      : { type : mongoose.Schema.ObjectId, ref : 'Project' },
-          studyParameters : [{
+    parameters: [
+      {
+        project_id: { type: mongoose.Schema.ObjectId, ref: 'Project' },
+        studyParameters: [
+          {
             mode: String,
             name: String,
             template: JSON,
             sample: JSON,
             content: String,
-          }],
-    }],
-}, { toJSON: { virtuals: true } });
+          },
+        ],
+      },
+    ],
+  },
+  { toJSON: { virtuals: true } }
+);
 
-//methods
+// methods
 // generating a hash
-userSchema.methods.generateHash = function(password) {
-    return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+userSchema.methods.generateHash = function (password) {
+  return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 };
 
 // checking if password is valid
-userSchema.methods.validPassword = function(password) {
-    return bcrypt.compareSync(password, this.local.password);
+userSchema.methods.validPassword = function (password) {
+  return bcrypt.compareSync(password, this.local.password);
 };
 
 // checking if code is valid
-userSchema.methods.validCode = function(password) {
-    return bcrypt.compareSync(password, this.code.password);
+userSchema.methods.validCode = function (password) {
+  return bcrypt.compareSync(password, this.code.password);
 };
 
-//get users of a particular project (for /data)
-userSchema.statics.getUsersOfProject = function(project) {
+// get users of a particular project (for /data)
+userSchema.statics.getUsersOfProject = function (project) {
   return this.aggregate([
-    { $match: { 'level' : { $lt: 10 }} },//filter only users
-    { $match: {
-      $or: [
-        { 'participant_projects' : { $eq: project } }, //filter users in the past
-        { 'participantInProject' : { $eq: project } }//filter current users
-        ]
-      }
+    { $match: { level: { $lt: 10 } } }, // filter only users
+    {
+      $match: {
+        $or: [
+          { participant_projects: { $eq: project } }, // filter users in the past
+          { participantInProject: { $eq: project } }, // filter current users
+        ],
+      },
     },
-    { $lookup:
-      {
+    {
+      $lookup: {
         from: 'results',
         let: { current_project: project, current_author: '$_id' },
         pipeline: [
-          { $match:
-            { $expr:
-              { $and:
-                [
+          {
+            $match: {
+              $expr: {
+                $and: [
                   { $eq: ['$project', '$$current_project'] },
-                  { $eq: ['$author', '$$current_author' ]}
-                ]
-              }
-            }
+                  { $eq: ['$author', '$$current_author'] },
+                ],
+              },
+            },
           },
-          {$project: {project: 1, test: 1, storage: 1,
-            deleteRequests: { $cond: ['$deleteRequest', 1, 0] },
-            dataRequests: { $cond: ['$dataRequest', 1, 0] },
-          }},
+          {
+            $project: {
+              project: 1,
+              test: 1,
+              storage: 1,
+              deleteRequests: { $cond: ['$deleteRequest', 1, 0] },
+              dataRequests: { $cond: ['$dataRequest', 1, 0] },
+            },
+          },
         ],
-        as: 'results'
-      }
+        as: 'results',
+      },
     },
-    { $project: {
+    {
+      $project: {
         name: '$$ROOT.name',
         level: '$$ROOT.level',
         participant_id: '$$ROOT.openLabId',
@@ -158,9 +168,7 @@ userSchema.statics.getUsersOfProject = function(project) {
         language: '$$ROOT.language',
         participantInProject: '$$ROOT.participantInProject',
         confirmationCodes: '$$ROOT.participantHistory',
-        numberTests: {$size:
-          { $setUnion: '$results.test' }
-        },
+        numberTests: { $size: { $setUnion: '$results.test' } },
         numberDeleteRequests: { $sum: '$results.deleteRequests' },
         numberDataRequests: { $sum: '$results.dataRequests' },
         notifications: '$$ROOT.notifications',
@@ -168,28 +176,29 @@ userSchema.statics.getUsersOfProject = function(project) {
         parameters: {
           $filter: {
             input: '$$ROOT.parameters',
-            as: "params",
+            as: 'params',
             cond: {
-              $eq: [ "$$params.project_id", project]
-            }
-          }}
-      }
+              $eq: ['$$params.project_id', project],
+            },
+          },
+        },
+      },
     },
-    { $sort : {identity: 1}}, //from highest to lowest
+    { $sort: { identity: 1 } }, // from highest to lowest
   ]);
 };
 
-//pre-save validation to make sure that the email does not already exist
-userSchema.pre('save', function(next){
-  if (!this.isModified('email') || this.email === ''){
-    next();//skip it
-  };
-  var self = this;
-  mongoose.models["User"].findOne({email: self.email}, function(err, user){
-    if(err){
+// pre-save validation to make sure that the email does not already exist
+userSchema.pre('save', function (next) {
+  if (!this.isModified('email') || this.email === '') {
+    next(); // skip it
+  }
+  const self = this;
+  mongoose.models.User.findOne({ email: self.email }, function (err, user) {
+    if (err) {
       next(err);
-    } else if(user){
-      self.invalidate("email", "This email already exists");
+    } else if (user) {
+      self.invalidate('email', 'This email already exists');
       next(new Error('This email already exists'));
     } else {
       next();
@@ -197,35 +206,45 @@ userSchema.pre('save', function(next){
   });
 });
 
-//method to get users with the data about tests that they have created (can be used for administration)
-userSchema.statics.getUsersTests = function() {
+// method to get users with the data about tests that they have created (can be used for administration)
+userSchema.statics.getUsersTests = function () {
   return this.aggregate([
-    { $lookup: {
-      from: 'tests', localField: '_id', foreignField: 'author', as: 'tests'
-      }
+    {
+      $lookup: {
+        from: 'tests',
+        localField: '_id',
+        foreignField: 'author',
+        as: 'tests',
+      },
     },
-    { $project: {
-      name: '$$ROOT.name',
-      level: '$$ROOT.level',
-      tests: '$$ROOT.tests'
-      }
-    }
+    {
+      $project: {
+        name: '$$ROOT.name',
+        level: '$$ROOT.level',
+        tests: '$$ROOT.tests',
+      },
+    },
   ]);
 };
 
-//method to get users
-userSchema.statics.getUsers = function() {
+// method to get users
+userSchema.statics.getUsers = function () {
   return this.aggregate([
-    //lookup users and populate them
-    { $lookup: {
-      from: 'results', localField: '_id', foreignField: 'author', as: 'results'
-      }
+    // lookup users and populate them
+    {
+      $lookup: {
+        from: 'results',
+        localField: '_id',
+        foreignField: 'author',
+        as: 'results',
+      },
     },
-    //filter where at least one item in results exists (users without results will be filtered out)
-    { $match: { 'level' : { $lt: 10 }} },//filter only users
-    //add the average field ($addField)
-    { $project: {
-      //list variables that are needed
+    // filter where at least one item in results exists (users without results will be filtered out)
+    { $match: { level: { $lt: 10 } } }, // filter only users
+    // add the average field ($addField)
+    {
+      $project: {
+        // list variables that are needed
         name: '$$ROOT.name',
         level: '$$ROOT.level',
         identity: '$$ROOT.identity',
@@ -233,22 +252,21 @@ userSchema.statics.getUsers = function() {
         language: '$$ROOT.language',
         project: '$$ROOT.project',
         projectidentity: '$$ROOT.projectidentity',
-        averageRating: {$avg: '$results.rating'},
-        numberTests: {$size:
-          { $setUnion: '$results.text' }
-        }//calculate the size of the array which is the set union of all taken tests
-      }
+        averageRating: { $avg: '$results.rating' },
+        numberTests: { $size: { $setUnion: '$results.text' } }, // calculate the size of the array which is the set union of all taken tests
+      },
     },
-    //sort it by new field
-    { $sort : {identity: 1}} //from highest to lowest
+    // sort it by new field
+    { $sort: { identity: 1 } }, // from highest to lowest
   ]);
 };
 
-//method to get researchers
-userSchema.statics.getResearchers = function() {
+// method to get researchers
+userSchema.statics.getResearchers = function () {
   return this.aggregate([
-    { $match: { 'level' : { $gt: 10 }} }, // filter only researchers
-    { $project: {
+    { $match: { level: { $gt: 10 } } }, // filter only researchers
+    {
+      $project: {
         email: '$$ROOT.email',
         participant_id: '$$ROOT.openLabId',
         name: '$$ROOT.name',
@@ -264,57 +282,60 @@ userSchema.statics.getResearchers = function() {
         subscription_plan: '$$ROOT.subscription_plan',
         subscription_status: '$$ROOT.subscription_status',
         emailIsConfirmed: '$$ROOT.emailIsConfirmed',
-      }
+      },
     },
-    { $sort : {identity: 1}} // from highest to lowest
+    { $sort: { identity: 1 } }, // from highest to lowest
   ]);
 };
 
-//the method for tp ranking list, return only general information about users
-userSchema.statics.getTopUsers = function(project_id) {
+// the method for tp ranking list, return only general information about users
+userSchema.statics.getTopUsers = function (project_id) {
   return this.aggregate([
-    { $lookup: {
-      from: 'results', localField: '_id', foreignField: 'author', as: 'results'
-      }
+    {
+      $lookup: {
+        from: 'results',
+        localField: '_id',
+        foreignField: 'author',
+        as: 'results',
+      },
     },
-    { $match: { 'projectidentity' : { $eq: project_id }} },//filter only users
-    { $match: { 'results.0' : { $exists: true }} },
-    { $match: { 'level' : { $lt: 10 }} },//filter only users
-    { $project: {
-      //list variables that are needed
+    { $match: { projectidentity: { $eq: project_id } } }, // filter only users
+    { $match: { 'results.0': { $exists: true } } },
+    { $match: { level: { $lt: 10 } } }, // filter only users
+    {
+      $project: {
+        // list variables that are needed
         name: '$$ROOT.name',
         level: '$$ROOT.level',
-        averageRating: {$sum: '$results.rating'},//to sum all ratings from all tasks
-        numberTests: {$size:
-          { $setUnion: '$results.text' }
-        }//calculate the size of the array which is the set union of all taken tests
-      }
+        averageRating: { $sum: '$results.rating' }, // to sum all ratings from all tasks
+        numberTests: { $size: { $setUnion: '$results.text' } }, // calculate the size of the array which is the set union of all taken tests
+      },
     },
-    //sort it by new field
-    { $sort : {averageRating: -1}}, //from highest to lowest
+    // sort it by new field
+    { $sort: { averageRating: -1 } }, // from highest to lowest
   ]);
 };
 
-//find projects which user has created
+// find projects which user has created
 userSchema.virtual('projects', {
-  ref: 'Project',//what model to link
-  localField: '_id',//which field in the current model Test
-  foreignField: 'creator',//should match field in the other model Result
-  justOne: false
+  ref: 'Project', // what model to link
+  localField: '_id', // which field in the current model Test
+  foreignField: 'creator', // should match field in the other model Result
+  justOne: false,
 });
 
 userSchema.virtual('invitedprojects', {
-  ref: 'Project',//what model to link
-  localField: '_id',//which field in the current model Test
-  foreignField: 'members',//should match field in the other model Result
-  justOne: false
+  ref: 'Project', // what model to link
+  localField: '_id', // which field in the current model Test
+  foreignField: 'members', // should match field in the other model Result
+  justOne: false,
 });
 
-function autopopulate(next){
-  this.populate({path: 'projects', select: 'creator name'});
-  this.populate({path: 'invitedprojects', select: 'members creator name'});
+function autopopulate(next) {
+  this.populate({ path: 'projects', select: 'creator name' });
+  this.populate({ path: 'invitedprojects', select: 'members creator name' });
   next();
-};
+}
 
 userSchema.pre('find', autopopulate);
 userSchema.pre('findOne', autopopulate);
