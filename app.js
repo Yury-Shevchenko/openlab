@@ -27,12 +27,6 @@ app.set('view engine', 'pug'); // we use the engine pug, mustache or EJS work gr
 // serves up static files from the public folder. Anything in public/ will just be served up as the file it is
 app.use(express.static('public'));
 
-app.post(
-  '/subscription/webhook',
-  bodyParser.raw({ type: '*/*' }),
-  userController.webhook
-);
-
 // populates req.cookies with any cookies that came along with the request
 app.use(cookieParser());
 

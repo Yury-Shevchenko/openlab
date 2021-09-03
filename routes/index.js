@@ -10,7 +10,6 @@ const testController = require('../controllers/testController');
 const resultController = require('../controllers/resultController');
 const paramController = require('../controllers/paramController');
 const projectController = require('../controllers/projectController');
-// const jobController  = require('../controllers/jobController');
 
 // home page
 router.get('/', testController.homePage);
@@ -634,11 +633,6 @@ router.get(
   authController.isAdminLoggedIn,
   catchErrors(projectController.manageNotifications)
 );
-// router.post('/createschedulenotification', authController.isAdminLoggedIn, catchErrors(jobController.createScheduleNotification));
-// router.post('/createintervalnotification', authController.isAdminLoggedIn, catchErrors(jobController.createIntervalNotification));
-// router.post('/createindividualnotification', authController.isAdminLoggedIn, catchErrors(jobController.createIndividualNotification));
-// router.post('/deleteprojectnotifications', authController.isAdminLoggedIn, catchErrors(jobController.deleteProjectNotifications));
-// router.get('/removenotification/:id', authController.isAdminLoggedIn, catchErrors(jobController.removeNotificationByID));
 
 // edit the project information about the tasks
 router.post(
@@ -646,10 +640,6 @@ router.post(
   authController.isLoggedIn,
   catchErrors(projectController.editTaskInformation)
 );
-
-// user-side notifications
-// router.post('/registernotification', authController.isLoggedIn, catchErrors(jobController.registerPushNotification));
-// router.post('/unregisternotification', authController.isLoggedIn, catchErrors(jobController.unsubscribePushNotification));
 
 router.get(
   '/debugprojects',

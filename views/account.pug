@@ -8,8 +8,6 @@ block content
       nav.nav
         .nav__section.nav__section--pages
           li.nav__item: a.nav__link(href="/account", class=(currentPath.startsWith('/account') ? 'nav__link--active' : '')) #{layout.account}
-          if user.level > 10
-            li.nav__item: a.nav__link(href="/subscribe", class=(currentPath.startsWith('/subscribe') ? 'nav__link--active' : '')) #{layout.subscription}
     p
 
     h2 #{l.title}

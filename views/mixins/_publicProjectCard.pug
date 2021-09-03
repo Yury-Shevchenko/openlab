@@ -25,10 +25,3 @@ mixin publicProjectCard(project = {})
                 a(href= `/studies/?study=${project.name}`) 
                  .button()=`${layout.participate}`
               
-          //- else
-          //-   a(href=`/code/${project.name}/?generate=true`)
-          //-     .button()=`${layout.participate}`
-        
-        //- a(href= (user ? (user.participantInProject ? `/studies/?study=${project.name}` : `/testing/?study=${project.name}` )  : `/studies/${project.name}`) ) 
-        //-   p More information
-        //- 

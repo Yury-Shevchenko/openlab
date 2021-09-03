@@ -72,8 +72,4 @@ block content
       else
         p !{l.message_create_project}
 
-    //- check the subscription to show the form
-    if user.subscription && (Date.now() < user.subscription_expires * 1000)
-      +invitationForm(project)
-
-    //- pre= h.dump(project)
+    +invitationForm(project)
