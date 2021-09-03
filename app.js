@@ -9,23 +9,13 @@ const passport = require('passport');
 const promisify = require('es6-promisify');
 const flash = require('connect-flash');
 const expressValidator = require('express-validator');
+const crypto = require('crypto');
 const routes = require('./routes/index');
 const helpers = require('./helpers');
 const errorHandlers = require('./handlers/errorHandlers');
 require('./handlers/passport');
 const language = require('./config/lang');
-const userController  = require('./controllers/userController');
-const crypto = require('crypto');
-const Agenda = require('agenda');
-const Agendash = require('agendash');
-
-//test lsl
-// const lsl = require('node-lsl');
-// const streams = lsl.resolve_byprop('type', 'EEG');
-// let streamInlet = new lsl.StreamInlet(streams[0]);
-// streamInlet.streamChunks(12, 1000);
-// streamInlet.on('chunk', console.log);
-// streamInlet.on('closed', () => console.log('LSL inlet closed'));
+const userController = require('./controllers/userController');
 
 // create express app
 const app = express();
@@ -35,10 +25,13 @@ app.set('views', path.join(__dirname, 'views')); // this is the folder where we 
 app.set('view engine', 'pug'); // we use the engine pug, mustache or EJS work great too
 
 // serves up static files from the public folder. Anything in public/ will just be served up as the file it is
-//app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static('public'));
 
-app.post('/subscription/webhook', bodyParser.raw({ type: '*/*' }), userController.webhook);
+app.post(
+  '/subscription/webhook',
+  bodyParser.raw({ type: '*/*' }),
+  userController.webhook
+);
 
 // populates req.cookies with any cookies that came along with the request
 app.use(cookieParser());
@@ -52,13 +45,15 @@ app.use(expressValidator());
 
 // Sessions allow us to store data on visitors from request to request
 // This keeps users logged in and allows us to send flash messages
-app.use(session({
-  secret: process.env.SECRET,
-  key: process.env.KEY,
-  resave: false,
-  saveUninitialized: false,
-  store: new MongoStore({ mongooseConnection: mongoose.connection })
-}));
+app.use(
+  session({
+    secret: process.env.SECRET,
+    key: process.env.KEY,
+    resave: false,
+    saveUninitialized: false,
+    store: new MongoStore({ mongooseConnection: mongoose.connection }),
+  })
+);
 
 // Passport JS is what we use to handle our logins
 app.use(passport.initialize());
@@ -69,9 +64,12 @@ app.use(flash());
 
 // pass variables to our templates + all requests
 app.use((req, res, next) => {
-  //Content security policy
+  // Content security policy
   const noncevalue = crypto.randomBytes(20).toString('hex');
-  res.setHeader('Content-Security-Policy', `worker-src http://localhost https://open-lab.online; script-src https://labjs-beta.netlify.app https://labjs-beta.netlify.com https://labjs.felixhenninger.com 'nonce-${noncevalue}' 'unsafe-eval' `);
+  res.setHeader(
+    'Content-Security-Policy',
+    `worker-src http://localhost https://open-lab.online; script-src https://labjs-beta.netlify.app https://labjs-beta.netlify.com https://labjs.felixhenninger.com 'nonce-${noncevalue}' 'unsafe-eval' `
+  );
   res.locals.noncevalue = noncevalue;
 
   res.locals.h = helpers;
@@ -79,51 +77,55 @@ app.use((req, res, next) => {
   res.locals.user = req.user || null;
   res.locals.currentPath = req.path;
   res.locals.visitor_language = req.session.visitor_language;
-  //console.log("languages:", req.headers['accept-language']);
 
-  const path = String(req.path).split('/')[1] || 'index';
-  if (res.locals.user != null && res.locals.user.language && language[res.locals.user.language]){
-    res.locals.l = language[res.locals.user.language][path] || language['english'][path];
-    res.locals.layout = language[res.locals.user.language]['layout'] || language['english']['layout'];
-    res.locals.language = res.locals.user.language.substring(0,2);
-    if(res.locals.language == 'ge'){res.locals.language = 'de'};
-  } else {
-    if (res.locals.visitor_language){
-      //console.log("languages:", res.locals.visitor_language);
-      const visitor_lang = res.locals.visitor_language;
-      res.locals.locale_language = visitor_lang || 'english';
-      res.locals.l = language[visitor_lang][path] || language['english'][path];
-      res.locals.layout = language[visitor_lang]['layout'] || language['english']['layout'];
-      res.locals.language = visitor_lang.substring(0,2);
-      if(res.locals.language == 'ge'){res.locals.language = 'de'};
-    } else {
-      if(req.headers && req.headers['accept-language']){
-        const lang = req.headers['accept-language'].slice(0,2);
-        if(lang == "de"){
-          res.locals.locale_language = 'german'
-          res.locals.l = language['german'][path];
-          res.locals.layout = language['german']['layout'];
-          res.locals.language = 'de';
-        } else if (lang  == "ru"){
-          res.locals.locale_language = 'russian'
-          res.locals.l = language['russian'][path];
-          res.locals.layout = language['russian']['layout'];
-          res.locals.language = 'ru';
-        } else if (lang  == "fr"){
-          res.locals.locale_language = 'french'
-          res.locals.l = language['french'][path];
-          res.locals.layout = language['french']['layout'];
-          res.locals.language = 'fr';
-        } else {
-          res.locals.locale_language = 'english'
-          res.locals.l = language['english'][path];
-          res.locals.layout = language['english']['layout'];
-          res.locals.language = 'en';
-        }
-      }
+  const curPath = String(req.path).split('/')[1] || 'index';
+  if (
+    res.locals.user != null &&
+    res.locals.user.language &&
+    language[res.locals.user.language]
+  ) {
+    res.locals.l =
+      language[res.locals.user.language][curPath] || language.english[curPath];
+    res.locals.layout =
+      language[res.locals.user.language].layout || language.english.layout;
+    res.locals.language = res.locals.user.language.substring(0, 2);
+    if (res.locals.language == 'ge') {
+      res.locals.language = 'de';
     }
-  };
-  //console.log(res.locals);
+  } else if (res.locals.visitor_language) {
+    const visitor_lang = res.locals.visitor_language;
+    res.locals.locale_language = visitor_lang || 'english';
+    res.locals.l = language[visitor_lang][curPath] || language.english[curPath];
+    res.locals.layout =
+      language[visitor_lang].layout || language.english.layout;
+    res.locals.language = visitor_lang.substring(0, 2);
+    if (res.locals.language == 'ge') {
+      res.locals.language = 'de';
+    }
+  } else if (req.headers && req.headers['accept-language']) {
+    const lang = req.headers['accept-language'].slice(0, 2);
+    if (lang == 'de') {
+      res.locals.locale_language = 'german';
+      res.locals.l = language.german[curPath];
+      res.locals.layout = language.german.layout;
+      res.locals.language = 'de';
+    } else if (lang == 'ru') {
+      res.locals.locale_language = 'russian';
+      res.locals.l = language.russian[curPath];
+      res.locals.layout = language.russian.layout;
+      res.locals.language = 'ru';
+    } else if (lang == 'fr') {
+      res.locals.locale_language = 'french';
+      res.locals.l = language.french[curPath];
+      res.locals.layout = language.french.layout;
+      res.locals.language = 'fr';
+    } else {
+      res.locals.locale_language = 'english';
+      res.locals.l = language.english[curPath];
+      res.locals.layout = language.english.layout;
+      res.locals.language = 'en';
+    }
+  }
   next();
 });
 
@@ -133,8 +135,7 @@ app.use((req, res, next) => {
   next();
 });
 
-
-// After allllll that above middleware, we finally handle our own routes!
+// Handle routes
 app.use('/', routes);
 
 // If that above routes didnt work, we 404 them and forward to error handler
