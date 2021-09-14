@@ -29,11 +29,3 @@ If you have problems with the application and seek support, please feel free to 
 
 ## License
 MIT
-
-
-
-
-
-## Support
-
-If you have problems with the application and seek support, please feel free to join our [Samply Slack chat](https://join.slack.com/t/samply-workspace/shared_invite/zt-e085hyyv-pFczGQFnVCA2w8lkcTmk6w).
