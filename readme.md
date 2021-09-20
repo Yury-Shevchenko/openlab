@@ -4,10 +4,10 @@ Open Lab makes lab.js study hosting easy and provides a secure foundation for da
 
 ## Features
 
-* Hosting your study created in lab.js: There is no need to set up your own server: you can use existing templates or upload a study from lab.js with just one click.
-* Data security: HTTPS, user authentication system, personal invitations
-* Participant management system: Track data collection in real time
-* Collaboration with colleagues: Share studies and tasks
+* Hosting your study created in lab.js. There is no need to set up your own server: you can use existing templates or upload a study from lab.js with just one click.
+* Data security: HTTPS, user authentication system, personal invitations.
+* Participant management system: Track data collection in real time.
+* Collaboration with colleagues: Share studies and tasks.
 * Data protection compliance: Check our [Terms & Conditions](https://open-lab.online/docs/terms) and [Privacy Policy](https://open-lab.online/docs/policy).
 
 ## Researcher access in a web browser
